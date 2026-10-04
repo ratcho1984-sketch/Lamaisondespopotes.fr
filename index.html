@@ -12654,6 +12654,14 @@ body[data-screen="home"] #v186Avis{display:inline-flex}
 /* v190 : un peu d'air entre « Mes installations » et les trois compteurs, sur tous les écrans */
 #home .h58-stats{padding-top:14px!important}
 </style>
+<style id="v191-city">
+/* v191 : nom de ville long dans le cadran météo de l'accueil : coupé proprement avec « … » */
+#home .home-weather-widget{min-width:0;overflow:hidden}
+#home .home-weather-copy{display:grid!important;grid-template-columns:auto minmax(0,1fr);column-gap:4px;align-items:baseline;min-width:0;overflow:hidden;text-align:left}
+#home .home-weather-temp{grid-column:1;grid-row:1}
+#home .home-weather-next{grid-column:2;grid-row:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#home .home-weather-city{grid-column:1 / -1;grid-row:2;display:block;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+</style>
 <style id="v147-elodie">
 #behavior .elodie-card{display:none}
 .beh-health-alert{margin:12px 0;padding:14px 16px;border-radius:18px;background:#fff;border:1px solid #eadfcd;border-left:5px solid #d9a774;color:#5f5a52;font-size:13.5px;line-height:1.45}
@@ -12987,6 +12995,19 @@ body[data-screen="home"] #testPremiumToggle{display:inline-flex}
   const b=document.createElement('button'); b.id='v186Avis'; b.type='button'; b.textContent='💬 Mon avis'; b.onclick=open; document.body.appendChild(b);
   let seen=null; try{ seen=localStorage.getItem(SEEN); }catch(e){}
   if(!seen) setTimeout(open,600);
+})();
+</script>
+<script id="v191-city-js">
+/* v191 : une ville saisie en MAJUSCULES s'affiche « Allègre-les-Fumades » sur l'accueil */
+(function(){
+  const el=document.getElementById('homeWeatherCity'); if(!el) return;
+  const small=['les','le','la','de','du','des','en','sur','sous','lès','et','d','l'];
+  function nice(t){
+    if(!t||t!==t.toUpperCase()||!/[A-ZÀ-Ý]/.test(t)) return t;
+    let i=0; return t.toLowerCase().replace(/[a-zà-ÿ]+/g,w=>{ const first=i++===0; return (!first&&small.includes(w))?w:w.charAt(0).toUpperCase()+w.slice(1); });
+  }
+  function fix(){ const n=nice(el.textContent); if(n!==el.textContent) el.textContent=n; el.title=el.textContent; }
+  new MutationObserver(fix).observe(el,{childList:true,characterData:true,subtree:true}); fix();
 })();
 </script>
 </body></html>
