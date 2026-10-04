@@ -9970,11 +9970,11 @@ renderStarterStep = function(){
       if(Array.isArray(d.popotes)) popotes=d.popotes;
       if(Array.isArray(d.eggRecords)) eggRecords=d.eggRecords;
       /* v192 : une seule fois, on retire les anciennes poules d'exemple (Paulette, Simone, Marguerite) et leurs pontes */
-      try{ if(!localStorage.getItem('maisonPopotesDemoV192')){
+      /* v193 : à chaque ouverture (une ancienne page restée ouverte pouvait les réenregistrer) */
+      try{
         const OLD=['paulette','simone','marguerite'];
         if(popotes.some(h=>OLD.includes(h.id))){ popotes=popotes.filter(h=>!OLD.includes(h.id)); eggRecords=eggRecords.filter(r=>!OLD.includes(r.henId)); setTimeout(()=>{ try{ persist(); }catch(e){} },0); }
-        localStorage.setItem('maisonPopotesDemoV192','1');
-      } }catch(e){}
+      }catch(e){}
       if(Array.isArray(d.parkState)&&d.parkState.length){
         parkState=d.parkState.slice(0,10);
         const pc=document.getElementById('parkCount'); if(pc) pc.value=parkState.length;
