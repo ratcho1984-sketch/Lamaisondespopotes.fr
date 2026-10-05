@@ -6937,9 +6937,62 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 <nav class="bottom"><button class="nav active" onclick="go('home',this)"><i>⌂</i>Accueil</button><button class="nav" onclick="go('hens',this)"><i>🐔</i>Mes Popotes</button><button class="nav" onclick="go('install',this)"><i>⌂</i>Installation</button><button class="nav" onclick="go('advice',this)"><i>🌿</i>Conseils</button><button class="nav" onclick="go('queen',this)"><i>♛</i>Queen</button></nav>
 <div class="toast" id="toast"></div>
 </main>
+<script id="v205-photos-idb">
+/* v205 : les photos (poules, œufs) sont rangées dans IndexedDB, bien plus spacieux que localStorage.
+   Avant, quand la place manquait, la sauvegarde retirait les photos et elles disparaissaient au rechargement. */
+(function(){
+  var P={ok:typeof indexedDB!=='undefined', loaded:false, want:{}, saved:{}, q:[], db:null};
+  var dbp=null;
+  function open(){
+    if(dbp) return dbp;
+    dbp=new Promise(function(res,rej){
+      try{ var r=indexedDB.open('maisonPopotesPhotos',1);
+        r.onupgradeneeded=function(){ r.result.createObjectStore('p'); };
+        r.onsuccess=function(){ res(r.result); }; r.onerror=function(){ rej(r.error); }; r.onblocked=function(){ rej(new Error('blocked')); };
+      }catch(e){ rej(e); }
+    });
+    dbp.catch(function(){ P.ok=false; try{ window.v58Persist&&window.v58Persist(); }catch(e){} });
+    return dbp;
+  }
+  function tx(mode,fn){ return open().then(function(db){ return new Promise(function(res,rej){ var t=db.transaction('p',mode); var st=t.objectStore('p'); var out=fn(st); t.oncomplete=function(){ res(out&&out.result!==undefined?out.result:out); }; t.onerror=function(){ rej(t.error); }; t.onabort=function(){ rej(t.error); }; }); }); }
+  P.begin=function(){ P.want={}; };
+  P.strip=function(o,key){
+    if(!o) return o;
+    if(o.photoDataUrl){ P.want[key]=o.photoDataUrl; var c=Object.assign({},o); c.photoDataUrl=null; c.photoRef=key; return c; }
+    if(o.photoRef){ if(!P.loaded){ P.want[o.photoRef]=null; return o; } var d=Object.assign({},o); delete d.photoRef; return d; }
+    return o;
+  };
+  P.sync=function(){
+    var want=P.want, saved=P.saved, loaded=P.loaded;
+    var puts=[], dels=[];
+    Object.keys(want).forEach(function(k){ var v=want[k]; if(v && saved[k]!==v.length+':'+v.slice(-32)) puts.push([k,v]); });
+    if(loaded) Object.keys(saved).forEach(function(k){ if(!(k in want)) dels.push(k); });
+    if(!puts.length && !dels.length) return;
+    tx('readwrite',function(st){ puts.forEach(function(p){ st.put(p[1],p[0]); }); dels.forEach(function(k){ st.delete(k); }); })
+      .then(function(){ puts.forEach(function(p){ saved[p[0]]=p[1].length+':'+p[1].slice(-32); }); dels.forEach(function(k){ delete saved[k]; }); })
+      .catch(function(){});
+  };
+  P.load=function(){
+    if(!P.ok){ P.loaded=true; return Promise.resolve(); }
+    return tx('readonly',function(st){ var m={}; var cur=st.openCursor(); cur.onsuccess=function(){ var c=cur.result; if(c){ m[c.key]=c.value; c.continue(); } }; return {get result(){ return m; }}; })
+      .then(function(m){
+        Object.keys(m).forEach(function(k){ var v=m[k]; if(v) P.saved[k]=v.length+':'+v.slice(-32); });
+        var changed=false;
+        try{ (popotes||[]).forEach(function(h){ if(h.photoRef && !h.photoDataUrl && m[h.photoRef]){ h.photoDataUrl=m[h.photoRef]; changed=true; } }); }catch(e){}
+        try{ (eggRecords||[]).forEach(function(r){ if(r.photoRef && !r.photoDataUrl && m[r.photoRef]){ r.photoDataUrl=m[r.photoRef]; changed=true; } }); }catch(e){}
+        P.loaded=true;
+        if(changed){ ['renderPopotes','renderHenProfile','renderEggHenChoices'].forEach(function(f){ try{ window[f]&&window[f](); }catch(e){} }); try{ window.v58RefreshHome&&window.v58RefreshHome(false); }catch(e){} }
+        try{ window.v58Persist&&window.v58Persist(); }catch(e){}
+      })
+      .catch(function(){ P.ok=false; P.loaded=true; });
+  };
+  window.v205Photos=P;
+  document.addEventListener('DOMContentLoaded',function(){ P.load(); });
+})();
+</script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=204;
+  var APP_V=205;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -9992,7 +10045,15 @@ renderStarterStep = function(){
   let resetting=false;
   function persist(){
     if(resetting) return;
-    const data={popotes,eggRecords,weatherCity,parkState:(typeof parkState!=='undefined'?parkState:null)};
+    /* v205 : photos rangées à part (IndexedDB) ; ici on ne garde qu'une référence */
+    const PH=window.v205Photos; let hensOut=popotes, eggsOut=eggRecords;
+    if(PH&&PH.ok){
+      PH.begin();
+      hensOut=popotes.map(h=>PH.strip(h,'h:'+h.id));
+      eggsOut=eggRecords.map(r=>{ if(r&&r.photoDataUrl&&!r.pid) r.pid='e'+Date.now().toString(36)+Math.random().toString(36).slice(2,7); return PH.strip(r,'e:'+(r&&r.pid)); });
+      PH.sync();
+    }
+    const data={popotes:hensOut,eggRecords:eggsOut,weatherCity,parkState:(typeof parkState!=='undefined'?parkState:null)};
     try{ localStorage.setItem(STORE,JSON.stringify(data)); }
     catch(e){
       // Quota dépassé (photos trop lourdes) : on garde tout sauf les photos
