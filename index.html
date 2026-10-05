@@ -7478,6 +7478,8 @@ function renderBreedPicker(mode, selectedValue=''){
 
   const values=new Set(breedCatalog.map(x=>x.value));
   const list=(current && !values.has(current)?[{value:current,label:current}]:[]).concat(breedCatalog);
+  /* v195 : races triées par ordre alphabétique, « Race non renseignée » toujours en premier */
+  list.sort((a,b)=>(a.value?1:0)-(b.value?1:0) || String(a.label).localeCompare(String(b.label),'fr',{sensitivity:'base'}));
   menu.innerHTML=list.map(item=>{
     const selected=item.value===current;
     return `<button type="button" class="breed-option ${selected?'selected':''}" onclick="selectBreedFromMenu('${mode}','${escapeJs(item.value)}',event)">
