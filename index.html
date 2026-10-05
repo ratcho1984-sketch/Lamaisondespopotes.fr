@@ -5633,8 +5633,9 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
   </div>
 
   <div class="add-popote-card">
-    <label for="newHenName">Prénom</label>
+    <label for="newHenName">Prénom <small style="font-weight:600;color:#8a7d66">(facultatif)</small></label>
     <input id="newHenName" type="text" maxlength="30" placeholder="Ex. Joséphine">
+    <p class="v58-id-note" style="margin:2px 0 8px">Pas de prénom ? Pas de souci : elle portera le nom de sa race (ex. « Marans »).</p>
 
     <label>Photo de ma poule</label>
     <div id="newHenPhotoPreview" style="display:none;margin:8px 0 12px;width:150px;height:150px;border-radius:22px;overflow:hidden;border:2px solid #d9d2c2;background:#f7f4ec;"></div>
@@ -7551,7 +7552,7 @@ function setHenName(value){
     return;
   }
   if(hen.name===v) return;
-  hen.name=v;
+  hen.name=v; hen.autoName=false;
   renderHenProfile();
   renderPopotes();
   renderEggHenChoices();
@@ -7821,18 +7822,23 @@ function onNewHenPhotoSelected(event){
 }
 
 function addNewPopote(){
-  const name=(document.getElementById('newHenName').value||'').trim();
-  if(!name){
-    toast('Indiquez le prénom de la Popote.');
-    return;
-  }
+  let name=(document.getElementById('newHenName').value||'').trim();
   const breed=(document.getElementById('newHenBreed').value||'').trim();
+  /* v198 : prénom facultatif. Sans prénom, la poule prend le nom de sa race (« Marans », « Marans 2 »…), sinon « Poule 1 », « Poule 2 »… */
+  let autoName=false;
+  if(!name){
+    autoName=true;
+    const base=breed||'Poule';
+    const taken=n=>popotes.some(h=>(h.name||'').toLowerCase()===n.toLowerCase());
+    if(breed && !taken(base)) name=base;
+    else { let k=breed?2:1; while(taken(base+' '+k)) k++; name=base+' '+k; }
+  }
   const laying=document.getElementById('newHenStatus').value==='laying';
   const rawPark=Number(document.getElementById('newHenPark').value);
   const parkIndex=(rawPark>=0 && parkState[rawPark]) ? rawPark : null;
   const id='hen_'+Date.now();
 
-  popotes.push({id,name,breed,laying,parkIndex,emoji:'🐔',normalEggs:0,unusualEggs:0,unusualDates:[],brooding:false,molting:false,photoDataUrl:newHenPhotoDataUrl});
+  popotes.push({id,name,autoName,breed,laying,parkIndex,emoji:'🐔',normalEggs:0,unusualEggs:0,unusualDates:[],brooding:false,molting:false,photoDataUrl:newHenPhotoDataUrl});
   document.getElementById('newHenName').value='';
   newHenPhotoDataUrl=null;
   const photoInput=document.getElementById('newHenPhotoInput'); if(photoInput) photoInput.value='';
@@ -10651,7 +10657,7 @@ renderStarterStep = function(){
       <div class="v58-id-body">
         <div class="v58-id-photo"><img src="${avatarSrcForHen(h)}" alt="${escapeHtml(h.name)}"></div>
         <dl class="v58-id-fields">
-          <div class="wide"><dt>Prénom</dt><dd class="v58-id-name">${escapeHtml(h.name)}</dd></div>
+          <div class="wide"><dt>${h.autoName?'Nom':'Prénom'}</dt><dd class="v58-id-name">${escapeHtml(h.name)}</dd></div>
           <div><dt>Race</dt><dd>${escapeHtml(h.breed||'Non renseignée')}</dd></div>
           <div><dt>Parc</dt><dd>${escapeHtml(parkNameForIndex(h.parkIndex))}</dd></div>
           <div><dt>Statut</dt><dd class="v58-pills">${pills.join('')}</dd></div>
@@ -10735,7 +10741,7 @@ renderStarterStep = function(){
     const biEl=document.getElementById('v58Birth'); if(biEl) h.birth=biEl.value;
     if(trEl) h.trait=trEl.value.trim();
     const newName=nameEl?nameEl.value.trim():'';
-    if(newName && newName!==h.name){ h.name=newName.slice(0,30); renderEggHenChoices(); try{renderParks();}catch(e){} }
+    if(newName && newName!==h.name){ h.name=newName.slice(0,30); h.autoName=false; renderEggHenChoices(); try{renderParks();}catch(e){} }
     renderPopotes(); renderHenProfile(); persist(); refreshHome(false);
     if(!silent) toast('Carte de '+h.name+' enregistrée ✓');
   };
@@ -10764,7 +10770,7 @@ renderStarterStep = function(){
     ensureNumbers();
     const val=id=>(document.getElementById(id)||{}).value||'';
     const pi=Number(val('newHenPark'));
-    const temp={id:'__preview',name:val('newHenName').trim()||'Son prénom',breed:val('newHenBreed'),
+    const temp={id:'__preview',name:val('newHenName').trim()||val('newHenBreed')||'Son prénom',autoName:!val('newHenName').trim()&&!!val('newHenBreed'),breed:val('newHenBreed'),
       laying:val('newHenStatus')!=='notlaying',parkIndex:(pi>=0&&parkState[pi])?pi:null,
       photoDataUrl:newHenPhotoDataUrl,arrival:val('newHenArrival'),birth:val('newHenBirth'),trait:val('newHenTrait').trim(),num:popotes.reduce((m,h)=>Math.max(m,Number(h.num)||0),0)+1};
     addPreview.innerHTML=idCard(temp,true)+
