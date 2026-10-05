@@ -6937,6 +6937,21 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 <nav class="bottom"><button class="nav active" onclick="go('home',this)"><i>⌂</i>Accueil</button><button class="nav" onclick="go('hens',this)"><i>🐔</i>Mes Popotes</button><button class="nav" onclick="go('install',this)"><i>⌂</i>Installation</button><button class="nav" onclick="go('advice',this)"><i>🌿</i>Conseils</button><button class="nav" onclick="go('queen',this)"><i>♛</i>Queen</button></nav>
 <div class="toast" id="toast"></div>
 </main>
+<script id="v203-autoupdate">
+(function(){
+  var APP_V=203;
+  if(!/github\.io$/.test(location.hostname)) return;
+  function check(){
+    fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
+      if(!j||!(j.v>APP_V)) return;
+      var k='v203Reloaded'+j.v; try{ if(sessionStorage.getItem(k)) return; sessionStorage.setItem(k,'1'); }catch(e){}
+      fetch(location.pathname,{cache:'reload'}).catch(function(){}).then(function(){ location.reload(); });
+    }).catch(function(){});
+  }
+  check();
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') check(); });
+})();
+</script>
 <script id="v199-coq-early">
 var V199_CHARS=['Calme','Vigilant','Protecteur','Encore jeune','Je ne sais pas'];
 var V199_TIP='<div class="v199-tip"><b>🔍 L’œil d’Élodie</b><br>Un coq veille sur son groupe. Prenez le temps d’observer : une poule qui s’isole, qui fuit souvent ou qui perd les plumes du dos peut avoir besoin d’un peu plus de calme ou d’espace.</div>';
