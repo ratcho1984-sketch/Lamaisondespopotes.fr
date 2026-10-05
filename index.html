@@ -6936,6 +6936,12 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 <nav class="bottom"><button class="nav active" onclick="go('home',this)"><i>⌂</i>Accueil</button><button class="nav" onclick="go('hens',this)"><i>🐔</i>Mes Popotes</button><button class="nav" onclick="go('install',this)"><i>⌂</i>Installation</button><button class="nav" onclick="go('advice',this)"><i>🌿</i>Conseils</button><button class="nav" onclick="go('queen',this)"><i>♛</i>Queen</button></nav>
 <div class="toast" id="toast"></div>
 </main>
+<script id="v196-age-js">
+/* v196 : âge approximatif de la poule à partir de « Née vers » (AAAA-MM) */
+window.henAgeMonths=function(h){ const b=(h&&h.birth||'').slice(0,7); if(!/^\d{4}-\d{2}$/.test(b)) return null; const [y,m]=b.split('-').map(Number); const n=new Date(); return Math.max(0,(n.getFullYear()-y)*12+(n.getMonth()+1-m)); };
+window.henAgeShort=function(h){ const m=henAgeMonths(h); if(m===null) return '—'; if(m<12) return '≈ '+Math.max(1,m)+' mois'; const y=Math.floor(m/12), r=m%12; return '≈ '+y+(r>=6?',5':'')+' an'+(y>1||r>=6?'s':''); };
+window.henAgeLong=function(h){ const m=henAgeMonths(h); if(m===null) return 'non renseigné'; const b=h.birth.slice(0,7).split('-'); const mo=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'][Number(b[1])-1]; let a; if(m<12) a=Math.max(1,m)+' mois'; else { const y=Math.floor(m/12), r=m%12; a=y+' an'+(y>1?'s':'')+(r?' et '+r+' mois':''); } return 'environ '+a+' (née vers '+mo+' '+b[0]+')'; };
+</script>
 <script>
 function go(id,el){
   const target=document.getElementById(id);
@@ -10650,6 +10656,7 @@ renderStarterStep = function(){
           <div><dt>Parc</dt><dd>${escapeHtml(parkNameForIndex(h.parkIndex))}</dd></div>
           <div><dt>Statut</dt><dd class="v58-pills">${pills.join('')}</dd></div>
           <div><dt>Œufs · 30 j</dt><dd class="v58-id-eggs">${eggs30}</dd></div>${big?`
+          <div><dt>Âge</dt><dd>${henAgeShort(h)}</dd></div>
           <div><dt>Arrivée</dt><dd>${h.arrival?h.arrival.split('-').reverse().join('/'):'—'}</dd></div>
           <div class="wide"><dt>Signe particulier</dt><dd>${escapeHtml(h.trait||'—')}</dd></div>`:''}
         </dl>
@@ -10703,6 +10710,8 @@ renderStarterStep = function(){
         <h3>🪪 Sa carte de membre de la famille</h3>
         <label for="v58Name">Prénom</label>
         <input id="v58Name" type="text" maxlength="30" value="${escapeHtml(hen.name)}" placeholder="Ex. Joséphine" autocomplete="off">
+        <label for="v58Birth">Née vers <small style="font-weight:600;color:#8a7d66">(mois et année, approximatifs)</small></label>
+        <input id="v58Birth" type="month" value="${escapeHtml((hen.birth||'').slice(0,7))}">
         <label for="v58Arrival">Arrivée à la maison</label>
         <input id="v58Arrival" type="date" value="${escapeHtml(hen.arrival||'')}">
         <label for="v58Trait">Signe particulier</label>
@@ -10710,10 +10719,10 @@ renderStarterStep = function(){
         <button type="button" class="v58-fam-save" onclick="v58SaveCard()">✓ Enregistrer sa carte</button>
         <button type="button" class="v58-fam-go" onclick="v58MakeIdImage()">Créer l’image de sa carte</button>
       </div>`;
-      const nameEl=document.getElementById('v58Name'), arrEl=document.getElementById('v58Arrival'), trEl=document.getElementById('v58Trait');
+      const nameEl=document.getElementById('v58Name'), arrEl=document.getElementById('v58Arrival'), trEl=document.getElementById('v58Trait'), biEl=document.getElementById('v58Birth');
       // La carte au-dessus se remplit pendant la saisie
-      const live=()=>{ const h=currentProfileHen(); if(!h) return; h.arrival=arrEl.value; h.trait=trEl.value.trim(); drawProfileCard(h,nameEl.value.trim()); };
-      [nameEl,arrEl,trEl].forEach(e=>{ e.addEventListener('input',live); e.addEventListener('change',()=>{ live(); persist(); }); });
+      const live=()=>{ const h=currentProfileHen(); if(!h) return; h.arrival=arrEl.value; if(biEl) h.birth=biEl.value; h.trait=trEl.value.trim(); drawProfileCard(h,nameEl.value.trim()); };
+      [nameEl,arrEl,trEl,biEl].filter(Boolean).forEach(e=>{ e.addEventListener('input',live); e.addEventListener('change',()=>{ live(); persist(); }); });
       nameEl.addEventListener('change',()=>setHenName(nameEl.value));
     }else{
       const n=document.getElementById('v58Name'); if(n && document.activeElement!==n) n.value=hen.name;
@@ -10723,6 +10732,7 @@ renderStarterStep = function(){
     const h=currentProfileHen(); if(!h) return;
     const nameEl=document.getElementById('v58Name'), arrEl=document.getElementById('v58Arrival'), trEl=document.getElementById('v58Trait');
     if(arrEl) h.arrival=arrEl.value;
+    const biEl=document.getElementById('v58Birth'); if(biEl) h.birth=biEl.value;
     if(trEl) h.trait=trEl.value.trim();
     const newName=nameEl?nameEl.value.trim():'';
     if(newName && newName!==h.name){ h.name=newName.slice(0,30); renderEggHenChoices(); try{renderParks();}catch(e){} }
@@ -10740,7 +10750,9 @@ renderStarterStep = function(){
     const h=document.createElement('h3'); h.className='v58-add-h'; h.textContent='🪪 Ses informations'; addCard.prepend(h);
     const btn=addCard.querySelector('.primary');
     const extra=document.createElement('div'); extra.className='v58-add-extra';
-    extra.innerHTML=`<label for="newHenArrival">Arrivée à la maison</label><input id="newHenArrival" type="date">
+    extra.innerHTML=`<label for="newHenBirth">Née vers <small style="font-weight:600;color:#8a7d66">(mois et année, approximatifs)</small></label><input id="newHenBirth" type="month">
+      <p class="v58-id-note" style="margin:2px 0 8px">Utile chez le vétérinaire : son âge est calculé automatiquement.</p>
+      <label for="newHenArrival">Arrivée à la maison</label><input id="newHenArrival" type="date">
       <label for="newHenTrait">Signe particulier</label><input id="newHenTrait" type="text" maxlength="38" placeholder="Ex. Adore les vers de terre">`;
     if(btn) addCard.insertBefore(extra,btn);
     addCard.addEventListener('input',()=>updateAddPreview());
@@ -10754,7 +10766,7 @@ renderStarterStep = function(){
     const pi=Number(val('newHenPark'));
     const temp={id:'__preview',name:val('newHenName').trim()||'Son prénom',breed:val('newHenBreed'),
       laying:val('newHenStatus')!=='notlaying',parkIndex:(pi>=0&&parkState[pi])?pi:null,
-      photoDataUrl:newHenPhotoDataUrl,arrival:val('newHenArrival'),trait:val('newHenTrait').trim(),num:popotes.reduce((m,h)=>Math.max(m,Number(h.num)||0),0)+1};
+      photoDataUrl:newHenPhotoDataUrl,arrival:val('newHenArrival'),birth:val('newHenBirth'),trait:val('newHenTrait').trim(),num:popotes.reduce((m,h)=>Math.max(m,Number(h.num)||0),0)+1};
     addPreview.innerHTML=idCard(temp,true)+
       `<div class="v58-id-actions"><button type="button" class="v58-id-btn" onclick="document.getElementById('newHenPhotoInput').click()">📷 ${newHenPhotoDataUrl?'Changer la photo':'Ajouter une photo'}</button>`+
       (newHenPhotoDataUrl?`<button type="button" class="v58-id-btn ghost" onclick="v58ClearNewPhoto()">Retirer la photo</button>`:'')+`</div>`+
@@ -10770,11 +10782,12 @@ renderStarterStep = function(){
   window.addNewPopote=function(){
     const before=popotes.length;
     const arrival=(document.getElementById('newHenArrival')||{}).value||'';
+    const birth=(document.getElementById('newHenBirth')||{}).value||'';
     const trait=((document.getElementById('newHenTrait')||{}).value||'').trim();
     const r=baseAdd.apply(this,arguments);
     if(popotes.length>before){
-      const h=popotes[popotes.length-1]; h.arrival=arrival; h.trait=trait; ensureNumbers();
-      ['newHenArrival','newHenTrait'].forEach(id=>{const e=document.getElementById(id); if(e) e.value='';});
+      const h=popotes[popotes.length-1]; h.arrival=arrival; h.birth=birth; h.trait=trait; ensureNumbers();
+      ['newHenArrival','newHenBirth','newHenTrait'].forEach(id=>{const e=document.getElementById(id); if(e) e.value='';});
       persist(); renderPopotes(); updateAddPreview();
     }
     return r;
@@ -10833,7 +10846,8 @@ renderStarterStep = function(){
     label('Parc',fx,572); value(parkNameForIndex(hen.parkIndex),fx,614,maxW1);
     const st=[hen.laying?'Pond':'Au repos',hen.brooding?'Couve':'',hen.molting?'En mue':''].filter(Boolean).join(' · ');
     label('Statut',col2,572); value(st,col2,614,maxW2);
-    label('Signe particulier',fx,674); value(hen.trait||'—',fx,716,1000,38);
+    label('Signe particulier',fx,674); value(hen.trait||'—',fx,716,maxW1,38);
+    label('Âge',col2,674); value(henAgeShort(hen).replace('≈ ',''),col2,716,maxW2,38);
     // empreinte + signature
     x.fillStyle=muted; x.font='800 20px system-ui,Arial,sans-serif'; x.fillText('EMPREINTE',px,770); x.fillText('SIGNATURE',px+250,770);
     x.save(); x.translate(px+80,850); x.strokeStyle='#7a5a3a'; x.lineWidth=9; x.lineCap='round';
@@ -11677,7 +11691,7 @@ table{border-collapse:collapse;width:100%}.cal td,.cal th{border:1px solid #ccc;
 .list td,.list th{border:1px solid #ddd;padding:5px 7px;font-size:13px;text-align:left}.foot{font-size:12px;color:#555;margin-top:22px;border-top:1px solid #ddd;padding-top:8px}@media print{body{margin:0}}
 </style></head><body>
 <h1>Suivi de ponte · ${esc(hen.name)}</h1><p style="color:#555;margin:4px 0 12px">Relevé établi le ${frDate(Date.now())} à partir des pontes notées par ses propriétaires dans l’application La Maison des Popotes. Le suivi commence à la première ponte enregistrée pour cette poule.</p>
-<div class="id"><div><b>Race :</b> ${esc(hen.breed||'non renseignée')}</div><div><b>Arrivée :</b> ${hen.arrival?hen.arrival.split('-').reverse().join('/'):'non renseignée'}</div><div><b>Statut actuel :</b> ${esc(status)}</div><div><b>Signe particulier :</b> ${esc(hen.trait||'—')}</div></div>
+<div class="id"><div><b>Race :</b> ${esc(hen.breed||'non renseignée')}</div><div><b>Âge :</b> ${esc(henAgeLong(hen))}</div><div><b>Arrivée :</b> ${hen.arrival?hen.arrival.split('-').reverse().join('/'):'non renseignée'}</div><div><b>Statut actuel :</b> ${esc(status)}</div><div><b>Signe particulier :</b> ${esc(hen.trait||'—')}</div></div>
 <h2>En résumé</h2><div class="sum"><div><b>${last?frDate(last.createdAt):'—'}</b><span>dernière ponte${last?' ('+agoTxt(last.createdAt)+')':''}</span></div><div><b>${months[2].st.total}</b><span>œufs ce mois-ci</span></div><div><b>${unusual.reduce((s,r)=>s+(r.count||0),0)}</b><span>œufs inhabituels sur 3 mois</span></div><div><b>${Math.max(...months.map(x=>x.st.gap))}</b><span>jours max. sans ponte</span></div></div>
 <h2>Calendrier des 3 derniers mois</h2><p style="font-size:12px;color:#555;margin:0">Vert ● = œuf(s) d’aspect normal · Orange ▲ = œuf d’aspect inhabituel · ○ = œuf possible (pondeuse incertaine) · case vide = aucune ponte notée.</p>
 ${months.map(cal).join('')}
@@ -13033,5 +13047,6 @@ body[data-screen="home"] #testPremiumToggle{display:inline-flex}
 .v58-id.big .v58-sig{font-size:19px!important}
 .v58-id.big .v58-sign-lbl{font-size:7.5px!important}
 .v58-id.big .v58-id-mrz{padding-top:4px!important;padding-bottom:5px!important;font-size:9px!important}
+.v58-id.big .v58-id-fields>div.wide:last-child{grid-column:1/-1!important}
 </style>
 </body></html>
