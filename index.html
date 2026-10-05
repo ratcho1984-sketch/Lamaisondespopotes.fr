@@ -6937,6 +6937,13 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 <nav class="bottom"><button class="nav active" onclick="go('home',this)"><i>⌂</i>Accueil</button><button class="nav" onclick="go('hens',this)"><i>🐔</i>Mes Popotes</button><button class="nav" onclick="go('install',this)"><i>⌂</i>Installation</button><button class="nav" onclick="go('advice',this)"><i>🌿</i>Conseils</button><button class="nav" onclick="go('queen',this)"><i>♛</i>Queen</button></nav>
 <div class="toast" id="toast"></div>
 </main>
+<script id="v199-coq-early">
+var V199_CHARS=['Calme','Vigilant','Protecteur','Encore jeune','Je ne sais pas'];
+var V199_TIP='<div class="v199-tip"><b>🔍 L’œil d’Élodie</b><br>Un coq veille sur son groupe. Prenez le temps d’observer : une poule qui s’isole, qui fuit souvent ou qui perd les plumes du dos peut avoir besoin d’un peu plus de calme ou d’espace.</div>';
+function v199Label(){ const c=popotes.filter(h=>h.sex==='coq').length, p=popotes.length-c;
+  if(!c) return p+' Popote'+(p>1?'s':'');
+  return (p?p+' Popote'+(p>1?'s':'')+' et ':'')+c+' coq'+(c>1?'s':''); }
+</script>
 <script id="v196-age-js">
 /* v196 : âge approximatif de la poule à partir de « Née vers » (AAAA-MM) */
 window.henAgeMonths=function(h){ const b=(h&&h.birth||'').slice(0,7); if(!/^\d{4}-\d{2}$/.test(b)) return null; const [y,m]=b.split('-').map(Number); const n=new Date(); return Math.max(0,(n.getFullYear()-y)*12+(n.getMonth()+1-m)); };
@@ -10056,7 +10063,7 @@ renderStarterStep = function(){
     if(sub){
       const laying=popotes.filter(h=>h.laying).length;
       sub.textContent=popotes.length
-        ? popotes.length+' Popote'+(popotes.length>1?'s':'')+' · '+laying+' en ponte'
+        ? v199Label()+' · '+laying+' en ponte'
         : 'Ajoutez votre première Popote';
     }
   }
@@ -10645,26 +10652,29 @@ renderStarterStep = function(){
     const pills=[];
     if(h.brooding) pills.push('<span class="v58-pill brood">Couve</span>');
     if(h.molting) pills.push('<span class="v58-pill molt">En mue</span>');
-    pills.push(h.laying?'<span class="v58-pill lay">Pond</span>':'<span class="v58-pill rest">Au repos</span>');
+    if(h.sex==='coq'){ pills.length=0; if(h.molting) pills.push('<span class="v58-pill molt">En mue</span>'); pills.unshift('<span class="v58-pill v199-coq">🐓 Coq</span>'); }
+    else pills.push(h.laying?'<span class="v58-pill lay">Pond</span>':'<span class="v58-pill rest">Au repos</span>');
+    const isCoq=h.sex==='coq';
+    const hensInPark=isCoq?popotes.filter(x=>x.sex!=='coq'&&x.id!==h.id&&x.parkIndex===h.parkIndex).length:0;
     const tag=big?'div':'button';
     const click=big?'':` type="button" onclick="openHenProfile('${h.id}')" aria-label="Ouvrir la fiche de ${escapeHtml(h.name)}"`;
     return `<${tag} class="v58-id${big?' big':''}${h.cardTheme&&window.v81IsPremium&&v81IsPremium()?' v81-th-'+h.cardTheme:''}"${click}>
       <div class="v58-id-head">
         <span class="v58-id-logo" aria-hidden="true"></span>
-        <span class="v58-id-titles"><b>La Maison des Popotes</b><small>${h.cardTheme==='memoire'&&window.v81IsPremium&&v81IsPremium()?'En mémoire · toujours dans nos cœurs':'Carte d’identité de Popote'}</small></span>
+        <span class="v58-id-titles"><b>La Maison des Popotes</b><small>${h.cardTheme==='memoire'&&window.v81IsPremium&&v81IsPremium()?'En mémoire · toujours dans nos cœurs':(h.sex==='coq'?'Carte d’identité de coq':'Carte d’identité de Popote')}</small></span>
         <span class="v58-id-no">N° ${no}</span>
       </div>
       <div class="v58-id-body">
         <div class="v58-id-photo"><img src="${avatarSrcForHen(h)}" alt="${escapeHtml(h.name)}"></div>
         <dl class="v58-id-fields">
-          <div class="wide"><dt>${h.autoName?'Nom':'Prénom'}</dt><dd class="v58-id-name">${escapeHtml(h.name)}</dd></div>
+          <div class="wide"><dt>${(h.autoName||h.sex==='coq')?'Nom':'Prénom'}</dt><dd class="v58-id-name">${escapeHtml(h.name)}</dd></div>
           <div><dt>Race</dt><dd>${escapeHtml(h.breed||'Non renseignée')}</dd></div>
           <div><dt>Parc</dt><dd>${escapeHtml(parkNameForIndex(h.parkIndex))}</dd></div>
           <div><dt>Statut</dt><dd class="v58-pills">${pills.join('')}</dd></div>
-          <div><dt>Œufs · 30 j</dt><dd class="v58-id-eggs">${eggs30}</dd></div>${big?`
+          ${isCoq?`<div><dt>Ses poules</dt><dd class="v199-hens">${hensInPark?hensInPark+' dans son parc':'—'}</dd></div>`:`<div><dt>Œufs · 30 j</dt><dd class="v58-id-eggs">${eggs30}</dd></div>`}${big?`
           <div><dt>Âge</dt><dd>${henAgeShort(h)}</dd></div>
           <div><dt>Arrivée</dt><dd>${h.arrival?h.arrival.split('-').reverse().join('/'):'—'}</dd></div>
-          <div class="wide"><dt>Signe particulier</dt><dd>${escapeHtml(h.trait||'—')}</dd></div>`:''}
+          ${isCoq?`<div class="wide"><dt>Caractère</dt><dd>${escapeHtml([h.character,h.trait].filter(Boolean).join(' · ')||'—')}</dd></div>`:`<div class="wide"><dt>Signe particulier</dt><dd>${escapeHtml(h.trait||'—')}</dd></div>`}`:''}
         </dl>
       </div>
       ${big?`<div class="v58-id-sign">
@@ -10673,18 +10683,19 @@ renderStarterStep = function(){
         <div class="v58-sign-cell grow"><span class="v58-sign-lbl">Signature</span><span class="v58-sig">${escapeHtml(h.name)}</span></div>
         ${h.arrival?`<span class="v58-since">♥ Membre de la famille depuis ${escapeHtml(h.arrival.slice(0,4))}</span>`:''}
       </div>`:''}
-      <div class="v58-id-mrz" aria-hidden="true">${mrzLine('POPOTE<<'+plain(h.name)+'<<'+plain(h.breed||'RACE INCONNUE'))}<br>${mrzLine('MP'+no+'<<'+plain(parkNameForIndex(h.parkIndex))+'<<MAISON<DES<POPOTES')}</div>
+      <div class="v58-id-mrz" aria-hidden="true">${mrzLine((h.sex==='coq'?'COQ<<<<':'POPOTE<<')+plain(h.name)+'<<'+plain(h.breed||'RACE INCONNUE'))}<br>${mrzLine('MP'+no+'<<'+plain(parkNameForIndex(h.parkIndex))+'<<MAISON<DES<POPOTES')}</div>
     </${tag}>`;
   }
   window.renderPopotes=function(){
     const grid=document.getElementById('popotesGrid'); if(!grid) return;
     ensureNumbers();
-    const n=popotes.length, lbl=n+' Popote'+(n>1?'s':'');
+    const lbl=v199Label();
     const c=document.getElementById('popotesCount'); if(c) c.textContent=lbl;
     const hd=document.getElementById('popotesHeading'); if(hd) hd.textContent=lbl+' à la maison';
     grid.classList.add('v58-id-grid');
     grid.innerHTML=popotes.map(h=>idCard(h,false)).join('')+
-      `<button type="button" class="popote-add" onclick="go('addpopote')"><span class="plus">＋</span>Ajouter une Popote</button>`;
+      `<button type="button" class="popote-add" onclick="go('addpopote')"><span class="plus">＋</span>Ajouter une Popote ou un coq</button>`+
+      (popotes.some(h=>h.sex==='coq')?V199_TIP:'');
   };
   // Fiche : la grande carte remplace la photo, avec ses boutons photo juste dessous
   const hero=document.querySelector('#profile .hen-profile-hero');
@@ -10701,7 +10712,8 @@ renderStarterStep = function(){
     cardPart.innerHTML=idCard(view,true)+
       `<div class="v58-id-actions"><button type="button" class="v58-id-btn" onclick="triggerHenPhotoUpload()">📷 ${hen.photoDataUrl?'Changer la photo':'Ajouter une photo'}</button>`+
       (hen.photoDataUrl?`<button type="button" class="v58-id-btn ghost" onclick="removeHenPhoto()">Retirer la photo</button>`:'')+`</div>`+
-      (hen.photoDataUrl?'':'<p class="v58-id-note">Sans photo, l’illustration de sa race s’affiche automatiquement.</p>');
+      (hen.photoDataUrl?'':(hen.sex==='coq'?'<p class="v58-id-note">Sans photo, un coq 🐓 s’affiche sur sa carte.</p>':'<p class="v58-id-note">Sans photo, l’illustration de sa race s’affiche automatiquement.</p>'))+
+      (hen.sex==='coq'?V199_TIP:'');
   }
   window.renderHenProfile=function(){
     baseRenderProfile.apply(this,arguments);
@@ -10714,9 +10726,10 @@ renderStarterStep = function(){
       formHenId=hen.id;
       formPart.innerHTML=`<div class="v58-fam">
         <h3>🪪 Sa carte de membre de la famille</h3>
-        <label for="v58Name">Prénom</label>
-        <input id="v58Name" type="text" maxlength="30" value="${escapeHtml(hen.name)}" placeholder="Ex. Joséphine" autocomplete="off">
-        <label for="v58Birth">Née vers <small style="font-weight:600;color:#8a7d66">(mois et année, approximatifs)</small></label>
+        <label for="v58Name">${hen.sex==='coq'?'Nom':'Prénom'}</label>
+        <input id="v58Name" type="text" maxlength="30" value="${escapeHtml(hen.name)}" placeholder="${hen.sex==='coq'?'Ex. Gaston':'Ex. Joséphine'}" autocomplete="off">
+        ${hen.sex==='coq'?`<label>Son caractère <small style="font-weight:600;color:#8a7d66">(facultatif)</small></label><div class="v199-chips" data-target="profile">${V199_CHARS.map(c=>`<button type="button" class="${hen.character===c?'on':''}" onclick="v199SetChar(this,'${c}')">${c}</button>`).join('')}</div>`:''}
+        <label for="v58Birth">${hen.sex==='coq'?'Né vers':'Née vers'} <small style="font-weight:600;color:#8a7d66">(mois et année, approximatifs)</small></label>
         <input id="v58Birth" type="month" value="${escapeHtml((hen.birth||'').slice(0,7))}">
         <label for="v58Arrival">Arrivée à la maison</label>
         <input id="v58Arrival" type="date" value="${escapeHtml(hen.arrival||'')}">
@@ -10770,13 +10783,13 @@ renderStarterStep = function(){
     ensureNumbers();
     const val=id=>(document.getElementById(id)||{}).value||'';
     const pi=Number(val('newHenPark'));
-    const temp={id:'__preview',name:val('newHenName').trim()||val('newHenBreed')||'Son prénom',autoName:!val('newHenName').trim()&&!!val('newHenBreed'),breed:val('newHenBreed'),
+    const temp={id:'__preview',name:val('newHenName').trim()||(window.v199Sex==='coq'?(val('newHenBreed')?'Coq '+val('newHenBreed'):'Son nom'):(val('newHenBreed')||'Son prénom')),autoName:!val('newHenName').trim()&&!!val('newHenBreed'),breed:val('newHenBreed'),sex:window.v199Sex==='coq'?'coq':undefined,character:window.v199NewChar||'',
       laying:val('newHenStatus')!=='notlaying',parkIndex:(pi>=0&&parkState[pi])?pi:null,
       photoDataUrl:newHenPhotoDataUrl,arrival:val('newHenArrival'),birth:val('newHenBirth'),trait:val('newHenTrait').trim(),num:popotes.reduce((m,h)=>Math.max(m,Number(h.num)||0),0)+1};
     addPreview.innerHTML=idCard(temp,true)+
       `<div class="v58-id-actions"><button type="button" class="v58-id-btn" onclick="document.getElementById('newHenPhotoInput').click()">📷 ${newHenPhotoDataUrl?'Changer la photo':'Ajouter une photo'}</button>`+
       (newHenPhotoDataUrl?`<button type="button" class="v58-id-btn ghost" onclick="v58ClearNewPhoto()">Retirer la photo</button>`:'')+`</div>`+
-      (newHenPhotoDataUrl?'':'<p class="v58-id-note">Sans photo, l’illustration de sa race s’affiche automatiquement.</p>');
+      (newHenPhotoDataUrl?'':(window.v199Sex==='coq'?'<p class="v58-id-note">Sans photo, un coq 🐓 s’affiche sur sa carte.</p>':'<p class="v58-id-note">Sans photo, l’illustration de sa race s’affiche automatiquement.</p>'));
   }
   window.v58UpdateAddPreview=updateAddPreview;
   window.v58ClearNewPhoto=function(){ newHenPhotoDataUrl=null; updateAddPreview(); };
@@ -10830,7 +10843,7 @@ renderStarterStep = function(){
     x.fillStyle=hg; x.fillRect(0,0,W,150); x.fillStyle=line; x.fillRect(0,150,W,3); if(ART_TH&&window.v91Draw){ try{ await v91Draw(x,ART_TH,'under',W,H); }catch(e){} }
     if(homeMask) x.drawImage(tint(homeMask,green,84,84),52,33,84,84);
     x.fillStyle=green; x.font='800 54px Georgia,serif'; x.fillText('LA MAISON DES POPOTES',160,82);
-    x.fillStyle=muted; x.font='700 26px system-ui,Arial,sans-serif'; x.fillText(HD&&hen.cardTheme==='memoire'?'EN MÉMOIRE  ·  TOUJOURS DANS NOS CŒURS':'CARTE D’IDENTITÉ DE POPOTE  ·  MEMBRE DE LA FAMILLE',162,122);
+    x.fillStyle=muted; x.font='700 26px system-ui,Arial,sans-serif'; x.fillText(HD&&hen.cardTheme==='memoire'?'EN MÉMOIRE  ·  TOUJOURS DANS NOS CŒURS':(hen.sex==='coq'?'CARTE D’IDENTITÉ DE COQ  ·  MEMBRE DE LA FAMILLE':'CARTE D’IDENTITÉ DE POPOTE  ·  MEMBRE DE LA FAMILLE'),162,122);
     const no='N° '+String(hen.num||0).padStart(3,'0');
     x.font='700 34px ui-monospace,Menlo,Consolas,monospace'; const nw=x.measureText(no).width+44;
     rr(x,W-nw-52,46,nw,62,16); x.fillStyle='#fff3dc'; x.fill(); x.strokeStyle='#efd9ad'; x.lineWidth=2; x.stroke();
@@ -10846,13 +10859,13 @@ renderStarterStep = function(){
     const fx=530, col2=1070, maxW1=500, maxW2=470;
     const label=(t,X,Y)=>{x.fillStyle=muted; x.font='800 22px system-ui,Arial,sans-serif'; x.fillText(t.toUpperCase().split('').join('\u200A'),X,Y);};
     const value=(t,X,Y,max,size=40)=>{x.fillStyle=ink; const s=fit(x,t,max,size,'700 {s}px system-ui,Arial,sans-serif'); x.font=`700 ${s}px system-ui,Arial,sans-serif`; x.fillText(t,X,Y);};
-    label('Prénom',fx,236); x.fillStyle=ink; const ns=fit(x,hen.name,1000,120,'800 {s}px Georgia,serif'); x.font=`800 ${ns}px Georgia,serif`; x.fillText(hen.name,fx,345);
+    label((hen.autoName||hen.sex==='coq')?'Nom':'Prénom',fx,236); x.fillStyle=ink; const ns=fit(x,hen.name,1000,120,'800 {s}px Georgia,serif'); x.font=`800 ${ns}px Georgia,serif`; x.fillText(hen.name,fx,345);
     label('Race',fx,470); value(hen.breed||'Non renseignée',fx,512,maxW1);
     label('Arrivée à la maison',col2,470); value(frDate(hen.arrival),col2,512,maxW2);
     label('Parc',fx,572); value(parkNameForIndex(hen.parkIndex),fx,614,maxW1);
-    const st=[hen.laying?'Pond':'Au repos',hen.brooding?'Couve':'',hen.molting?'En mue':''].filter(Boolean).join(' · ');
+    const st=hen.sex==='coq'?['Coq',hen.molting?'En mue':''].filter(Boolean).join(' · '):[hen.laying?'Pond':'Au repos',hen.brooding?'Couve':'',hen.molting?'En mue':''].filter(Boolean).join(' · ');
     label('Statut',col2,572); value(st,col2,614,maxW2);
-    label('Signe particulier',fx,674); value(hen.trait||'—',fx,716,maxW1,38);
+    if(hen.sex==='coq'){ label('Caractère',fx,674); value([hen.character,hen.trait].filter(Boolean).join(' · ')||'—',fx,716,maxW1,38); } else { label('Signe particulier',fx,674); value(hen.trait||'—',fx,716,maxW1,38); }
     label('Âge',col2,674); value(henAgeShort(hen).replace('≈ ',''),col2,716,maxW2,38);
     // empreinte + signature
     x.fillStyle=muted; x.font='800 20px system-ui,Arial,sans-serif'; x.fillText('EMPREINTE',px,770); x.fillText('SIGNATURE',px+250,770);
@@ -10871,7 +10884,7 @@ renderStarterStep = function(){
     const plainT=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'<').replace(/^<|<$/g,'');
     const L=t=>(t+'<'.repeat(90)).slice(0,72);
     x.fillStyle='#4f5d54'; x.font='600 34px ui-monospace,"Courier New",monospace';
-    x.fillText(L('POPOTE<<'+plainT(hen.name)+'<<'+plainT(parkNameForIndex(hen.parkIndex))),52,948+OFF);
+    x.fillText(L((hen.sex==='coq'?'COQ<<<<':'POPOTE<<')+plainT(hen.name)+'<<'+plainT(parkNameForIndex(hen.parkIndex))),52,948+OFF);
     x.fillText(L('MP'+String(hen.num||0).padStart(3,'0')+'<<'+plainT(hen.breed||'RACE')+'<<'+plainT(frDate(hen.arrival))),52,992+OFF);
     x.restore();
     if(ART_TH&&window.v91Draw){ try{ await v91Draw(x,ART_TH,'over',W,H); }catch(e){} }
@@ -11001,7 +11014,7 @@ renderStarterStep = function(){
   function demoRecs(){
     if(demoCache) return demoCache;
     const out=[]; let seed=11; const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
-    const hens=popotes.length?popotes:[{id:'demo',name:'Popote',laying:true}];
+    const hens=popotes.some(h=>h.sex!=='coq')?popotes.filter(h=>h.sex!=='coq'):[{id:'demo',name:'Popote',laying:true}];
     const now=new Date(), d=new Date(now.getFullYear()-1,now.getMonth(),1);
     const sf=[.25,.35,.6,.8,.85,.8,.65,.6,.55,.4,.3,.22];
     for(;d<=now;d.setDate(d.getDate()+1)){
@@ -11164,10 +11177,10 @@ renderStarterStep = function(){
       for(let i=pRange-1;i>=0;i--){ const y=now.getFullYear(), m=now.getMonth()-i, d=new Date(y,m,1); items.push({l:MSHORT[d.getMonth()].replace('.',''),s:SEASON_EMO(d.getMonth()),full:MONTHS[d.getMonth()]+' '+d.getFullYear(),v:sum(list,monthStart(y,m),monthStart(y,m+1),pHen)}); }
       const total=items.reduce((s,i)=>s+i.v,0), bestM=items.reduce((p,q)=>q.v>p.v?q:p,items[0]);
       const a=monthStart(now.getFullYear(),now.getMonth()-pRange+1);
-      const per=popotes.map(h=>({l:h.name,v:sum(list,a,Date.now()+1,h.id)})).sort((p,q)=>q.v-p.v);
+      const per=popotes.filter(h=>h.sex!=='coq').map(h=>({l:h.name,v:sum(list,a,Date.now()+1,h.id)})).sort((p,q)=>q.v-p.v);
       body.innerHTML=`${demoBar()}
         <div class="v81-seg2">${[3,6,12].map(r=>`<button type="button" class="${pRange===r?'on':''}" onclick="v81Ponte(${r})">${r} mois</button>`).join('')}</div>
-        <div class="v81-chips"><button type="button" class="${pHen==null?'on':''}" onclick="v81PonteHen(null)">Toutes</button>${popotes.map(h=>`<button type="button" class="${pHen===h.id?'on':''}" onclick="v81PonteHen('${h.id}')">${esc(h.name)}</button>`).join('')}</div>
+        <div class="v81-chips"><button type="button" class="${pHen==null?'on':''}" onclick="v81PonteHen(null)">Toutes</button>${popotes.filter(h=>h.sex!=='coq').map(h=>`<button type="button" class="${pHen===h.id?'on':''}" onclick="v81PonteHen('${h.id}')">${esc(h.name)}</button>`).join('')}</div>
         <h3 class="v81-h">${pHen?esc(henName(pHen)):'Toutes les Popotes'} · œufs par mois</h3>
         ${bars(items,'œufs')}
         <p class="v81-legend">❄️ hiver · 🌱 printemps · ☀️ été · 🍂 automne</p>
@@ -11859,14 +11872,14 @@ ${months.map(cal).join('')}
     named=named.filter(id=>popotes.some(h=>h.id===id));
     if(named.length>n) setN(named.length);
     const U=unk();
-    let html=popotes.map(h=>{ const on=named.includes(h.id);
+    let html=popotes.filter(h=>h.sex!=='coq').map(h=>{ const on=named.includes(h.id);
       return `<button type="button" class="egg-hen-choice ${on?'on':''}" onclick="selectEggHen('${h.id}')" aria-pressed="${on}">
         ${avatarImgHTML(h,'avatar-choice')}<span><b>${escapeHtml(h.name)}</b><small>${on?'✓ 1 œuf':(h.laying?'Pond actuellement':'Pas de ponte')}</small></span>
         ${on?'<i class="v82-badge">✓</i>':''}</button>`; }).join('');
     html+=`<button type="button" class="egg-hen-choice v82-unk ${U>0?'on':''}" onclick="selectEggHen(null)" aria-label="Ajouter un œuf de pondeuse inconnue">
       <span class="egg-hen-avatar">❔</span><span><b>Pondeuse inconnue</b><small>${U>0?U+' œuf'+(U>1?'s':'')+' · touchez pour +1':'Touchez pour ajouter un œuf'}</small></span>
       ${U>0?`<i class="v82-badge">×${U}</i><span class="v82-minus" role="button" tabindex="0" aria-label="Retirer un œuf de pondeuse inconnue" onclick="event.stopPropagation();v82UnkMinus()">−</span>`:''}</button>`;
-    if(!popotes.length) html=`<div class="egg-empty">Aucune Popote n’a encore été créée. Ajoutez d’abord vos poules dans « Mes Popotes ».</div>`+html;
+    if(!popotes.some(h=>h.sex!=='coq')) html=`<div class="egg-empty">Aucune Popote n’a encore été créée. Ajoutez d’abord vos poules dans « Mes Popotes ».</div>`+html;
     box.innerHTML=html;
     let sum=document.getElementById('v82Sum');
     if(!sum){ sum=document.createElement('p'); sum.id='v82Sum'; sum.className='v82-sum'; box.before(sum); }
@@ -11894,7 +11907,7 @@ ${months.map(cal).join('')}
   const henList=document.getElementById('eggHenChoices'); if(henList) henList.after(susBox);
   function renderSuspects(){
     const U=unk(); Object.keys(sus).forEach(k=>{ if(+k.slice(2)>=U) delete sus[k]; else sus[k]=sus[k].filter(id=>!named.includes(id)&&popotes.some(h=>h.id===id)); });
-    const cand=popotes.filter(h=>!named.includes(h.id));
+    const cand=popotes.filter(h=>h.sex!=='coq'&&!named.includes(h.id));
     if(!U||!cand.length){ susBox.innerHTML=''; return; }
     susBox.innerHTML=`<div class="v88-head">❔ Vous avez une idée de qui a pondu ? <small>Facultatif · plusieurs choix possibles</small></div>`+
       Array.from({length:U},(_,i)=>{ const k='u:'+i, sel=sus[k]||[];
@@ -13055,4 +13068,110 @@ body[data-screen="home"] #testPremiumToggle{display:inline-flex}
 .v58-id.big .v58-id-mrz{padding-top:4px!important;padding-bottom:5px!important;font-size:9px!important}
 .v58-id.big .v58-id-fields>div.wide:last-child{grid-column:1/-1!important}
 </style>
+<style id="v199-coq-css">
+.v199-seg{display:flex;background:#efe7d6;border-radius:16px;padding:4px;margin:4px 0 12px;gap:4px}
+.v199-seg button{flex:1;border:0;background:transparent;text-align:center;padding:11px 6px;border-radius:12px;font:800 15px system-ui;color:#7a6a4f;cursor:pointer}
+.v199-seg button.on{background:#fff;color:#1f4d34;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.v58-pill.v199-coq{background:#fbeccb;color:#8a5d22}
+.v199-hens{color:#1f4d34;font-weight:800}
+.v199-chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.v199-chips button{border:1px solid #d9cdb4;border-radius:999px;padding:7px 11px;font:700 13px system-ui;color:#5b5243;background:#fffdf8;cursor:pointer}
+.v199-chips button.on{background:#e8f2e3;border-color:#9cc39a;color:#1f4d34}
+.v199-tip{grid-column:1/-1;margin:12px 0;padding:12px 14px;border-radius:16px;background:#f3eefb;border:1px solid #ddd0f2;font:14px/1.45 system-ui;color:#3d3550;text-align:left}
+.v199-tip b{color:#5b3e8c}
+.v199-note{font:12.5px/1.4 system-ui;color:#8a7d66;margin:2px 0 10px}
+body.v199-coqmode #addpopote label[for="newHenStatus"],body.v199-coqmode #newHenStatus{display:none!important}
+body.v199-coqprof #profile .status-row:has(#stateLayingToggle),body.v199-coqprof #profile .status-row:has(#stateBroodingToggle),body.v199-coqprof #profile button[onclick="addEggFromProfile()"],body.v199-coqmode #addpopote .field-help{display:none!important}
+#v199CoqBox{display:none}body.v199-coqmode #v199CoqBox{display:block}
+</style>
+<script id="v199-coq-js">
+(function(){
+  window.v199Sex='poule'; window.v199NewChar='';
+  const persist=()=>{ try{ if(window.v58Persist) window.v58Persist(); }catch(e){} };
+  const refreshHome=b=>{ try{ if(window.v58RefreshHome) window.v58RefreshHome(b); }catch(e){} };
+  const COQ_SVG='data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6ecd5"/><stop offset="1" stop-color="#e6efdc"/></linearGradient></defs><rect width="400" height="500" fill="url(#g)"/><text x="200" y="300" font-size="210" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🐓</text></svg>');
+  const baseAv=window.avatarSrcForHen;
+  window.avatarSrcForHen=function(h){ if(h&&h.sex==='coq'&&!h.photoDataUrl) return COQ_SVG; return baseAv.apply(this,arguments); };
+  // Ajouter : choix poule / coq
+  const sec=document.getElementById('addpopote');
+  const prev=sec&&sec.querySelector('.v58-add-preview');
+  const nameLab=document.querySelector('label[for="newHenName"]'), nameIn=document.getElementById('newHenName');
+  const nameHint=nameIn&&nameIn.nextElementSibling&&nameIn.nextElementSibling.tagName==='P'?nameIn.nextElementSibling:null;
+  const T={poule:{lab:nameLab?nameLab.innerHTML:'',ph:nameIn?nameIn.placeholder:'',hint:nameHint?nameHint.textContent:''}};
+  const st=document.getElementById('newHenStatus');
+  if(st){ const box=document.createElement('div'); box.id='v199CoqBox';
+    box.innerHTML='<label>Son caractère <small style="font-weight:600;color:#8a7d66">(facultatif)</small></label><div class="v199-chips" data-target="new">'+V199_CHARS.map(c=>'<button type="button" onclick="v199SetChar(this,\''+c+'\')">'+c+'</button>').join('')+'</div><p class="v199-note">Pas de suivi de ponte pour un coq : il n’apparaîtra pas dans « De quelle poule ? ».</p>';
+    st.after(box); }
+  const btn=sec&&sec.querySelector('.add-popote-card .primary');
+  const title=sec&&sec.querySelector('.top .title');
+  const T0={btn:btn?btn.textContent:'',title:title?title.textContent:''};
+  function apply(){
+    const coq=window.v199Sex==='coq';
+    document.body.classList.toggle('v199-coqmode',coq);
+    seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.s===window.v199Sex));
+    if(nameLab) nameLab.innerHTML=coq?'Nom <small style="font-weight:600;color:#8a7d66">(facultatif)</small>':T.poule.lab;
+    if(nameIn) nameIn.placeholder=coq?'Ex. Gaston':T.poule.ph;
+    if(nameHint) nameHint.textContent=coq?'Pas de nom ? Pas de souci : il portera le nom de sa race (ex. « Coq Marans »).':T.poule.hint;
+    const bl=document.querySelector('label[for="newHenBirth"]'); if(bl) bl.innerHTML=bl.innerHTML.replace(coq?'Née vers':'Né vers',coq?'Né vers':'Née vers');
+    if(btn) btn.textContent=coq?'Ajouter ce coq':T0.btn;
+    if(title) title.textContent=coq?'Ajouter un coq':T0.title;
+    sec.querySelectorAll('.v199-chips[data-target="new"] button').forEach(b=>b.classList.toggle('on',b.textContent===window.v199NewChar));
+    if(window.v58UpdateAddPreview) v58UpdateAddPreview();
+  }
+  const seg=document.createElement('div'); seg.className='v199-seg';
+  seg.innerHTML='<button type="button" data-s="poule">🐔 Une poule</button><button type="button" data-s="coq">🐓 Un coq</button>';
+  seg.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; window.v199Sex=b.dataset.s; apply(); });
+  if(prev) prev.parentNode.insertBefore(seg,prev);
+  window.v199SetChar=function(el,c){
+    const tgt=el.parentNode.dataset.target;
+    if(tgt==='new'){ window.v199NewChar=window.v199NewChar===c?'':c; apply(); return; }
+    const h=currentProfileHen(); if(!h) return; h.character=h.character===c?'':c;
+    el.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.textContent===h.character));
+    persist(); renderPopotes(); try{ renderHenProfile(); }catch(e){}
+  };
+  const baseGo=window.go;
+  window.go=function(id){ const r=baseGo.apply(this,arguments);
+    try{
+      if(id==='addpopote'){ window.v199Sex='poule'; window.v199NewChar=''; apply(); }
+      if(id==='profile'){ const h=currentProfileHen(); const t=document.querySelector('#profile .top .title'); if(t) t.textContent=h&&h.sex==='coq'?'Fiche de mon coq':'Fiche de ma poule'; }
+      const rq=document.getElementById('reqRoosters'); if(rq&&!rq.dataset.touched) rq.value=popotes.filter(h=>h.sex==='coq').length;
+    }catch(e){}
+    return r; };
+  document.addEventListener('input',e=>{ if(e.target&&e.target.id==='reqRoosters') e.target.dataset.touched='1'; },true);
+  const baseAdd=window.addNewPopote;
+  window.addNewPopote=function(){
+    const coq=window.v199Sex==='coq';
+    if(!coq) return baseAdd.apply(this,arguments);
+    const before=popotes.length;
+    let auto=false;
+    if(nameIn && !nameIn.value.trim()){
+      auto=true; const br=((document.getElementById('newHenBreed')||{}).value||'').trim();
+      const base=br?'Coq '+br:'Coq'; const taken=n=>popotes.some(h=>(h.name||'').toLowerCase()===n.toLowerCase());
+      let nm; if(br && !taken(base)) nm=base; else { let k=br?2:1; while(taken(base+' '+k)) k++; nm=base+' '+k; }
+      nameIn.value=nm;
+    }
+    const ch=window.v199NewChar;
+    const t0=window.toast; window.toast=function(m){ return t0.call(this,String(m).replace('a été ajoutée à Mes Popotes','a été ajouté à Mes Popotes')); };
+    let r; try{ r=baseAdd.apply(this,arguments); } finally { window.toast=t0; }
+    if(popotes.length>before){
+      const h=popotes[popotes.length-1]; h.sex='coq'; h.laying=false; h.emoji='🐓'; h.character=ch||''; if(auto) h.autoName=true;
+      window.v199Sex='poule'; window.v199NewChar=''; apply();
+      persist(); renderPopotes(); try{ renderEggHenChoices(); }catch(e){} try{ refreshHome(false); }catch(e){}
+    } else if(auto && nameIn) nameIn.value='';
+    return r;
+  };
+  const baseProf=window.renderHenProfile;
+  window.renderHenProfile=function(){ const r=baseProf.apply(this,arguments);
+    try{ const h=currentProfileHen(), coq=!!(h&&h.sex==='coq'), P=document.getElementById('profile');
+      document.body.classList.toggle('v199-coqprof',coq);
+      const t=P.querySelector('.top .title'); if(t) t.textContent=coq?'Fiche de mon coq':'Fiche de ma poule';
+      P.querySelectorAll('.profile-detail-label span:last-child').forEach(e=>{ if(/^Nom d(e la poule|u coq)$/.test(e.textContent)) e.textContent=coq?'Nom du coq':'Nom de la poule'; });
+      const hb=P.querySelector('button[onclick="go(\'health\')"]'); if(hb) hb.textContent=coq?'✚ Mon coq ne va pas bien ?':'✚ Ma poule ne va pas bien ?';
+      const db=P.querySelector('.delete-hen-btn'); if(db) db.textContent=coq?'🗑 Supprimer ce coq':'🗑 Supprimer cette poule';
+    }catch(e){}
+    return r; };
+  apply();
+  try{ renderPopotes(); refreshHome(false); }catch(e){}
+})();
+</script>
 </body></html>
