@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=210;
+  var APP_V=211;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -7061,7 +7061,7 @@ function go(id,el){
 let n=1;
 let who='Non identifié';
 let selectedHenId=null;
-let selectedProfileHenId='queen';
+let selectedProfileHenId=null;
 let selectedEggAspect='normal';
 let eggExtraOpen=false;
 let selectedEggSize='';
@@ -7072,9 +7072,8 @@ let eggRecords=[];
 let newHenPhotoDataUrl=null;
 
 /* Base de démonstration : Mes Popotes est la source unique utilisée partout. */
-let popotes=[
-  {id:'queen',name:'Queen',breed:'Pékin blanche',laying:true,parkIndex:0,emoji:'🐔',normalEggs:0,unusualEggs:0,unusualDates:[],brooding:false,molting:false,photoDataUrl:null}
-];
+/* v211 : aucune poule au départ, l'utilisateur crée toutes ses poules */
+let popotes=[];
 
 function egg(d){
   n=Math.max(0,n+d);
@@ -10070,6 +10069,8 @@ renderStarterStep = function(){
       /* v193 : à chaque ouverture (une ancienne page restée ouverte pouvait les réenregistrer) */
       try{
         const OLD=['paulette','simone','marguerite'];
+        /* v211 : on retire aussi l'ancienne poule d'exemple Queen (si elle n'a pas de photo) */
+        if(popotes.some(h=>h&&h.id==='queen'&&!h.photoRef&&!h.photoDataUrl)) OLD.push('queen');
         if(popotes.some(h=>OLD.includes(h.id))){ popotes=popotes.filter(h=>!OLD.includes(h.id)); eggRecords=eggRecords.filter(r=>!OLD.includes(r.henId)); setTimeout(()=>{ try{ persist(); }catch(e){} },0); }
       }catch(e){}
       if(Array.isArray(d.parkState)&&d.parkState.length){
