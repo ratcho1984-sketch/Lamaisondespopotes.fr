@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=207;
+  var APP_V=208;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13302,6 +13302,94 @@ body.v199-coqprof #profile .status-row:has(#stateLayingToggle),body.v199-coqprof
     try{ refreshBreedSelectors(); }catch(e){}
     try{ renderPopotes(); }catch(e){}
   }catch(e){}
+})();
+</script>
+<style id="v208-vets-css">
+.v208-vetbtn{display:flex;align-items:center;gap:12px;width:100%;margin:12px 0 4px;padding:14px 16px;border:1px solid #cfe0cf;border-radius:18px;background:#f1f7ef;text-align:left;cursor:pointer;font-family:inherit;color:#1f4d34}
+.v208-vetbtn .ic{font-size:26px;flex:none}
+.v208-vetbtn b{display:block;font-size:16px}
+.v208-vetbtn small{display:block;font-size:13px;color:#5d6b60;margin-top:2px;font-weight:500}
+.v208-vetbtn i{margin-left:auto;font-style:normal;font-size:22px;color:#2f6b47}
+#vets{padding-bottom:160px}
+#vets .v208-card{background:#fffdf8;border:1px solid #e5dac8;border-radius:20px;padding:16px;margin:12px 0}
+#vets h3{margin:0 0 6px;font:800 18px/1.2 Georgia,serif;color:#1f4d34}
+#vets p{margin:6px 0;font-size:14.5px;line-height:1.5;color:#3d4a40}
+#vets label{display:block;font-size:12px;font-weight:800;color:#5d6b60;margin:10px 0 4px}
+#vets input{width:100%;box-sizing:border-box;min-height:44px;border:1px solid #e5dac8;border-radius:12px;padding:8px 12px;font-size:16px;background:#fffaf0;font-family:inherit}
+#vets .v208-go{display:block;width:100%;margin-top:10px;padding:14px;border:0;border-radius:14px;background:#2f6b47;color:#fff;font:800 16px system-ui;text-align:center;text-decoration:none;cursor:pointer}
+#vets .v208-go.alt{background:#fff;color:#2f6b47;border:1.5px solid #2f6b47}
+#vets .v208-urg{background:#fdecea;border-color:#f3c3bd}
+#vets .v208-urg h3{color:#9b2f27}
+#vets ul{margin:6px 0 0;padding-left:20px;font-size:14.5px;line-height:1.55;color:#3d4a40}
+#vets .v208-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+#vets .v208-tags span{background:#e8f2e3;color:#1f4d34;border-radius:999px;padding:5px 10px;font-size:13px;font-weight:700}
+#vets .v208-empty{background:#f6f1e6;border-radius:14px;padding:12px;font-size:14px;color:#6b5d45}
+#vets .v208-call{display:flex;gap:8px}
+#vets .v208-call a{flex:1}
+</style>
+<script id="v208-vets-js">
+(function(){
+  const health=document.getElementById('health'); if(!health||document.getElementById('vets')) return;
+  // 1. Bouton dans « Ma poule ne va pas bien »
+  const pr=health.querySelector('.vet-priority');
+  const btn=document.createElement('button'); btn.type='button'; btn.className='v208-vetbtn'; btn.setAttribute('onclick',"go('vets')");
+  btn.innerHTML='<span class="ic">📍</span><span><b>Trouver un vétérinaire pour mes poules</b><small>Près de chez moi, qui soigne les poules</small></span><i>›</i>';
+  if(pr) pr.after(btn); else health.querySelector('.top').after(btn);
+  // 2. Écran dédié
+  const sec=document.createElement('section'); sec.className='screen'; sec.id='vets';
+  sec.innerHTML=`<div class="top"><button class="back" onclick="go('health')">‹</button><div class="title">Trouver un vétérinaire</div></div>
+  <div class="v208-card v208-urg"><h3>🚨 En cas d'urgence</h3><p>Une poule immobile, en boule ou debout sans bouger, doit voir un vétérinaire tout de suite. N'attendez pas de trouver « le » spécialiste : appelez le vétérinaire le plus proche.</p></div>
+  <div class="v208-card"><h3>🔍 Chercher près de chez moi</h3>
+    <p>Tous les vétérinaires ne soignent pas les poules. Ceux qui le font se présentent souvent avec ces mots :</p>
+    <div class="v208-tags"><span>NAC</span><span>Animaux de basse-cour</span><span>Volailles</span><span>Aviaire</span><span>Animaux de la ferme</span></div>
+    <label for="v208City">Ma ville ou mon code postal</label><input id="v208City" type="text" placeholder="Ex. Alès" autocomplete="address-level2">
+    <a class="v208-go" id="v208Search" href="#" target="_blank" rel="noopener">🗺️ Voir les vétérinaires sur la carte</a>
+    <a class="v208-go alt" id="v208Search2" href="#" target="_blank" rel="noopener">Chercher « vétérinaire NAC » sur le web</a>
+  </div>
+  <div class="v208-card"><h3>📞 Avant de vous déplacer, appelez</h3>
+    <ul><li>Soignez-vous les poules ?</li><li>Pouvez-vous me recevoir rapidement si c'est urgent ?</li><li>Quel est le tarif d'une consultation ?</li><li>Faites-vous les visites à domicile ?</li></ul>
+  </div>
+  <div class="v208-card"><h3>🩺 Mon vétérinaire</h3>
+    <p>Notez-le une fois : il sera prêt en cas de besoin et apparaîtra aussi dans la checklist « Je pars en vacances ».</p>
+    <label for="v208VetName">Nom du cabinet</label><input id="v208VetName" type="text" placeholder="Ex. Clinique des Cévennes">
+    <label for="v208VetPhone">Téléphone</label><input id="v208VetPhone" type="tel" placeholder="Ex. 04 66 00 00 00">
+    <div class="v208-call"><a class="v208-go" id="v208Call" href="#">📞 Appeler mon vétérinaire</a></div>
+  </div>
+  <div class="v208-card"><h3>🤝 Les vétérinaires recommandés par la communauté</h3>
+    <div class="v208-empty">Nous construisons cette liste avec vous. Elle est encore vide : nous n'y mettrons que des vétérinaires recommandés par des propriétaires de poules.</div>
+    <a class="v208-go alt" id="v208Reco" href="#">✉️ Recommander un vétérinaire</a>
+  </div>`;
+  health.after(sec);
+  const $=id=>document.getElementById(id);
+  const VK='maisonPopotesVacances';
+  function vac(){ try{ return JSON.parse(localStorage.getItem(VK)||'null')||{}; }catch(e){ return {}; } }
+  function saveVet(){
+    const d=vac(); d.vacVet=$('v208VetName').value.trim(); d.vacVetPhone=$('v208VetPhone').value.trim();
+    try{ localStorage.setItem(VK,JSON.stringify(d)); }catch(e){}
+    if($('vacVet')) $('vacVet').value=d.vacVet; if($('vacVetPhone')) $('vacVetPhone').value=d.vacVetPhone;
+    refresh();
+  }
+  function refresh(){
+    const city=$('v208City').value.trim();
+    const q=encodeURIComponent('vétérinaire poules NAC'+(city?' '+city:''));
+    $('v208Search').href='https://www.google.com/maps/search/?api=1&query='+q;
+    $('v208Search2').href='https://www.google.com/search?q='+encodeURIComponent('vétérinaire NAC volailles poules'+(city?' '+city:''));
+    const tel=$('v208VetPhone').value.replace(/[^\d+]/g,'');
+    const call=$('v208Call'); call.href=tel?'tel:'+tel:'#'; call.style.opacity=tel?'1':'.45';
+    const body='Bonjour,\n\nJe vous recommande ce vétérinaire qui soigne les poules :\n\nNom du cabinet : \nVille : \nTéléphone : \nPourquoi je le recommande : \n\nMerci !';
+    $('v208Reco').href='mailto:lamaisondespopotes@outlook.fr?subject='+encodeURIComponent('Je recommande un vétérinaire pour les poules')+'&body='+encodeURIComponent(body);
+  }
+  $('v208Call').addEventListener('click',e=>{ if($('v208Call').getAttribute('href')==='#'){ e.preventDefault(); try{ toast('Ajoutez d’abord le téléphone de votre vétérinaire.'); }catch(_){} } });
+  ['v208VetName','v208VetPhone'].forEach(id=>$(id).addEventListener('input',saveVet));
+  $('v208City').addEventListener('input',refresh);
+  function fill(){
+    const d=vac(); $('v208VetName').value=d.vacVet||(($('vacVet')||{}).value||''); $('v208VetPhone').value=d.vacVetPhone||(($('vacVetPhone')||{}).value||'');
+    if(!$('v208City').value){ try{ $('v208City').value=(typeof weatherCity!=='undefined'&&weatherCity)?weatherCity:''; }catch(e){} }
+    refresh();
+  }
+  fill();
+  const baseGo=window.go;
+  window.go=function(id){ const r=baseGo.apply(this,arguments); if(id==='vets'){ try{ fill(); }catch(e){} } return r; };
 })();
 </script>
 </body></html>
