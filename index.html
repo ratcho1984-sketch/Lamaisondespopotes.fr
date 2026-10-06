@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=212;
+  var APP_V=213;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11709,7 +11709,13 @@ renderStarterStep = function(){
   const DOW=['L','M','M','J','V','S','D'];
   const dayKey=ts=>{ const d=new Date(ts); return d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate(); };
   const henRecs=id=>{ const src=calDemo?demoRecs():(Array.isArray(eggRecords)?eggRecords:[]);
-    return src.filter(r=>r.henId===id&&(r.count||0)>0).concat(src.filter(r=>!r.henId&&Array.isArray(r.suspects)&&r.suspects.includes(id)&&(r.count||0)>0).map(r=>Object.assign({},r,{_p:true}))); };
+    const sure=src.filter(r=>r.henId===id&&(r.count||0)>0);
+    /* v213 : une poule pond au plus un œuf par jour → au plus 1 œuf « possible » par jour, et aucun si elle a déjà un œuf certain ce jour-là */
+    const sureDays=new Set(sure.map(r=>dayKey(r.createdAt))), possDays=new Set();
+    const poss=src.filter(r=>!r.henId&&Array.isArray(r.suspects)&&r.suspects.includes(id)&&(r.count||0)>0).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0))
+      .filter(r=>{ const k=dayKey(r.createdAt); if(sureDays.has(k)||possDays.has(k)) return false; possDays.add(k); return true; })
+      .map(r=>Object.assign({},r,{_p:true,count:1}));
+    return sure.concat(poss); };
   const ouList=a=>a.length<2?a.join(''):a.slice(0,-1).join(', ')+' ou '+a[a.length-1];
   const otherSus=(r,id)=>(r.suspects||[]).filter(x=>x!==id).map(x=>{ const h=popotes.find(p=>p.id===x); return h?h.name:null; }).filter(Boolean);
   const DETAIL=r=>[r.size,r.color,...(r.unusualDetails||[]),r.weight?r.weight+' g':null].filter(Boolean).join(' · ');
