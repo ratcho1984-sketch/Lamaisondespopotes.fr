@@ -6,3 +6,5 @@ Version de test de l'application La Maison des Popotes, ouverte à la communaut�
 - `questionnaire.html` : le questionnaire des testeurs
 
 Les données restent sur le téléphone de chaque testeur ; aucun paiement n'est réel.
+
+Dernière version de l’appli de test : v207.
