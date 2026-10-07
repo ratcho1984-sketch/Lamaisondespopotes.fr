@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=216;
+  var APP_V=217;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13752,6 +13752,27 @@ window.VetSource = {
     b.innerHTML='<span class="ic">🌳</span><span><b>Plantes et arbustes pour le parc</b><small>Ceux qui abritent, ceux à éviter (toxiques)</small></span><i>›</i>'; return b; };
   const intro=document.querySelector('#parkTourIntroView .primary'); if(intro) intro.after(mk());
   const res=document.getElementById('parkElodieCard'); if(res) res.after(mk());
+})();
+</script>
+
+<style id="v217-adopt-css">#hens .v217-adopt{margin-top:12px}</style>
+<script id="v217-adopt-js">
+(function(){
+  function place(){
+    const hens=document.getElementById('hens'); if(!hens) return;
+    let b=document.getElementById('v217Adopt');
+    if(!b){
+      const img=document.querySelector("#advice .tile[onclick*=\"go('henchooser')\"] img");
+      b=document.createElement('button'); b.type='button'; b.id='v217Adopt'; b.className='v184-vac v217-adopt'; b.setAttribute('onclick',"go('henchooser')");
+      b.innerHTML=(img?'<img src="'+img.src+'" alt="">':'')+'<span><strong>Adopter une nouvelle poule</strong><small>Trouvez la race qui convient à votre installation</small></span><span class="chev">›</span>';
+    }
+    const j=hens.querySelector('.v81-mnt-hens');
+    if(j){ if(j.nextElementSibling!==b) j.after(b); }
+    else { const g=document.getElementById('popotesGrid'); if(g&&!b.parentNode) g.after(b); }
+  }
+  place(); document.addEventListener('DOMContentLoaded',place); setTimeout(place,500);
+  const baseGo=window.go;
+  window.go=function(id){ const r=baseGo.apply(this,arguments); if(id==='hens'){ try{ place(); }catch(e){} } return r; };
 })();
 </script>
 
