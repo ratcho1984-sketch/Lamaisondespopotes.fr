@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=220;
+  var APP_V=221;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13754,7 +13754,7 @@ window.VetSource = {
 })();
 </script>
 
-<style id="v217-adopt-css">#hens .v217-adopt{margin-top:12px}</style>
+<style id="v217-adopt-css">#hens .v217-adopt{margin-top:12px}#hens .v221-vac{margin-top:12px}</style>
 <script id="v217-adopt-js">
 (function(){
   function place(){
@@ -13768,6 +13768,9 @@ window.VetSource = {
     const j=hens.querySelector('.v81-mnt-hens');
     if(j){ if(j.nextElementSibling!==b) j.after(b); }
     else { const g=document.getElementById('popotesGrid'); if(g&&!b.parentNode) g.after(b); }
+    /* v221 : « Je pars en vacances » tout en bas de la page */
+    const vac=hens.querySelector('.v184-vac:not(.v217-adopt)');
+    if(vac&&b.parentNode&&b.nextElementSibling!==vac){ b.after(vac); vac.classList.add('v221-vac'); }
   }
   place(); document.addEventListener('DOMContentLoaded',place); setTimeout(place,500);
   const baseGo=window.go;
