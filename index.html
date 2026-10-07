@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=215;
+  var APP_V=216;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13680,6 +13680,7 @@ window.VetSource = {
 #plantes .v214-how ul{margin:4px 0 0;padding-left:18px}
 #plantes .v214-vet{background:#fbf3f1;border:1px solid #efd3cd;color:#5a3a35}
 #plantes .v214-vet b{color:#8c2f26}
+#plantes .v214-h{margin:18px 2px 4px;font:800 17px/1.3 Georgia,serif;color:#1f4d34}
 #plantes .v214-note{font-size:12.5px;color:#7a7060;margin:10px 2px}
 </style>
 <script id="v214-plantes-js">
@@ -13697,6 +13698,10 @@ window.VetSource = {
     ['🌾','Graminées hautes','Miscanthus',"Atteint sa hauteur en une saison. Les poules aiment se poser dans ces touffes à l'ombre. On coupe au printemps.",['1,5 à 2 m','En 1 saison','Ombre légère']],
     ['🌻','Topinambour, tournesol','Helianthus',"Le plus rapide de tous : un abri d'été en quelques semaines. Les graines de tournesol sont une friandise.",['Abri d’été','En quelques semaines']],
     ['🌿','Romarin, lavande, thym, menthe, mélisse','Aromatiques',"Petites touffes qui parfument le parc et attirent les insectes. En bordure ou dans un coin protégé.",['Bas','Bordure','Insectes']]
+  ];
+  const TREES=[
+    ['🌳','Saule','Salix alba, Salix caprea',"Un des arbres qui poussent le plus vite (jusqu'à 1 m par an). Il aime les sols frais et fait vite une ombre légère. Taillé en têtard, il reste à hauteur raisonnable.",['Arbre','Jusqu’à 1 m par an','Sol frais']],
+    ['🍇','Mûrier','Morus alba, Morus nigra',"Pousse vite et donne une ombre épaisse l'été. Ses mûres tombées au sol sont un régal pour les poules. Le mûrier platane (sans fruits) fait aussi un bel arbre d'ombre.",['Arbre','Pousse vite','Fruits']]
   ];
   const BAD=[
     ['☠️','If','Taxus baccata',"Feuillage et graines très toxiques pour les animaux. À retirer du parc.",['Très toxique']],
@@ -13725,6 +13730,8 @@ window.VetSource = {
   <p class="v214-lead">Des arbustes de 1 à 2 m dans le parc donnent de l'ombre l'été, coupent le vent et offrent des cachettes contre les rapaces. Voici ceux qui poussent vite, et ceux à éviter absolument.</p>
   <div class="v214-seg" role="tablist"><button type="button" data-t="good" class="on">🌿 À planter</button><button type="button" data-t="bad" class="bad">☠️ À éviter</button></div>
   <div id="v214Good">${GOOD.map(x=>card(x,false)).join('')}
+    <h3 class="v214-h">🌳 Et pour un peu plus d'ombre : 2 arbres qui poussent vite</h3>
+    ${TREES.map(x=>card(x,false)).join('')}
     <div class="v214-box v214-how"><b>🪴 Pour que vos plantations tiennent</b><ul>
       <li>Les poules grattent au pied des jeunes plants : protégez la base avec un grillage ou de grosses pierres la première année.</li>
       <li>Plantez de préférence à l'automne, quand la terre est encore chaude et humide.</li>
