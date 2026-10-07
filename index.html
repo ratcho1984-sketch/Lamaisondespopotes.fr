@@ -5949,7 +5949,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
     </div>
     <div class="install-watch-note show" id="installAdviceNote">
       Certains points peuvent être améliorés. Vous pouvez consulter les conseils de La Maison des Popotes pour savoir quoi mettre en place.
-      <button type="button" onclick="go('advice')">Voir les conseils adaptés</button>
+      <button type="button" onclick="go('parktour');try{restartParkTour&&document.getElementById('parkTourIntroView')&&(document.getElementById('parkTourIntroView').style.display='',document.getElementById('parkTourQuestionView').style.display='none',document.getElementById('parkTourResultView').style.display='none')}catch(e){}">Voir les conseils adaptés</button>
     </div>
   </div>
 </section>
@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=219;
+  var APP_V=220;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
