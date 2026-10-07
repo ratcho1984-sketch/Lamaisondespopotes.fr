@@ -6775,7 +6775,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
       <div id="starterPlanCards" class="starter-plan"></div>
 
       <div class="starter-result-actions">
-        <button class="primary" type="button" onclick="finishStarterFlow()">C'est parti&nbsp;!</button>
+        <button class="primary" type="button" onclick="finishStarterFlow()">Adopter de nouvelles poules</button>
         <button class="starter-redo" type="button" onclick="restartStarterFlow()">Refaire le questionnaire</button>
       </div>
     </div>
@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=217;
+  var APP_V=218;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -8671,8 +8671,6 @@ const starterCards={
       picto:'eggs',
       icon:'O',
       text:"Choisissez des races connues pour bien pondre. Les poules hybrides pondent beaucoup, mais s'épuisent souvent plus vite et ont plus fréquemment des problèmes de ponte\u00A0: une race pondeuse plus rustique est souvent un bon compromis. Gardez en tête que la ponte baisse naturellement en automne, en hiver et pendant la mue.",
-      button:'Découvrir le suivi de ponte',
-      action:"go('lay')"
     },
     companions:{
       title:'Pour des poules de compagnie',
@@ -8894,7 +8892,8 @@ function showStarterResult(){
 
 function finishStarterFlow(){
   persistStarterAnswers();
-  go('home');
+  /* v218 : mène directement à « Choisir mes poules » */
+  go('henchooser');
 }
 
 function restartStarterFlow(){
