@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=213;
+  var APP_V=214;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13648,6 +13648,102 @@ window.VetSource = {
   window.v210Vets={state:st,search,setPos};
   const baseGo=window.go;
   window.go=function(id){ const r=baseGo.apply(this,arguments); if(id==='vets'){ try{ fill(); }catch(e){} } return r; };
+})();
+</script>
+
+<style id="v214-plantes-css">
+.v214-btn{display:flex;align-items:center;gap:12px;width:100%;margin:14px 0 4px;padding:14px 16px;border:1px solid #cfe0cf;border-radius:18px;background:#f1f7ef;text-align:left;cursor:pointer;font-family:inherit;color:#1f4d34}
+.v214-btn .ic{width:52px;height:52px;border-radius:14px;flex:none;display:flex;align-items:center;justify-content:center;font-size:30px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.v214-btn b{display:block;font-size:16px}.v214-btn small{display:block;font-size:13px;color:#5d6b60;margin-top:2px;font-weight:500}
+.v214-btn i{margin-left:auto;font-style:normal;font-size:22px;color:#2f6b47}
+#plantes{padding-bottom:calc(160px + env(safe-area-inset-bottom))}
+#plantes .v214-lead{font-size:15px;line-height:1.5;color:#3d4a40;margin:6px 0 12px}
+#plantes .v214-seg{display:flex;background:#efe7d6;border-radius:999px;padding:3px;margin:8px 0 12px;position:sticky;top:64px;z-index:2}
+#plantes .v214-seg button{flex:1;min-height:42px;border:0;border-radius:999px;background:transparent;font:800 14.5px system-ui,sans-serif;color:#5d6b60;cursor:pointer}
+#plantes .v214-seg button.on{background:#fff;color:#1f4d34;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+#plantes .v214-seg button.on.bad{color:#9b2f27}
+#plantes .v214-card{background:#fffdf8;border:1px solid #e5dac8;border-radius:18px;padding:12px 14px;margin:10px 0;display:flex;gap:12px;align-items:flex-start}
+#plantes .v214-card .e{font-size:28px;line-height:1;flex:none;width:36px;text-align:center;margin-top:2px}
+#plantes .v214-card h4{margin:0;font:800 16px/1.25 Georgia,serif;color:#1f4d34}
+#plantes .v214-card .lat{font-style:italic;font-size:12.5px;color:#7a7060;font-weight:500;font-family:system-ui,sans-serif}
+#plantes .v214-card p{margin:4px 0 0;font-size:14px;line-height:1.45;color:#3d4a40}
+#plantes .v214-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+#plantes .v214-tags span{background:#e8f2e3;color:#1f4d34;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:700}
+#plantes .v214-card.bad{background:#fdf6f4;border-color:#efd3cd}
+#plantes .v214-card.bad h4{color:#8c2f26}
+#plantes .v214-card.bad .v214-tags span{background:#fbe3df;color:#8c2f26}
+#plantes .v214-box{border-radius:18px;padding:12px 14px;margin:12px 0;font-size:14px;line-height:1.5}
+#plantes .v214-box b{display:block;margin-bottom:4px;font-size:15px}
+#plantes .v214-tip{background:#f3eefb;border:1px solid #ddd0f0;color:#3b1d4a}
+#plantes .v214-tip b{color:#5b2d82}
+#plantes .v214-how{background:#f1f7ef;border:1px solid #cfe0cf;color:#1f4d34}
+#plantes .v214-how ul{margin:4px 0 0;padding-left:18px}
+#plantes .v214-vet{background:#fbf3f1;border:1px solid #efd3cd;color:#5a3a35}
+#plantes .v214-vet b{color:#8c2f26}
+#plantes .v214-note{font-size:12.5px;color:#7a7060;margin:10px 2px}
+</style>
+<script id="v214-plantes-js">
+(function(){
+  const tour=document.getElementById('parktour'); if(!tour||document.getElementById('plantes')) return;
+  const GOOD=[
+    ['🌰','Noisetier','Corylus avellana',"Pousse vite et forme une belle cépée : ombre l'été, abri contre les rapaces toute l'année.",['Ombre','Abri','Pousse vite']],
+    ['🌳','Saule','Salix',"Supporte bien les sols humides et repousse après la taille. Ses branches basses font un coin à l'abri.",['Ombre','Sol humide']],
+    ['🍇','Mûrier (arbre)','Morus',"Grand arbre d'ombre. Les poules adorent picorer les mûres tombées au sol.",['Ombre','Fruits']],
+    ['🍃','Figuier','Ficus carica',"Très apprécié dans le Sud : large feuillage, ombre épaisse l'été, figues tombées à picorer.",['Ombre','Fruits','Climat doux']],
+    ['🍎','Pommier, poirier','Malus, Pyrus',"Des arbres fruitiers qui donnent de l'ombre. Les poules mangent les insectes et les fruits tombés.",['Ombre','Fruits']],
+    ['🫐','Cassissier, groseillier','Ribes',"Arbustes bas où les poules se glissent pour se cacher et se reposer.",['Abri bas','Fruits']],
+    ['🍓','Framboisier, ronce sans épines','Rubus',"Fourré dense : une vraie cachette. Protégez le pied la première année, elles grattent beaucoup.",['Cachette','Fruits']],
+    ['🎋','Bambou non traçant','Fargesia',"Écran dense et persistant, coupe le vent. Choisissez bien une variété non traçante.",['Coupe-vent','Persistant']],
+    ['🌺','Hibiscus de Syrie','Hibiscus syriacus',"Arbuste rustique, fleurs comestibles appréciées des poules.",['Abri','Fleurs comestibles']],
+    ['🌿','Aromatiques : thym, romarin, lavande, menthe, mélisse','',"Petites touffes qui parfument le parc et attirent les insectes. À planter en bordure ou dans un coin protégé.",['Bordure','Insectes']],
+    ['🌾','Graminées hautes','Miscanthus…',"Touffes hautes où les poules aiment se poser à l'ombre. Coupez au printemps.",['Abri','Ombre légère']]
+  ];
+  const BAD=[
+    ['☠️','If','Taxus baccata',"Feuillage et graines très toxiques pour les animaux. À retirer du parc.",['Très toxique']],
+    ['☠️','Laurier-rose','Nerium oleander',"Très toxique, même en petite quantité. Fréquent dans le Sud : à garder hors du parc.",['Très toxique']],
+    ['☠️','Laurier-cerise (laurier palme)','Prunus laurocerasus',"Feuilles et noyaux toxiques. Souvent utilisé en haie : vérifiez votre clôture.",['Toxique','Haies']],
+    ['☠️','Cytise','Laburnum',"Graines et gousses très toxiques.",['Très toxique']],
+    ['☠️','Ricin','Ricinus communis',"Graines extrêmement toxiques.",['Très toxique']],
+    ['⚠️','Buis','Buxus',"Toutes les parties sont toxiques.",['Toxique','Haies']],
+    ['⚠️','Thuya','Thuja',"Feuillage toxique. Courant en haie de jardin.",['Toxique','Haies']],
+    ['⚠️','Rhododendron, azalée','Rhododendron',"Feuilles et fleurs toxiques.",['Toxique']],
+    ['⚠️','Lierre','Hedera helix',"Feuilles et baies toxiques. Il grimpe vite sur les grillages et les abris.",['Toxique','Grimpant']],
+    ['⚠️','Troène','Ligustrum',"Baies noires toxiques. Plante de haie très répandue.",['Toxique','Haies']],
+    ['⚠️','Hortensia','Hydrangea',"Feuilles et fleurs toxiques.",['Toxique']],
+    ['⚠️','Robinier (faux acacia)','Robinia pseudoacacia',"Écorce, graines et feuilles toxiques.",['Toxique']],
+    ['⚠️','Muguet, digitale','Convallaria, Digitalis',"Toxiques pour le cœur, même en petite quantité.",['Toxique']],
+    ['⚠️','Datura','Datura',"Toutes les parties sont toxiques.",['Toxique']],
+    ['⚠️','Fougère aigle','Pteridium aquilinum',"Toxique si elle est mangée régulièrement.",['Toxique']],
+    ['⚠️','Avocatier','Persea americana',"Feuilles, peau et noyau toxiques pour les oiseaux.",['Toxique']],
+    ['⚠️','Parties vertes de pomme de terre et de tomate','Solanacées',"Feuilles, tiges et pommes de terre vertes ou germées sont toxiques. Ne les mettez pas dans le parc ni au compost des poules.",['Toxique','Potager']]
+  ];
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const card=(x,bad)=>`<div class="v214-card${bad?' bad':''}"><span class="e">${x[0]}</span><div><h4>${esc(x[1])}${x[2]?` <span class="lat">${esc(x[2])}</span>`:''}</h4><p>${esc(x[3])}</p><div class="v214-tags">${x[4].map(t=>`<span>${esc(t)}</span>`).join('')}</div></div></div>`;
+  const sec=document.createElement('section'); sec.className='screen'; sec.id='plantes';
+  sec.innerHTML=`<div class="top"><button class="back" onclick="go('parktour')">‹</button><div class="title">Plantes et arbustes</div></div>
+  <p class="v214-lead">Des arbustes dans le parc donnent de l'ombre l'été, coupent le vent et offrent des cachettes contre les rapaces. Voici ceux que l'on peut planter, et ceux à éviter absolument.</p>
+  <div class="v214-seg" role="tablist"><button type="button" data-t="good" class="on">🌿 À planter</button><button type="button" data-t="bad" class="bad">☠️ À éviter</button></div>
+  <div id="v214Good">${GOOD.map(x=>card(x,false)).join('')}
+    <div class="v214-box v214-how"><b>🪴 Pour que vos plantations tiennent</b><ul>
+      <li>Les poules grattent au pied des jeunes plants : protégez la base avec un grillage ou de grosses pierres la première année.</li>
+      <li>Plantez de préférence à l'automne, quand la terre est encore chaude et humide.</li>
+      <li>Répartissez plusieurs abris dans le parc, pas un seul : chaque poule pourra trouver sa place.</li></ul></div>
+  </div>
+  <div id="v214Bad" hidden>
+    <div class="v214-box v214-vet"><b>Liste indicative, pas complète</b>Une poule qui a de quoi manger évite souvent les plantes toxiques, mais ne prenez pas de risque : ne les gardez pas dans le parc ni à portée de bec à travers le grillage. Vérifiez aussi les haies des voisins qui débordent.</div>
+    ${BAD.map(x=>card(x,true)).join('')}
+  </div>
+  <div class="v214-box v214-tip"><b>🔍 Le regard d'Élodie</b>Une zone du parc où les poules ne vont jamais est souvent une zone trop découverte : elles s'y sentent exposées au ciel. Un arbuste ou un abri au milieu suffit parfois pour qu'elles se mettent à l'explorer. Observez où elles se posent l'après-midi : c'est là qu'elles se sentent bien.</div>
+  <div class="v214-box v214-vet"><b>🩺 Une poule a mangé une plante suspecte ?</b>Appelez votre vétérinaire dès qu'une poule montre un comportement inhabituel. Une poule immobile, en boule ou debout sans bouger : vétérinaire tout de suite. Si possible, gardez un morceau de la plante pour la montrer.</div>
+  <p class="v214-note">En cas de doute sur une plante, mieux vaut l'éviter et demander conseil à une jardinerie ou à votre vétérinaire.</p>`;
+  tour.after(sec);
+  sec.querySelector('.v214-seg').addEventListener('click',e=>{ const b=e.target.closest('[data-t]'); if(!b) return;
+    sec.querySelectorAll('.v214-seg button').forEach(x=>x.classList.toggle('on',x===b));
+    document.getElementById('v214Good').hidden=b.dataset.t!=='good'; document.getElementById('v214Bad').hidden=b.dataset.t!=='bad'; });
+  const mk=()=>{ const b=document.createElement('button'); b.type='button'; b.className='v214-btn'; b.setAttribute('onclick',"go('plantes')");
+    b.innerHTML='<span class="ic">🌳</span><span><b>Plantes et arbustes pour le parc</b><small>Ceux qui abritent, ceux à éviter (toxiques)</small></span><i>›</i>'; return b; };
+  const intro=document.querySelector('#parkTourIntroView .primary'); if(intro) intro.after(mk());
+  const res=document.getElementById('parkElodieCard'); if(res) res.after(mk());
 })();
 </script>
 
