@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=222;
+  var APP_V=223;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13778,4 +13778,8 @@ window.VetSource = {
 })();
 </script>
 
+<script id="v223-storage-persist">
+/* v223 : demander au navigateur de ne jamais effacer les données (poules, photos) pour faire de la place */
+try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persisted().then(function(p){ if(!p) navigator.storage.persist(); }); }catch(e){}
+</script>
 </body></html>
