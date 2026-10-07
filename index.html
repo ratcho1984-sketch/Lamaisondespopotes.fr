@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=214;
+  var APP_V=215;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13686,17 +13686,17 @@ window.VetSource = {
 (function(){
   const tour=document.getElementById('parktour'); if(!tour||document.getElementById('plantes')) return;
   const GOOD=[
-    ['🌰','Noisetier','Corylus avellana',"Pousse vite et forme une belle cépée : ombre l'été, abri contre les rapaces toute l'année.",['Ombre','Abri','Pousse vite']],
-    ['🌳','Saule','Salix',"Supporte bien les sols humides et repousse après la taille. Ses branches basses font un coin à l'abri.",['Ombre','Sol humide']],
-    ['🍇','Mûrier (arbre)','Morus',"Grand arbre d'ombre. Les poules adorent picorer les mûres tombées au sol.",['Ombre','Fruits']],
-    ['🍃','Figuier','Ficus carica',"Très apprécié dans le Sud : large feuillage, ombre épaisse l'été, figues tombées à picorer.",['Ombre','Fruits','Climat doux']],
-    ['🍎','Pommier, poirier','Malus, Pyrus',"Des arbres fruitiers qui donnent de l'ombre. Les poules mangent les insectes et les fruits tombés.",['Ombre','Fruits']],
-    ['🫐','Cassissier, groseillier','Ribes',"Arbustes bas où les poules se glissent pour se cacher et se reposer.",['Abri bas','Fruits']],
-    ['🍓','Framboisier, ronce sans épines','Rubus',"Fourré dense : une vraie cachette. Protégez le pied la première année, elles grattent beaucoup.",['Cachette','Fruits']],
-    ['🎋','Bambou non traçant','Fargesia',"Écran dense et persistant, coupe le vent. Choisissez bien une variété non traçante.",['Coupe-vent','Persistant']],
-    ['🌺','Hibiscus de Syrie','Hibiscus syriacus',"Arbuste rustique, fleurs comestibles appréciées des poules.",['Abri','Fleurs comestibles']],
-    ['🌿','Aromatiques : thym, romarin, lavande, menthe, mélisse','',"Petites touffes qui parfument le parc et attirent les insectes. À planter en bordure ou dans un coin protégé.",['Bordure','Insectes']],
-    ['🌾','Graminées hautes','Miscanthus…',"Touffes hautes où les poules aiment se poser à l'ombre. Coupez au printemps.",['Abri','Ombre légère']]
+    ['🫐','Cassissier, groseillier','Ribes',"Pousse vite et fait une touffe dense où les poules se glissent pour se reposer à l'ombre. Petits fruits à picorer.",['1 à 1,5 m','Pousse vite','Fruits']],
+    ['🟢','Groseillier à maquereau','Ribes uva-crispa',"Ses épines en font une cachette sûre : les poules s'y abritent, les rapaces n'y entrent pas.",['≈ 1 m','Cachette','Fruits']],
+    ['🍓','Framboisier','Rubus idaeus',"Très rapide : il drageonne et forme un fourré dès la 2e année. Il repousse même si les poules le malmènent.",['≈ 1,5 m','Très rapide','Fruits']],
+    ['🫐','Mûre sans épines','Rubus fruticosus',"Pousse très vite, à palisser sur le grillage pour faire un écran vert. Les poules adorent les mûres tombées.",['1,5 à 2 m','Très rapide','Écran']],
+    ['🌿','Saule pourpre nain (osier)','Salix purpurea « Nana »',"Un des arbustes les plus rapides, il aime les coins humides. Se taille facilement et repart toujours.",['1 à 1,5 m','Très rapide','Sol humide']],
+    ['🍂','Chalef','Elaeagnus × ebbingei',"Persistant, rustique, pousse vite et supporte la sécheresse. Il fait une haie brise-vent toute l'année.",['1,5 à 2 m','Pousse vite','Persistant']],
+    ['🎋','Bambou non traçant','Fargesia',"Écran dense et persistant qui coupe le vent. Choisissez bien une variété non traçante, et taillez à la hauteur voulue.",['Taillé à 2 m','Pousse vite','Persistant']],
+    ['🌺','Hibiscus de Syrie','Hibiscus syriacus',"Arbuste rustique, ombre légère l'été et fleurs comestibles appréciées des poules.",['1,5 à 2 m','Fleurs comestibles']],
+    ['🌾','Graminées hautes','Miscanthus',"Atteint sa hauteur en une saison. Les poules aiment se poser dans ces touffes à l'ombre. On coupe au printemps.",['1,5 à 2 m','En 1 saison','Ombre légère']],
+    ['🌻','Topinambour, tournesol','Helianthus',"Le plus rapide de tous : un abri d'été en quelques semaines. Les graines de tournesol sont une friandise.",['Abri d’été','En quelques semaines']],
+    ['🌿','Romarin, lavande, thym, menthe, mélisse','Aromatiques',"Petites touffes qui parfument le parc et attirent les insectes. En bordure ou dans un coin protégé.",['Bas','Bordure','Insectes']]
   ];
   const BAD=[
     ['☠️','If','Taxus baccata',"Feuillage et graines très toxiques pour les animaux. À retirer du parc.",['Très toxique']],
@@ -13709,6 +13709,7 @@ window.VetSource = {
     ['⚠️','Rhododendron, azalée','Rhododendron',"Feuilles et fleurs toxiques.",['Toxique']],
     ['⚠️','Lierre','Hedera helix',"Feuilles et baies toxiques. Il grimpe vite sur les grillages et les abris.",['Toxique','Grimpant']],
     ['⚠️','Troène','Ligustrum',"Baies noires toxiques. Plante de haie très répandue.",['Toxique','Haies']],
+    ['⚠️','Fusain','Euonymus',"Feuilles et fruits toxiques. Arbuste de haie très courant.",['Toxique','Haies']],
     ['⚠️','Hortensia','Hydrangea',"Feuilles et fleurs toxiques.",['Toxique']],
     ['⚠️','Robinier (faux acacia)','Robinia pseudoacacia',"Écorce, graines et feuilles toxiques.",['Toxique']],
     ['⚠️','Muguet, digitale','Convallaria, Digitalis',"Toxiques pour le cœur, même en petite quantité.",['Toxique']],
@@ -13721,7 +13722,7 @@ window.VetSource = {
   const card=(x,bad)=>`<div class="v214-card${bad?' bad':''}"><span class="e">${x[0]}</span><div><h4>${esc(x[1])}${x[2]?` <span class="lat">${esc(x[2])}</span>`:''}</h4><p>${esc(x[3])}</p><div class="v214-tags">${x[4].map(t=>`<span>${esc(t)}</span>`).join('')}</div></div></div>`;
   const sec=document.createElement('section'); sec.className='screen'; sec.id='plantes';
   sec.innerHTML=`<div class="top"><button class="back" onclick="go('parktour')">‹</button><div class="title">Plantes et arbustes</div></div>
-  <p class="v214-lead">Des arbustes dans le parc donnent de l'ombre l'été, coupent le vent et offrent des cachettes contre les rapaces. Voici ceux que l'on peut planter, et ceux à éviter absolument.</p>
+  <p class="v214-lead">Des arbustes de 1 à 2 m dans le parc donnent de l'ombre l'été, coupent le vent et offrent des cachettes contre les rapaces. Voici ceux qui poussent vite, et ceux à éviter absolument.</p>
   <div class="v214-seg" role="tablist"><button type="button" data-t="good" class="on">🌿 À planter</button><button type="button" data-t="bad" class="bad">☠️ À éviter</button></div>
   <div id="v214Good">${GOOD.map(x=>card(x,false)).join('')}
     <div class="v214-box v214-how"><b>🪴 Pour que vos plantations tiennent</b><ul>
