@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=223;
+  var APP_V=224;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13781,5 +13781,103 @@ window.VetSource = {
 <script id="v223-storage-persist">
 /* v223 : demander au navigateur de ne jamais effacer les données (poules, photos) pour faire de la place */
 try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persisted().then(function(p){ if(!p) navigator.storage.persist(); }); }catch(e){}
+</script>
+<script id="v224-keep-hens">
+/* v224 : les poules (et leurs photos) ne doivent jamais disparaître lors d'une mise à jour.
+   1. Une sauvegarde ne peut retirer une poule que si l'utilisateur l'a supprimée lui-même.
+   2. Copie de secours des poules ; si la sauvegarde principale est vide, on repart de la copie.
+   3. Les photos ne sont plus effacées automatiquement de la mémoire du téléphone.
+   4. Si l'appli est ouverte deux fois (appli + onglet Chrome), chaque fenêtre reprend les données les plus récentes. */
+(function(){
+  var STORE='maisonPopotesV58', BACK='maisonPopotesV224Backup';
+  var DEMO=['paulette','simone','marguerite','queen'];
+  var allow={}; DEMO.forEach(function(k){ allow[k]=1; });
+  var LS; try{ LS=window.localStorage; }catch(e){ return; }
+  var proto=Object.getPrototypeOf(LS), baseSet=proto.setItem, baseGet=proto.getItem;
+  function parse(v){ try{ return JSON.parse(v||'null'); }catch(e){ return null; } }
+  function ids(d){ return (d&&Array.isArray(d.popotes))?d.popotes.filter(Boolean).map(function(h){ return h.id; }):[]; }
+  var lastSeen=null;
+  proto.setItem=function(k,v){
+    if(this===LS && k===STORE){
+      try{
+        var nd=parse(v), od=parse(baseGet.call(LS,STORE));
+        if(nd && od){
+          var keep=ids(nd), lost=ids(od).filter(function(id){ return keep.indexOf(id)<0 && !allow[id]; });
+          if(lost.length){
+            /* une fenêtre restée ouverte avec d'anciennes données : on garde les poules déjà enregistrées */
+            var add=od.popotes.filter(function(h){ return h && lost.indexOf(h.id)>=0; });
+            nd.popotes=nd.popotes.concat(add);
+            var eg=(od.eggRecords||[]).filter(function(r){ return r && lost.indexOf(r.henId)>=0; });
+            var have={}; (nd.eggRecords||[]).forEach(function(r){ if(r&&r.createdAt) have[r.createdAt+'|'+r.henId]=1; });
+            nd.eggRecords=(nd.eggRecords||[]).concat(eg.filter(function(r){ return !have[r.createdAt+'|'+r.henId]; }));
+            v=JSON.stringify(nd);
+            setTimeout(adopt,0);
+          }
+        }
+        if(nd && Array.isArray(nd.popotes) && nd.popotes.length){
+          try{ baseSet.call(LS,BACK,JSON.stringify({t:Date.now(),popotes:nd.popotes,eggRecords:nd.eggRecords||[]})); }catch(e){}
+        } else if(nd && Array.isArray(nd.popotes) && !nd.popotes.length && od && ids(od).length===0){
+          /* rien à protéger */
+        }
+        lastSeen=v;
+      }catch(e){}
+    }
+    return baseSet.call(this,k,v);
+  };
+  /* suppression volontaire d'une poule : autorisée */
+  var baseDel=window.confirmDeleteHen;
+  if(typeof baseDel==='function'){
+    window.confirmDeleteHen=async function(id){
+      allow[id]=1;
+      try{ var r=await baseDel.apply(this,arguments);
+        if(popotes.some(function(h){ return h.id===id; })) delete allow[id];
+        else { try{ var b=parse(baseGet.call(LS,BACK)); if(b&&Array.isArray(b.popotes)){ b.popotes=b.popotes.filter(function(h){ return h&&h.id!==id; }); baseSet.call(LS,BACK,JSON.stringify(b)); } }catch(e){} }
+        return r;
+      }catch(e){ delete allow[id]; throw e; }
+    };
+  }
+  /* « Revenir à la démo » efface tout volontairement : on efface aussi la copie */
+  var baseReset=window.v58ResetDemo;
+  if(typeof baseReset==='function'){
+    window.v58ResetDemo=async function(){ var before=baseGet.call(LS,STORE); var r=await baseReset.apply(this,arguments); if(before && !baseGet.call(LS,STORE)) try{ LS.removeItem(BACK); }catch(e){} return r; };
+  }
+  /* photos : on ne supprime plus rien automatiquement */
+  var P=window.v205Photos;
+  if(P && P.sync){ var baseSync=P.sync; P.sync=function(){ var l=P.loaded; P.loaded=false; try{ baseSync(); }finally{ P.loaded=l; } }; }
+
+  function rerender(){
+    ['renderPopotes','renderEggHenChoices','renderHenProfile','renderParks','updateParkSummary'].forEach(function(f){ try{ typeof window[f]==='function'&&window[f](); }catch(e){} });
+    try{ window.v58RefreshHome&&window.v58RefreshHome(false); }catch(e){}
+    try{ P&&P.load&&P.load(); }catch(e){}
+  }
+  /* reprendre les données enregistrées (par une autre fenêtre, ou si le démarrage a échoué) */
+  function adopt(){
+    try{
+      var raw=baseGet.call(LS,STORE), d=parse(raw);
+      if(!d || !Array.isArray(d.popotes)) return;
+      var memIds=popotes.map(function(h){ return h.id; }).join(','), stIds=ids(d).join(',');
+      if(raw===lastSeen && memIds===stIds) return;
+      lastSeen=raw;
+      var photos={}; popotes.forEach(function(h){ if(h&&h.photoDataUrl) photos[h.id]=h.photoDataUrl; });
+      popotes=d.popotes.filter(Boolean).map(function(h){ if(!h.photoDataUrl && photos[h.id]) h.photoDataUrl=photos[h.id]; return h; });
+      if(Array.isArray(d.eggRecords)) eggRecords=d.eggRecords;
+      if(!popotes.some(function(h){ return h.id===selectedProfileHenId; })) selectedProfileHenId=popotes[0]?popotes[0].id:null;
+      rerender();
+    }catch(e){}
+  }
+  /* démarrage : sauvegarde principale vide mais copie de secours pleine → on restaure */
+  try{
+    var d=parse(baseGet.call(LS,STORE)), b=parse(baseGet.call(LS,BACK));
+    if(b && Array.isArray(b.popotes) && b.popotes.length && ids(d).length===0){
+      var nd=d||{}; nd.popotes=b.popotes; nd.eggRecords=(d&&d.eggRecords&&d.eggRecords.length)?d.eggRecords:(b.eggRecords||[]);
+      baseSet.call(LS,STORE,JSON.stringify(nd));
+    }
+    if(popotes.length===0 && ids(parse(baseGet.call(LS,STORE))).length) adopt();
+    else lastSeen=baseGet.call(LS,STORE);
+  }catch(e){}
+  window.addEventListener('storage',function(e){ if(e.key===STORE) adopt(); });
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') adopt(); });
+  window.addEventListener('pageshow',function(e){ if(e.persisted) adopt(); });
+})();
 </script>
 </body></html>
