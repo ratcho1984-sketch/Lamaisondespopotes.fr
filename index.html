@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=229;
+  var APP_V=230;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -10809,6 +10809,8 @@ renderStarterStep = function(){
         <input id="v58Birth" type="month" value="${escapeHtml((hen.birth||'').slice(0,7))}">
         <label for="v58Arrival">Arrivée à la maison</label>
         <input id="v58Arrival" type="date" value="${escapeHtml(hen.arrival||'')}">
+        <label for="v58Weight">Poids <small style="font-weight:600;color:#8a7d66">(en kg, facultatif)</small></label>
+        <input id="v58Weight" type="text" inputmode="decimal" maxlength="5" value="${escapeHtml(hen.weight||'')}" placeholder="Ex. 2,3" autocomplete="off">
         <label for="v58Trait">Signe particulier</label>
         <input id="v58Trait" type="text" maxlength="38" value="${escapeHtml(hen.trait||'')}" placeholder="Ex. Adore les vers de terre">
         <button type="button" class="v58-fam-save" onclick="v58SaveCard()">✓ Enregistrer sa carte</button>
@@ -10816,8 +10818,8 @@ renderStarterStep = function(){
       </div>`;
       const nameEl=document.getElementById('v58Name'), arrEl=document.getElementById('v58Arrival'), trEl=document.getElementById('v58Trait'), biEl=document.getElementById('v58Birth');
       // La carte au-dessus se remplit pendant la saisie
-      const live=()=>{ const h=currentProfileHen(); if(!h) return; h.arrival=arrEl.value; if(biEl) h.birth=biEl.value; h.trait=trEl.value.trim(); drawProfileCard(h,nameEl.value.trim()); };
-      [nameEl,arrEl,trEl,biEl].filter(Boolean).forEach(e=>{ e.addEventListener('input',live); e.addEventListener('change',()=>{ live(); persist(); }); });
+      const live=()=>{ const h=currentProfileHen(); if(!h) return; h.arrival=arrEl.value; if(biEl) h.birth=biEl.value; h.trait=trEl.value.trim(); const wEl=document.getElementById('v58Weight'); if(wEl) h.weight=wEl.value.trim().replace('.',','); drawProfileCard(h,nameEl.value.trim()); };
+      [nameEl,arrEl,trEl,biEl,document.getElementById('v58Weight')].filter(Boolean).forEach(e=>{ e.addEventListener('input',live); e.addEventListener('change',()=>{ live(); persist(); }); });
       nameEl.addEventListener('change',()=>setHenName(nameEl.value));
     }else{
       const n=document.getElementById('v58Name'); if(n && document.activeElement!==n) n.value=hen.name;
@@ -10828,6 +10830,7 @@ renderStarterStep = function(){
     const nameEl=document.getElementById('v58Name'), arrEl=document.getElementById('v58Arrival'), trEl=document.getElementById('v58Trait');
     if(arrEl) h.arrival=arrEl.value;
     const biEl=document.getElementById('v58Birth'); if(biEl) h.birth=biEl.value;
+    const wEl=document.getElementById('v58Weight'); if(wEl) h.weight=wEl.value.trim().replace('.',',');
     if(trEl) h.trait=trEl.value.trim();
     const newName=nameEl?nameEl.value.trim():'';
     if(newName && newName!==h.name){ h.name=newName.slice(0,30); h.autoName=false; renderEggHenChoices(); try{renderParks();}catch(e){} }
@@ -14136,6 +14139,51 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
   if(typeof base==='function') window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{ apply(); }catch(e){} return r; };
   function hook(){ var box=document.getElementById('v81Cal'); if(!box) return false; new MutationObserver(function(){ apply(); }).observe(box,{childList:true}); apply(); return true; }
   if(!hook()) document.addEventListener('DOMContentLoaded',hook);
+})();
+</script>
+<style id="v230-fiche-css">
+#profile .profile-details-card .profile-detail-row:has(#profileNameInput){display:none}
+#profile .hen-state-card{display:none!important}
+#profile .v230-ic{display:grid;place-items:center;font-size:26px}
+</style>
+<script id="v230-fiche-js">
+/* v230 : fiche de la poule — poids sur la carte de membre, nom en double retiré, statut actuel en liste déroulante */
+(function(){
+  function opts(h){ return h&&h.sex==='coq'?[['ok','Rien de particulier'],['mue','🪶 En mue']]:[['pond','🥚 Pond'],['repos','Au repos (ne pond pas)'],['couve','🪹 Couve'],['mue','🪶 En mue']]; }
+  function curVal(h){ return h.molting?'mue':h.sex==='coq'?'ok':h.brooding?'couve':h.laying?'pond':'repos'; }
+  function ensure(){
+    var card=document.querySelector('#profile .profile-details-card'); if(!card) return null;
+    var row=document.getElementById('v230Row');
+    if(!row){
+      row=document.createElement('div'); row.className='profile-detail-row'; row.id='v230Row';
+      row.innerHTML='<div class="profile-detail-label"><span class="row-icon custom-row-icon v230-ic"><b style="font-size:26px;line-height:1;font-weight:400">❤️</b></span><span>Statut actuel</span></div><select id="v230Status" class="profile-park-select" onchange="v230SetStatus(this.value)"></select>';
+      card.appendChild(row);
+    }
+    return row;
+  }
+  function refresh(){
+    var h=null; try{ h=currentProfileHen(); }catch(e){} if(!h||!ensure()) return;
+    var s=document.getElementById('v230Status'), o=opts(h), k=o.map(function(x){ return x[0]; }).join();
+    if(s.dataset.k!==k){ s.innerHTML=o.map(function(x){ return '<option value="'+x[0]+'">'+x[1]+'</option>'; }).join(''); s.dataset.k=k; }
+    s.value=curVal(h);
+  }
+  window.v230SetStatus=function(v){
+    var h=null; try{ h=currentProfileHen(); }catch(e){} if(!h) return;
+    var want={laying:v==='pond',brooding:v==='couve',molting:v==='mue'};
+    var t0=window.toast; window.toast=function(){};
+    try{
+      if(h.sex!=='coq'&&!!h.laying!==want.laying) setHenLaying(want.laying);
+      if(h.sex!=='coq'&&!!h.brooding!==want.brooding) setHenBrooding(want.brooding);
+      if(!!h.molting!==want.molting) setHenMolting(want.molting);
+    }finally{ window.toast=t0; }
+    try{ window.v58Persist&&window.v58Persist(); }catch(e){}
+    var lab=(opts(h).find(function(x){ return x[0]===v; })||['',''])[1];
+    try{ toast(h.name+' : '+lab.replace(/^\S+\s/,function(m){ return /[a-z]/i.test(m)?m:''; }).toLowerCase()+' ✓'); }catch(e){}
+    refresh();
+  };
+  var base=window.renderHenProfile;
+  if(typeof base==='function') window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{ refresh(); }catch(e){} return r; };
+  if(document.readyState!=='loading') refresh(); else document.addEventListener('DOMContentLoaded',refresh);
 })();
 </script>
 </body></html>
