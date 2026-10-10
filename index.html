@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=241;
+  var APP_V=242;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11465,6 +11465,7 @@ renderStarterStep = function(){
   const elodieRdv=()=>`<button type="button" class="elodie-rdv" onclick="go('behaviorhealthfilter')"><span class="elodie-rdv-ic">📅</span><span><b>Prendre rendez-vous avec Élodie</b><small>${ELODIE_LABEL} · <strong>${ELODIE_PRICE}</strong></small></span><span class="elodie-rdv-chev">›</span></button>`;
   const elodieOffer=()=>`<div class="elodie-offer"><div class="elodie-offer-head">${(()=>{const im=document.querySelector('.elodie-photo-frame img');return im?`<img class="elodie-offer-photo" src="${im.src}" alt="Élodie">`:'<span class="elodie-offer-photo elodie-offer-ini">É</span>';})()}<div><b>Parlez de votre situation avec Élodie</b><small>Comportementaliste · sans abonnement Premium</small></div></div><p>Problème de comportement, aménagement du parc, saisonnalité, naissance de poussins… Élodie regarde avec vous ce qui se passe chez vous et vous propose des pistes adaptées à votre situation.</p><button type="button" class="elodie-offer-btn" onclick="go('behaviorhealthfilter')">📅 Prendre rendez-vous avec Élodie</button><div class="elodie-offer-price"><strong>${ELODIE_PRICE}</strong> · ${ELODIE_LABEL}</div></div>`;
   window.elodieOfferHTML=elodieOffer;
+  F.export={icon:'📥',title:'Exporter mon historique',pitch:'Téléchargez tout l’historique de vos pontes dans un tableur.',bullets:['Toutes vos pontes, date par date','Poule par poule, avec l’aspect et les détails','À ouvrir dans un tableur ou à garder en sauvegarde'],action(){ try{ (window.v242ExportBase||window.v81Export)(); }catch(e){} }};
   F.oeufinfo={icon:'🥚',title:'Détails de chaque œuf',pitch:'Notez le poids, la taille, la couleur, les particularités et la photo de chaque œuf.',bullets:['Poids, taille et couleur de l’œuf','Particularités et photo d’un œuf inhabituel','Un historique précis pour chaque Popote'],action(){ try{ toggleEggExtraInfo(true); }catch(e){} }};
   F.guide={icon:'📚',title:'Guide approfondi',free:true,
     pitch:'Des guides complets, pas à pas, écrits à partir de notre expérience et de l’observation.',
@@ -14303,4 +14304,16 @@ body.v81-prem #extraInfoToggle .v237-tag{display:none}
 #lay .v81-mnt-lay .v81-enc-t b{color:#1f5a35!important}#lay .v81-mnt-lay .v81-enc-t small{color:#5c6b58!important}
 #lay .v81-mnt-lay .v81-enc-ic{box-shadow:0 2px 6px rgba(47,122,74,.15)!important}
 </style>
+<style id="v242-export-css">
+.v81-link[onclick="v81Export()"]{border:1.5px solid var(--v81-vi3)!important;background:linear-gradient(135deg,#faf5fd,#f3eafa)!important;color:#3b1d4a!important}
+body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium";margin-left:8px;font-size:11.5px;font-weight:800;color:#8a5d12;background:#fff6e0;border:1.5px solid #f0d9a0;border-radius:99px;padding:2px 8px}
+</style>
+<script id="v242-export-js">
+/* v242 : « Exporter tout mon historique » réservé à Premium (l'évolution de la ponte reste gratuite) */
+(function(){
+  var base=window.v81Export; if(typeof base!=='function') return;
+  window.v242ExportBase=base;
+  window.v81Export=function(){ if(!(window.v81IsPremium&&v81IsPremium())){ try{ v81Open('export'); }catch(e){} return; } return base.apply(this,arguments); };
+})();
+</script>
 </body></html>
