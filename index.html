@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=231;
+  var APP_V=232;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11213,7 +11213,7 @@ renderStarterStep = function(){
   ];
   F.bilan={icon:'📊',title:'Bilan du mois',
     pitch:'Chaque début de mois, un résumé clair de la ponte de vos Popotes.',
-    bullets:['Total du mois et comparaison avec le mois précédent','La poule la plus régulière','Semaine par semaine, et le mot de Queen sur la saison'],
+    bullets:['Total du mois et comparaison avec le mois précédent','La poule la plus régulière','Semaine par semaine, et le regard d’Élodie sur la saison'],
     render(body){
       const now=new Date(), y=now.getFullYear(), m=now.getMonth()+bilanOff;
       const a=monthStart(y,m), b=Math.min(monthStart(y,m+1),Date.now()+1), pa=monthStart(y,m-1);
@@ -11241,7 +11241,7 @@ renderStarterStep = function(){
         ${total?`<h3 class="v81-h">Semaine par semaine</h3>${bars(weeks,'œufs')}`:''}
         ${per.length?`<h3 class="v81-h">Par Popote</h3>${hbars(per,'œufs')}`:''}
         ${!enough&&!demo?`<div class="v81-empty">Il n’y a pas encore assez de pontes enregistrées pour un vrai bilan. Continuez à noter vos œufs, le bilan se remplira tout seul.<button type="button" onclick="v81Demo(true)">Voir un exemple</button></div>`:''}
-        <div class="v81-queen"><span>♛</span><p><b>Le mot de Queen</b>${esc(MONTH_NOTE[md])} Si une poule arrête brusquement de pondre et montre d’autres signes (isolement, plumes ébouriffées), regardez « Ma poule ne va pas bien ».</p></div>
+        <div class="v81-queen"><span class="v232-elo">${(()=>{const im=document.querySelector('.elodie-photo-frame img');return im?`<img src="${im.src}" alt="Élodie avec Queen">`:'♛';})()}</span><p><b>Le regard d’Élodie</b>${esc(MONTH_NOTE[md])} Si une poule arrête brusquement de pondre et montre d’autres signes (isolement, plumes ébouriffées), regardez « Ma poule ne va pas bien ».</p></div>
         <button type="button" class="v81-link" onclick="v81Open('ponte')">📈 Voir l’évolution sur 12 mois ›</button>`;
     }};
   window.v81Bilan=o=>{ bilanOff=o; rerender(); };
@@ -11270,7 +11270,7 @@ renderStarterStep = function(){
         </div>
         ${pHen?'':`<h3 class="v81-h">Par Popote sur la période</h3>${hbars(per,'œufs')}`}
         ${!list.length&&!demo?`<div class="v81-empty">Aucune ponte enregistrée pour l’instant. Les graphiques se construisent au fil de vos enregistrements.<button type="button" onclick="v81Demo(true)">Voir un exemple</button></div>`:''}
-        <div class="v81-queen"><span>♛</span><p><b>Le mot de Queen</b>Une courbe qui baisse en automne et en hiver, c’est le rythme habituel de beaucoup de poules. Ce qui mérite votre attention, c’est un arrêt brutal chez une seule poule, surtout avec d’autres changements de comportement.</p></div>
+        <div class="v81-queen"><span class="v232-elo">${(()=>{const im=document.querySelector('.elodie-photo-frame img');return im?`<img src="${im.src}" alt="Élodie avec Queen">`:'♛';})()}</span><p><b>Le regard d’Élodie</b>Une courbe qui baisse en automne et en hiver, c’est le rythme habituel de beaucoup de poules. Ce qui mérite votre attention, c’est un arrêt brutal chez une seule poule, surtout avec d’autres changements de comportement.</p></div>
         <button type="button" class="v81-link" onclick="v81Export()">📥 Exporter tout mon historique (tableur)</button>`;
     }};
   window.v81Ponte=r=>{ pRange=r; rerender(); };
@@ -14188,4 +14188,5 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
   if(document.readyState!=='loading') refresh(); else document.addEventListener('DOMContentLoaded',refresh);
 })();
 </script>
+<style id="v232-elodie-violet-css">.v81-queen>span.v232-elo{flex:0 0 58px;width:58px;height:58px;overflow:hidden;border:2px solid #fff;box-shadow:0 2px 6px rgba(60,30,80,.15)}.v81-queen>span.v232-elo img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}.v81-queen{align-items:flex-start}</style>
 </body></html>
