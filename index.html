@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=224;
+  var APP_V=225;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13878,6 +13878,84 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
   window.addEventListener('storage',function(e){ if(e.key===STORE) adopt(); });
   document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') adopt(); });
   window.addEventListener('pageshow',function(e){ if(e.persisted) adopt(); });
+})();
+</script>
+<style id="v225-egg-note-css">
+#profile .glance-grid .glance-card.v225-hide{display:none}
+#profile .glance-grid .glance-card.v225-full{grid-column:1/-1}
+.v225-note{margin:12px 0 4px;padding:13px 13px 14px;border:1px solid #e8dfd2;border-radius:17px;background:#fffdf9}
+.v225-note h4{margin:0 0 3px;font-size:14px;color:#3b3328}
+.v225-note p{margin:0 0 10px;font-size:11.5px;color:#7a7064;line-height:1.35}
+.v225-lab{display:block;font-size:11px;font-weight:850;color:#5d5448;margin:8px 0 6px}
+.v225-w{display:flex;align-items:center;gap:6px;max-width:150px}
+.v225-w input{flex:1;min-width:0;font-size:16px;padding:9px 10px;border:1px solid #e1d8ca;border-radius:12px;background:#fff}
+.v225-w span{font-weight:800;color:#666158}
+.v225-colors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.v225-c{border:1px solid #e1d8ca;border-radius:14px;background:#fff;padding:8px 4px;text-align:center;color:#666158;font-size:10px;font-weight:850}
+.v225-c.on{border-color:#8fb598;background:#edf5ea;color:#315c42}
+.v225-c i{display:block;width:24px;height:30px;margin:0 auto 4px;border-radius:50% 50% 48% 48% / 58% 58% 42% 42%;border:1px solid rgba(90,75,55,.16)}
+.v225-save{margin-top:12px;width:100%;border:0;border-radius:14px;padding:12px;background:#4f7a5b;color:#fff;font-weight:850;font-size:14px}
+</style>
+<script id="v225-egg-note-js">
+/* v225 : sur la fiche Premium d'une poule, on peut noter le poids et la couleur de son œuf. La « taille habituelle » est retirée. */
+(function(){
+  var COLORS=[['Blanc','#fffef7'],['Crème','#f5e6c7'],['Beige','#dfbf91'],['Brun','#b87543'],['Chocolat','#70452f'],['Bleu','#bad9d4'],['Vert','#c7d5ab'],['Autre','linear-gradient(135deg,#f0d0b0,#c5d9c5)']];
+  var color=null;
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function setup(){
+    var size=document.getElementById('profileUsualSize'); if(size&&size.closest('.glance-card')) size.closest('.glance-card').classList.add('v225-hide');
+    var eggs=document.getElementById('profileEggs30d'); if(eggs&&eggs.closest('.glance-card')) eggs.closest('.glance-card').classList.add('v225-full');
+    if(document.getElementById('v225Note')) return;
+    var range=document.getElementById('profileWeightRange'); if(!range) return;
+    var box=document.createElement('div'); box.id='v225Note'; box.className='v225-note';
+    box.innerHTML='<h4>⚖️ Noter le poids et la couleur de son œuf</h4><p id="v225Lead">Tout est facultatif.</p>'
+      +'<label class="v225-lab" for="v225Weight">Poids de l’œuf</label><div class="v225-w"><input id="v225Weight" type="number" inputmode="decimal" min="20" max="150" step="1" placeholder="Ex. 58"><span>g</span></div>'
+      +'<span class="v225-lab">Couleur de l’œuf</span><div class="v225-colors">'
+      +COLORS.map(function(c){ return '<button type="button" class="v225-c" data-c="'+c[0]+'"><i style="background:'+c[1]+'"></i>'+c[0]+'</button>'; }).join('')
+      +'</div><button type="button" class="v225-save" id="v225Save">Enregistrer</button>';
+    range.parentNode.insertBefore(box,range);
+    box.querySelectorAll('.v225-c').forEach(function(b){ b.onclick=function(){ var on=!b.classList.contains('on'); box.querySelectorAll('.v225-c').forEach(function(x){ x.classList.remove('on'); }); if(on){ b.classList.add('on'); color=b.dataset.c; } else color=null; }; });
+    document.getElementById('v225Save').onclick=save;
+  }
+  function dayKey(t){ var d=new Date(t); return d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate(); }
+  function save(){
+    var hen=popotes.find(function(h){ return h.id===selectedProfileHenId; }); if(!hen) return;
+    var raw=(document.getElementById('v225Weight').value||'').trim().replace(',','.'), w=raw?Number(raw):null;
+    if(raw && !(Number.isFinite(w)&&w>=20&&w<=150)){ toast('Indiquez un poids entre 20 et 150 g'); return; }
+    if(!raw && !color){ toast('Indiquez un poids ou une couleur'); return; }
+    var today=dayKey(Date.now());
+    var rec=eggRecords.filter(function(r){ return r.henId===hen.id && (r.count||0)>0 && dayKey(r.createdAt)===today; }).sort(function(a,b){ return b.createdAt-a.createdAt; })[0];
+    if(rec){
+      if(raw){ rec.weight=w; if(!rec.size||rec.v225AutoSize){ rec.size=autoEggSizeFromWeight(w); rec.v225AutoSize=true; } }
+      if(color) rec.color=color;
+      toast('✓ Ajouté à l’œuf de '+hen.name+' d’aujourd’hui');
+    } else {
+      /* une poule pond au plus un œuf par jour : on enregistre son œuf du jour */
+      rec={createdAt:Date.now(),count:1,henId:hen.id,henName:hen.name,aspect:'normal',weight:raw?w:null,size:raw?autoEggSizeFromWeight(w):null,v225AutoSize:!!raw,color:color||null,unusualDetails:[],photoDataUrl:null,note:null};
+      eggRecords.push(rec); hen.normalEggs=(hen.normalEggs||0)+1;
+      toast('✓ Œuf du jour enregistré pour '+hen.name);
+    }
+    document.getElementById('v225Weight').value=''; color=null;
+    document.querySelectorAll('#v225Note .v225-c').forEach(function(x){ x.classList.remove('on'); });
+    try{ window.v58Persist&&window.v58Persist(); }catch(e){}
+    ['renderHenProfile','renderPopotes'].forEach(function(f){ try{ typeof window[f]==='function'&&window[f](); }catch(e){} });
+    try{ window.v58RefreshHome&&window.v58RefreshHome(false); }catch(e){}
+  }
+  var base=window.renderEggGlance;
+  if(typeof base==='function'){
+    window.renderEggGlance=function(hen){
+      var r=base.apply(this,arguments);
+      try{
+        setup();
+        var lead=document.getElementById('v225Lead');
+        if(lead&&hen) lead.innerHTML='Pour un œuf de <b>'+esc(hen.name)+'</b> pondu aujourd’hui. Tout est facultatif.';
+        var range=document.getElementById('profileWeightRange'), s=layingSnapshot(hen);
+        if(range && !(s.minWeight!==null&&s.maxWeight!==null)) range.textContent='Notez le poids de quelques œufs juste au-dessus pour faire apparaître la plage habituelle de cette poule.';
+      }catch(e){}
+      return r;
+    };
+  }
+  if(document.readyState!=='loading') setup(); else document.addEventListener('DOMContentLoaded',setup);
 })();
 </script>
 </body></html>
