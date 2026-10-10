@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=226;
+  var APP_V=227;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11779,7 +11779,7 @@ renderStarterStep = function(){
     const list=henRecs(hen.id), last=lastLay(list), now=new Date();
     const months=[2,1,0].map(i=>{ const d=new Date(now.getFullYear(),now.getMonth()-i,1); return {y:d.getFullYear(),m:d.getMonth(),st:monthStats(list,d.getFullYear(),d.getMonth())}; });
     const cal=({y,m,st})=>{ const first=(new Date(y,m,1).getDay()+6)%7, nd=new Date(y,m+1,0).getDate(); let c=''; for(let i=0;i<first;i++) c+='<td></td>';
-      for(let d=1;d<=nd;d++){ const x=st.by[dayKey(new Date(y,m,d).getTime())]; c+=`<td class="${x&&x.u?'u':x&&(x.n+x.x)?'n':x&&x.p?'p':''}">${d}${x?`<br><span>${x.n+x.x?'●'.repeat(Math.min(3,x.n+x.x)):''}${x.u?'▲':''}${x.p?'<i>○</i>':''}</span>`:''}</td>`; if((first+d)%7===0) c+='</tr><tr>'; }
+      for(let d=1;d<=nd;d++){ const x=st.by[dayKey(new Date(y,m,d).getTime())]; c+=`<td class="${x&&x.u?'u':x&&(x.n+x.x)?'n':x&&x.p?'p':''}">${d}${x?`<br><span>${x.n+x.x?'●'.repeat(Math.min(3,x.n+x.x)):''}${x.u?'▲':''}${x.p?'<i>○</i>':''}</span>`:''}${window.v227Mark?window.v227Mark(hen,y,m,d):''}</td>`; if((first+d)%7===0) c+='</tr><tr>'; }
       return `<h3>${MONTHS[m]} ${y} — ${st.total} œuf${st.total>1?'s':''}, ${st.days} jour${st.days>1?'s':''} de ponte, ${st.unusual.reduce((s,r)=>s+(r.count||0),0)} inhabituel(s), plus long arrêt : ${st.gap} jour${st.gap>1?'s':''}${st.poss?', + '+st.poss+' possible(s)':''}</h3><table class="cal"><tr>${DOW.map(d=>`<th>${d}</th>`).join('')}</tr><tr>${c}</tr></table>`; };
     const from=new Date(now.getFullYear(),now.getMonth()-2,1).getTime();
     const unusual=list.filter(r=>!r._p&&r.aspect==='unusual'&&r.createdAt>=from).sort((a,b)=>a.createdAt-b.createdAt);
@@ -11794,10 +11794,11 @@ table{border-collapse:collapse;width:100%}.cal td,.cal th{border:1px solid #ccc;
 <h1>Suivi de ponte · ${esc(hen.name)}</h1><p style="color:#555;margin:4px 0 12px">Relevé établi le ${frDate(Date.now())} à partir des pontes notées par ses propriétaires dans l’application La Maison des Popotes. Le suivi commence à la première ponte enregistrée pour cette poule.</p>
 <div class="id"><div><b>Race :</b> ${esc(hen.breed||'non renseignée')}</div><div><b>Âge :</b> ${esc(henAgeLong(hen))}</div><div><b>Arrivée :</b> ${hen.arrival?hen.arrival.split('-').reverse().join('/'):'non renseignée'}</div><div><b>Statut actuel :</b> ${esc(status)}</div><div><b>Signe particulier :</b> ${esc(hen.trait||'—')}</div></div>
 <h2>En résumé</h2><div class="sum"><div><b>${last?frDate(last.createdAt):'—'}</b><span>dernière ponte${last?' ('+agoTxt(last.createdAt)+')':''}</span></div><div><b>${months[2].st.total}</b><span>œufs ce mois-ci</span></div><div><b>${unusual.reduce((s,r)=>s+(r.count||0),0)}</b><span>œufs inhabituels sur 3 mois</span></div><div><b>${Math.max(...months.map(x=>x.st.gap))}</b><span>jours max. sans ponte</span></div></div>
-<h2>Calendrier des 3 derniers mois</h2><p style="font-size:12px;color:#555;margin:0">Vert ● = œuf(s) d’aspect normal · Orange ▲ = œuf d’aspect inhabituel · ○ = œuf possible (pondeuse incertaine) · case vide = aucune ponte notée.</p>
+<h2>Calendrier des 3 derniers mois</h2><p style="font-size:12px;color:#555;margin:0">Vert ● = œuf(s) d’aspect normal · Orange ▲ = œuf d’aspect inhabituel · ○ = œuf possible (pondeuse incertaine) · 🪶 = en mue · 🪹 = couve · case vide = aucune ponte notée.</p>
 ${months.map(cal).join('')}
 <h2>Œufs inhabituels</h2>${unusual.length?`<table class="list"><tr><th>Date</th><th>Nombre</th><th>Description</th><th>Note</th></tr>${unusual.map(r=>`<tr><td>${frDate(r.createdAt)}</td><td>${r.count}</td><td>${esc(DETAIL(r)||'—')}</td><td>${esc(r.note||'')}</td></tr>`).join('')}</table>`:'<p>Aucun œuf inhabituel noté sur la période.</p>'}
 <h2>Œufs possibles (pondeuse incertaine)</h2>${(()=>{ const P=list.filter(r=>r._p&&r.createdAt>=from).sort((a,b)=>a.createdAt-b.createdAt); return P.length?`<p style="font-size:12px;color:#555;margin:0 0 6px">Œufs dont la pondeuse n’est pas certaine : ils ne sont pas comptés dans le total ci-dessus.</p><table class="list"><tr><th>Date</th><th>Nombre</th><th>Autres pondeuses possibles</th><th>Aspect</th></tr>${P.map(r=>`<tr><td>${frDate(r.createdAt)}</td><td>${r.count}</td><td>${esc(otherSus(r,hen.id).join(', ')||'—')}</td><td>${r.aspect==='unusual'?'Inhabituel':r.aspect==='unknown'?'Non renseigné':'Normal'}</td></tr>`).join('')}</table>`:'<p>Aucun.</p>'; })()}
+${window.v227VetSection?window.v227VetSection(hen,from):''}
 <h2>Observations notées dans son journal</h2>${notes.length?`<table class="list"><tr><th>Date</th><th>Type</th><th>Observation</th></tr>${notes.map(e=>`<tr><td>${frDate(e.ts)}</td><td>${jType(e.type)[2]}</td><td>${esc(e.text||'(photo)')}</td></tr>`).join('')}</table>`:'<p>Aucune observation notée sur la période.</p>'}
 <p class="foot">Ce document rassemble des observations faites par le propriétaire. Il ne constitue pas un diagnostic. Les pontes non notées dans l’application n’y figurent pas.<br>La Maison des Popotes</p>
 `;
@@ -13960,6 +13961,91 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
     };
   }
   if(document.readyState!=='loading') setup(); else document.addEventListener('DOMContentLoaded',setup);
+})();
+</script>
+<style id="v227-periods-css">
+.v81-cd{position:relative}
+.v81-cd .v227-ic{position:absolute;right:1px;bottom:1px;font-size:13px;line-height:1;pointer-events:none}
+.v81-cd .v227-ic2{right:auto;left:1px}
+.v81-cd.v227-molt{box-shadow:inset 0 -3px 0 #8fb3c9}
+.v81-cd.v227-brood{box-shadow:inset 0 -3px 0 #d9b25a}
+.v81-cd.v227-molt.v227-brood{box-shadow:inset 0 -3px 0 #8fb3c9,inset 0 -6px 0 #d9b25a}
+.v227-leg{display:inline-flex;align-items:center;gap:3px}
+.v227-box{margin:12px 0 4px;padding:12px;border:1px solid #e8dfd2;border-radius:16px;background:#fffdf9}
+.v227-box h4{margin:0 0 4px;font-size:14px;color:#3b3328}
+.v227-box>p{margin:0 0 8px;font-size:11.5px;color:#7a7064;line-height:1.35}
+.v227-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 0;border-top:1px dashed #eadfcd;font-size:12.5px;color:#4a4237}
+.v227-row:first-of-type{border-top:0}
+.v227-row b{min-width:92px}
+.v227-row input{font-size:14px;padding:5px 6px;border:1px solid #e1d8ca;border-radius:9px;background:#fff;max-width:140px}
+.v227-row small{color:#7a7064}
+.v227-row .v227-del{margin-left:auto;border:0;background:none;color:#a0522d;font-size:16px;padding:2px 6px}
+.v227-add{display:flex;gap:8px;margin-top:8px}
+.v227-add button{flex:1;border:1px solid #e1d8ca;border-radius:12px;background:#fff;padding:9px 6px;font-weight:800;font-size:12px;color:#4a4237}
+.v227-det{display:block;margin-top:4px;font-size:12px;color:#4a4237}
+</style>
+<script id="v227-periods-js">
+/* v227 : périodes de mue (🪶) et de couvaison (🪹) de chaque poule, visibles dans le calendrier de ponte et sur la fiche vétérinaire.
+   Enregistrées quand on active/désactive « Couve » ou « En mue », et modifiables (dates) sous le calendrier. */
+(function(){
+  var T={molt:{ic:'🪶',name:'Mue',flag:'molting',lab:'en mue'},brood:{ic:'🪹',name:'Couvaison',flag:'brooding',lab:'couve'}};
+  function pad(n){ return (n<10?'0':'')+n; }
+  function iso(d){ d=d||new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function fr(s){ if(!s) return ''; var p=s.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
+  function days(a,b){ return Math.round((new Date(b+'T12:00')-new Date(a+'T12:00'))/864e5)+1; }
+  function per(h){ h.v227=h.v227||{}; ['molt','brood'].forEach(function(k){ if(!Array.isArray(h.v227[k])) h.v227[k]=[]; }); return h.v227; }
+  function open(list){ for(var i=list.length-1;i>=0;i--) if(!list[i].e) return list[i]; return null; }
+  function sync(h){ /* poules déjà « en mue » ou « couve » avant cette version : la période commence aujourd'hui */
+    var P=per(h); Object.keys(T).forEach(function(k){ if(k==='brood'&&h.sex==='coq') return; var o=open(P[k]); if(h[T[k].flag]&&!o) P[k].push({s:iso()}); else if(!h[T[k].flag]&&o) o.e=iso(); }); }
+  function flagsFromPeriods(h){ var P=per(h); Object.keys(T).forEach(function(k){ h[T[k].flag]=!!open(P[k]); }); }
+  function save(){ try{ window.v58Persist&&window.v58Persist(); }catch(e){} }
+  function cur(){ try{ return currentProfileHen(); }catch(e){ return null; } }
+  function inP(h,k,s){ return per(h)[k].some(function(p){ return p.s<=s && (!p.e? s<=iso() : s<=p.e); }); }
+  window.v227Mark=function(h,y,m,d){ var s=y+'-'+pad(m+1)+'-'+pad(d), o=''; if(inP(h,'molt',s)) o+='🪶'; if(inP(h,'brood',s)) o+='🪹'; return o?'<br>'+o:''; };
+  window.v227VetSection=function(h,from){
+    var P=per(h), f=iso(new Date(from)), rows=[];
+    Object.keys(T).forEach(function(k){ P[k].forEach(function(p){ var e=p.e||iso(); if(e>=f) rows.push([p.s,k,p]); }); });
+    rows.sort(function(a,b){ return a[0]<b[0]?-1:1; });
+    return '<h2>Mue et couvaison</h2>'+(rows.length?'<table class="list"><tr><th>Période</th><th>Du</th><th>Au</th><th>Durée</th></tr>'+rows.map(function(r){ var p=r[2]; return '<tr><td>'+T[r[1]].ic+' '+T[r[1]].name+'</td><td>'+fr(p.s)+'</td><td>'+(p.e?fr(p.e):'en cours')+'</td><td>'+days(p.s,p.e||iso())+' jour(s)</td></tr>'; }).join('')+'</table>':'<p>Aucune période de mue ou de couvaison notée sur la période.</p>');
+  };
+  /* bascules « Couve » et « En mue » */
+  [['setHenBrooding','brood'],['setHenMolting','molt']].forEach(function(x){
+    var base=window[x[0]]; if(typeof base!=='function') return;
+    window[x[0]]=function(v){ var h=cur(); if(h){ var L=per(h)[x[1]], o=open(L); if(v&&!o) L.push({s:iso()}); if(!v&&o){ o.e=iso(); } } var r=base.apply(this,arguments); save(); return r; };
+  });
+  function rer(){ try{ renderHenProfile(); }catch(e){} try{ renderPopotes(); }catch(e){} save(); }
+  window.v227Edit=function(k,i,f,v){ var h=cur(); if(!h) return; var p=per(h)[k][i]; if(!p) return;
+    if(f==='s'){ if(!v) return; p.s=v; if(p.e&&p.e<v) p.e=v; } else { p.e=v||null; if(p.e&&p.e<p.s) p.e=p.s; if(!p.e) per(h)[k].forEach(function(q,j){ if(j!==i&&!q.e) q.e=iso(); }); }
+    flagsFromPeriods(h); rer(); };
+  window.v227Del=function(k,i){ var h=cur(); if(!h) return; per(h)[k].splice(i,1); flagsFromPeriods(h); rer(); };
+  window.v227Add=function(k){ var h=cur(); if(!h) return; var t=new Date(); t.setDate(t.getDate()-7); per(h)[k].push({s:iso(t),e:iso()}); flagsFromPeriods(h); rer();
+    try{ toast(T[k].ic+' Période ajoutée : modifiez ses dates si besoin'); }catch(e){} };
+  var busy=false;
+  function decorate(){
+    var box=document.getElementById('v81Cal'), h=cur(); if(!box||!h||busy) return;
+    var grid=box.querySelector('.v81-cgrid'); if(!grid) return;
+    busy=true;
+    try{
+      sync(h);
+      grid.querySelectorAll('.v81-cd[onclick]').forEach(function(b){
+        var m=/v81CalDay\('(\d+)-(\d+)-(\d+)'\)/.exec(b.getAttribute('onclick')); if(!m) return;
+        var s=m[1]+'-'+pad(+m[2]+1)+'-'+pad(+m[3]), mo=inP(h,'molt',s), br=h.sex!=='coq'&&inP(h,'brood',s);
+        b.classList.toggle('v227-molt',mo); b.classList.toggle('v227-brood',br);
+        if(mo) b.insertAdjacentHTML('beforeend','<span class="v227-ic">🪶</span>');
+        if(br) b.insertAdjacentHTML('beforeend','<span class="v227-ic'+(mo?' v227-ic2':'')+'">🪹</span>');
+        if(b.classList.contains('sel')){ var det=box.querySelector('.v81-cdet'); if(det&&(mo||br)) det.insertAdjacentHTML('beforeend','<span class="v227-det">'+(mo?'🪶 En mue ce jour-là':'')+(mo&&br?' · ':'')+(br?'🪹 En couvaison ce jour-là':'')+'</span>'); }
+      });
+      var leg=box.querySelector('.v81-clegend');
+      if(leg&&!leg.querySelector('.v227-leg')){ var tail=leg.lastElementChild; tail.insertAdjacentHTML('beforebegin','<span class="v227-leg">🪶 en mue</span>'+(h.sex==='coq'?'':'<span class="v227-leg">🪹 couve</span>')); }
+      var P=per(h), ks=h.sex==='coq'?['molt']:['molt','brood'], rows='';
+      ks.forEach(function(k){ P[k].forEach(function(p,i){ rows+='<div class="v227-row"><b>'+T[k].ic+' '+T[k].name+'</b>du <input type="date" value="'+p.s+'" max="'+iso()+'" onchange="v227Edit(\''+k+'\','+i+',\'s\',this.value)"> au <input type="date" value="'+(p.e||'')+'" max="'+iso()+'" onchange="v227Edit(\''+k+'\','+i+',\'e\',this.value)"><small>'+(p.e?days(p.s,p.e)+' jour(s)':'en cours · '+days(p.s,iso())+' jour(s)')+'</small><button type="button" class="v227-del" aria-label="Supprimer" onclick="v227Del(\''+k+'\','+i+')">✕</button></div>'; }); });
+      var html='<div class="v227-box" id="v227Box"><h4>'+ks.map(function(k){ return T[k].ic; }).join(' ')+' '+(h.sex==='coq'?'Périodes de mue':'Mue et couvaison')+'</h4><p>Elles s’enregistrent quand vous activez « '+(h.sex==='coq'?'En mue':'Couve » ou « En mue')+' » sur sa fiche. Vous pouvez corriger les dates ou ajouter une période passée.</p>'+(rows||'<p style="margin:0;font-size:12px;color:#7a7064">Aucune période notée pour l’instant.</p>')+'<div class="v227-add">'+ks.map(function(k){ return '<button type="button" onclick="v227Add(\''+k+'\')">+ '+T[k].ic+' '+(k==='molt'?'Une mue':'Une couvaison')+' passée</button>'; }).join('')+'</div></div>';
+      var old=box.querySelector('#v227Box'); if(old) old.remove();
+      var vb=box.querySelector('.v81-vetbtn'); if(vb) vb.insertAdjacentHTML('beforebegin',html);
+    }finally{ busy=false; }
+  }
+  function hook(){ var box=document.getElementById('v81Cal'); if(!box) return false; new MutationObserver(function(){ if(!busy) decorate(); }).observe(box,{childList:true}); decorate(); return true; }
+  if(!hook()) document.addEventListener('DOMContentLoaded',hook);
 })();
 </script>
 </body></html>
