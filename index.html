@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=230;
+  var APP_V=231;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14158,6 +14158,8 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
       row=document.createElement('div'); row.className='profile-detail-row'; row.id='v230Row';
       row.innerHTML='<div class="profile-detail-label"><span class="row-icon custom-row-icon v230-ic"><b style="font-size:26px;line-height:1;font-weight:400">❤️</b></span><span>Statut actuel</span></div><select id="v230Status" class="profile-park-select" onchange="v230SetStatus(this.value)"></select>';
       card.appendChild(row);
+      /* v231 : on reprend la jolie plume de l'ancienne ligne « Nom de la poule » */
+      try{ var src=card.querySelector('#profileNameInput').closest('.profile-detail-row').querySelector('.custom-row-icon img'); if(src){ var ic=row.querySelector('.v230-ic'); ic.classList.remove('v230-ic'); ic.innerHTML='<img src="'+src.getAttribute('src')+'" alt="">'; } }catch(e){}
     }
     return row;
   }
