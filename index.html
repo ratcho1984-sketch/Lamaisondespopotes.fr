@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=244;
+  var APP_V=245;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14346,6 +14346,126 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
   var base=window.renderHenProfile;
   if(base){ window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{place();}catch(e){} return r; }; }
   document.addEventListener('DOMContentLoaded',function(){try{place();}catch(e){}});
+})();
+</script>
+<style id="v245-traitement-css">
+#v245Row .profile-detail-label span:last-child{font-size:12.5px!important;letter-spacing:-.02em}
+#v245Sum{margin:2px 12px 12px;padding:10px 12px;border-radius:14px;background:#f1f7ee;border:1px solid #cfe0cd;color:#224f37;font-size:14px;font-weight:700;cursor:pointer;display:flex;gap:8px;align-items:center}
+#v245Sum small{display:block;font-weight:600;color:#5d6b60;font-size:12.5px;margin-top:2px}
+#v245Sum i{margin-left:auto;font-style:normal;font-size:18px}
+.v245-bg{position:fixed;inset:0;z-index:9000;background:rgba(30,25,15,.45);display:flex;justify-content:center;align-items:flex-end}
+.v245-sh{width:min(430px,100%);max-height:92vh;overflow:auto;background:#fffdf8;border-radius:22px 22px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -8px 30px rgba(40,30,20,.2);display:grid;gap:6px;box-sizing:border-box}
+.v245-sh h4{margin:2px 0 4px;font:800 19px Georgia,serif;color:#235b3d}
+.v245-sh label{font-size:12px;font-weight:800;color:#5d6b60;margin-top:6px}
+.v245-sh label small{font-weight:600;color:#8a7d66}
+.v245-sh input,.v245-sh select,.v245-sh textarea{width:100%;box-sizing:border-box;min-height:44px;border:1px solid #e5dac8;border-radius:12px;padding:8px 12px;font-size:16px;background:#fffaf0;color:#24241f;font-family:inherit}
+.v245-sh textarea{min-height:70px;resize:vertical}
+.v245-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.v245-two>div{display:grid;gap:6px}
+.v245-ph{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.v245-ph img{width:74px;height:74px;object-fit:cover;border-radius:12px;border:1px solid #e5dac8;cursor:zoom-in}
+.v245-b{min-height:46px;border-radius:14px;border:1px solid #cfe0cd;background:#f1f7ee;color:#224f37;font-weight:800;font-size:15px;padding:0 14px;cursor:pointer;font-family:inherit}
+.v245-b.main{background:#2f7a4a;color:#fff;border:0;margin-top:8px}
+.v245-b.ghost{background:#fff;border-color:#e5dac8;color:#7a5a3a}
+.v245-b.stop{background:#fff7f3;border-color:#f0d2c4;color:#a0452d}
+.v245-vet{margin-top:4px;padding:10px 12px;border-radius:14px;background:#fff4e8;border:1px solid #f1d3b0;color:#6b3d17;font-size:13.5px;line-height:1.4}
+.v245-zoom{position:fixed;inset:0;z-index:9100;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center}
+.v245-zoom img{max-width:100%;max-height:100%}
+</style>
+<script id="v245-traitement-js">
+/* v245 : ligne « Traitement actuel » sur la fiche de la poule + fiche détaillée (produit, dose, ordonnance en photo) */
+(function(){
+  var TYPES=[['aucun','(Aucun traitement)'],['medical','💊 Traitement médical'],['vitamine','🍊 Vitamines'],['vermifuge','🪱 Vermifuge'],['autre','🧴 Autre traitement']];
+  var LAB={}; TYPES.forEach(function(t){ LAB[t[0]]=t[1].replace(/^\(|\)$/g,''); });
+  /* photos d'ordonnance : rangées à part dans IndexedDB (clé = id de la poule) */
+  var dbp=null;
+  function db(){ if(!dbp) dbp=new Promise(function(res,rej){ try{ var r=indexedDB.open('maisonPopotesOrdo',1); r.onupgradeneeded=function(){ r.result.createObjectStore('o'); }; r.onsuccess=function(){ res(r.result); }; r.onerror=function(){ rej(r.error); }; }catch(e){ rej(e); } }); return dbp; }
+  function idb(mode,fn){ return db().then(function(d){ return new Promise(function(res,rej){ var t=d.transaction('o',mode), st=t.objectStore('o'), q=fn(st); t.oncomplete=function(){ res(q&&q.result); }; t.onerror=function(){ rej(t.error); }; }); }); }
+  function getPh(k){ return idb('readonly',function(st){ return st.get(k); }).catch(function(){ return null; }); }
+  function putPh(k,v){ return idb('readwrite',function(st){ return v?st.put(v,k):st.delete(k); }).catch(function(){}); }
+  function hen(){ try{ return currentProfileHen(); }catch(e){ return null; } }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function fr(d){ if(!d) return ''; var p=d.split('-'); return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:d; }
+  function icon(){ var im=document.querySelector("#home .h58-card[onclick=\"go('health')\"] img"); return im?'<img src="'+im.getAttribute('src')+'" alt="">':'<b style="font-size:26px;line-height:1;font-weight:400">💊</b>'; }
+  function ensure(){
+    var card=document.querySelector('#profile .profile-details-card'); if(!card) return null;
+    var row=document.getElementById('v245Row');
+    if(!row){
+      row=document.createElement('div'); row.className='profile-detail-row'; row.id='v245Row';
+      row.innerHTML='<div class="profile-detail-label"><span class="row-icon custom-row-icon">'+icon()+'</span><span>Traitement actuel</span></div><select id="v245Type" class="profile-park-select" onchange="v245Pick(this.value)">'+TYPES.map(function(t){ return '<option value="'+t[0]+'">'+t[1]+'</option>'; }).join('')+'</select>';
+      card.appendChild(row);
+      var sum=document.createElement('div'); sum.id='v245Sum'; sum.onclick=function(){ v245Open(); }; card.appendChild(sum);
+    }else if(row.nextElementSibling!==document.getElementById('v245Sum') || card.lastElementChild.id!=='v245Sum'){ card.appendChild(row); card.appendChild(document.getElementById('v245Sum')); }
+    return row;
+  }
+  function refresh(){
+    var h=hen(); if(!h||!ensure()) return;
+    var t=h.treatment&&h.treatment.type&&h.treatment.type!=='aucun'?h.treatment:null;
+    document.getElementById('v245Type').value=t?t.type:'aucun';
+    var sum=document.getElementById('v245Sum');
+    if(t){ sum.style.display=''; sum.innerHTML='<span>'+esc(LAB[t.type])+(t.name?' · '+esc(t.name):'')+'<small>'+[t.dose?'Dose : '+esc(t.dose):'',t.freq?esc(t.freq):'',t.end?'jusqu’au '+fr(t.end):''].filter(Boolean).join(' · ')+(t.hasPhoto?' · 📄 ordonnance':'')+'</small></span><i>›</i>'; }
+    else sum.style.display='none';
+  }
+  window.v245Pick=function(v){
+    var h=hen(); if(!h) return;
+    var cur=h.treatment&&h.treatment.type&&h.treatment.type!=='aucun'?h.treatment.type:'aucun';
+    if(v==='aucun'){ if(cur!=='aucun') v245Stop(); return; }
+    v245Open(v);
+  };
+  var photoTmp; /* undefined = inchangée, null = retirée, chaîne = nouvelle */
+  window.v245Open=function(type){
+    var h=hen(); if(!h) return;
+    var t=Object.assign({},h.treatment||{}); var isNew=!(t.type&&t.type!=='aucun');
+    if(type) t.type=type; if(!t.type||t.type==='aucun') t.type='medical';
+    photoTmp=undefined;
+    var bg=document.createElement('div'); bg.className='v245-bg'; bg.id='v245Bg';
+    bg.innerHTML='<div class="v245-sh" role="dialog" aria-label="Traitement actuel">'+
+      '<h4>💊 Traitement de '+esc(h.name)+'</h4>'+
+      '<label for="v245T">Type de traitement</label><select id="v245T">'+TYPES.slice(1).map(function(x){ return '<option value="'+x[0]+'"'+(x[0]===t.type?' selected':'')+'>'+x[1]+'</option>'; }).join('')+'</select>'+
+      '<label for="v245N">Ce que c’est <small>(nom du produit ou du médicament)</small></label><input id="v245N" maxlength="60" value="'+esc(t.name)+'" placeholder="Ex. nom inscrit sur la boîte">'+
+      '<label for="v245D">Dose à donner <small>(quantité exacte)</small></label><input id="v245D" maxlength="60" value="'+esc(t.dose)+'" placeholder="Ex. 0,5 ml, 1 comprimé, 2 gouttes…">'+
+      '<label for="v245F">Quand et comment</label><input id="v245F" maxlength="80" value="'+esc(t.freq)+'" placeholder="Ex. 2 fois par jour, dans l’eau de boisson">'+
+      '<div class="v245-two"><div><label for="v245S">Début</label><input id="v245S" type="date" value="'+esc(t.start||new Date().toISOString().slice(0,10))+'"></div><div><label for="v245E">Fin</label><input id="v245E" type="date" value="'+esc(t.end)+'"></div></div>'+
+      '<label for="v245W">Œufs à ne pas consommer jusqu’au <small>(si le vétérinaire l’indique)</small></label><input id="v245W" type="date" value="'+esc(t.eggs)+'">'+
+      '<label>Ordonnance du vétérinaire <small>(photo, facultatif)</small></label><div class="v245-ph" id="v245Ph"></div>'+
+      '<input id="v245File" type="file" accept="image/*" style="display:none">'+
+      '<label for="v245Note">Notes <small>(conseils du vétérinaire, observations)</small></label><textarea id="v245Note" maxlength="400" placeholder="Ex. surveiller l’appétit, la rappeler dans 5 jours">'+esc(t.note)+'</textarea>'+
+      '<div class="v245-vet">Suivez exactement l’ordonnance et les doses données par votre vétérinaire. Au moindre doute, ou si son comportement change, appelez-le.</div>'+
+      '<button type="button" class="v245-b main" id="v245Save">✓ Enregistrer le traitement</button>'+
+      (isNew?'':'<button type="button" class="v245-b stop" id="v245Stop">Traitement terminé</button>')+
+      '<button type="button" class="v245-b ghost" id="v245Close">Fermer</button></div>';
+    document.body.appendChild(bg);
+    function close(){ bg.remove(); refresh(); }
+    bg.addEventListener('click',function(e){ if(e.target===bg) close(); });
+    document.getElementById('v245Close').onclick=close;
+    var st=document.getElementById('v245Stop'); if(st) st.onclick=function(){ bg.remove(); v245Stop(); };
+    var ph=document.getElementById('v245Ph'), file=document.getElementById('v245File');
+    function drawPh(src){ ph.innerHTML=(src?'<img src="'+src+'" alt="Ordonnance">':'')+'<button type="button" class="v245-b" id="v245PhAdd">📷 '+(src?'Changer la photo':'Photographier l’ordonnance')+'</button>'+(src?'<button type="button" class="v245-b ghost" id="v245PhDel">Retirer</button>':'');
+      document.getElementById('v245PhAdd').onclick=function(){ file.click(); };
+      var d=document.getElementById('v245PhDel'); if(d) d.onclick=function(){ photoTmp=null; drawPh(null); };
+      var im=ph.querySelector('img'); if(im) im.onclick=function(){ var z=document.createElement('div'); z.className='v245-zoom'; z.innerHTML='<img src="'+src+'" alt="">'; z.onclick=function(){ z.remove(); }; document.body.appendChild(z); };
+    }
+    drawPh(null); if(t.hasPhoto) getPh(h.id).then(function(v){ if(photoTmp===undefined&&v) drawPh(v); });
+    file.onchange=function(){ var f=file.files&&file.files[0]; if(!f) return; var r=new FileReader(); r.onload=function(){ var img=new Image(); img.onload=function(){ var m=1600, k=Math.min(1,m/Math.max(img.width,img.height)), c=document.createElement('canvas'); c.width=Math.round(img.width*k); c.height=Math.round(img.height*k); c.getContext('2d').drawImage(img,0,0,c.width,c.height); photoTmp=c.toDataURL('image/jpeg',.82); drawPh(photoTmp); }; img.onerror=function(){ photoTmp=r.result; drawPh(photoTmp); }; img.src=r.result; }; r.readAsDataURL(f); file.value=''; };
+    document.getElementById('v245Save').onclick=function(){
+      var g=function(id){ return document.getElementById(id).value.trim(); };
+      var nt={type:g('v245T'),name:g('v245N'),dose:g('v245D'),freq:g('v245F'),start:g('v245S'),end:g('v245E'),eggs:g('v245W'),note:g('v245Note'),hasPhoto:photoTmp===undefined?!!t.hasPhoto:!!photoTmp};
+      if(photoTmp!==undefined) putPh(h.id,photoTmp);
+      h.treatment=nt; try{ window.v58Persist&&window.v58Persist(); }catch(e){}
+      bg.remove(); refresh(); try{ toast(h.name+' : traitement enregistré ✓'); }catch(e){}
+    };
+  };
+  window.v245Stop=function(){
+    var h=hen(); if(!h) return;
+    var t=h.treatment;
+    if(t&&t.type&&t.type!=='aucun'){ var past=Object.assign({},t,{stopped:new Date().toISOString().slice(0,10)}); delete past.hasPhoto; (h.treatmentHistory=h.treatmentHistory||[]).push(past); }
+    h.treatment={type:'aucun'}; putPh(h.id,null);
+    try{ window.v58Persist&&window.v58Persist(); }catch(e){}
+    refresh(); try{ toast(h.name+' : aucun traitement en cours ✓'); }catch(e){}
+  };
+  var base=window.renderHenProfile;
+  if(typeof base==='function') window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{ refresh(); }catch(e){} return r; };
+  if(document.readyState!=='loading') refresh(); else document.addEventListener('DOMContentLoaded',refresh);
 })();
 </script>
 </body></html>
