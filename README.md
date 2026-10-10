@@ -7,4 +7,4 @@ Version de test de l'application La Maison des Popotes, ouverte à la communaut�
 
 Les données restent sur le téléphone de chaque testeur ; aucun paiement n'est réel.
 
-Dernière version de l’appli de test : v236.
+Dernière version de l’appli de test : v237.
