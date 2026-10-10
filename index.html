@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=225;
+  var APP_V=226;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13894,6 +13894,7 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
 .v225-c{border:1px solid #e1d8ca;border-radius:14px;background:#fff;padding:8px 4px;text-align:center;color:#666158;font-size:10px;font-weight:850}
 .v225-c.on{border-color:#8fb598;background:#edf5ea;color:#315c42}
 .v225-c i{display:block;width:24px;height:30px;margin:0 auto 4px;border-radius:50% 50% 48% 48% / 58% 58% 42% 42%;border:1px solid rgba(90,75,55,.16)}
+.v226-egg{display:inline-block;width:26px;height:33px;border-radius:50% 50% 48% 48% / 58% 58% 42% 42%;border:1px solid rgba(90,75,55,.22);box-shadow:inset 0 -3px 6px rgba(80,60,35,.10);vertical-align:middle}
 .v225-save{margin-top:12px;width:100%;border:0;border-radius:14px;padding:12px;background:#4f7a5b;color:#fff;font-weight:850;font-size:14px}
 </style>
 <script id="v225-egg-note-js">
@@ -13949,6 +13950,9 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
         setup();
         var lead=document.getElementById('v225Lead');
         if(lead&&hen) lead.innerHTML='Pour un œuf de <b>'+esc(hen.name)+'</b> pondu aujourd’hui. Tout est facultatif.';
+        /* v226 : un œuf de la couleur habituelle à la place de la palette */
+        var cc=document.getElementById('profileUsualColor'), ic=cc&&cc.closest('.glance-card')&&cc.closest('.glance-card').querySelector('.g-icon');
+        if(ic){ var m={}; COLORS.forEach(function(c){ m[c[0]]=c[1]; }); var uc=layingSnapshot(hen).usualColor; ic.innerHTML='<i class="v226-egg" style="background:'+(m[uc]||'#f3ece1')+'"></i>'; }
         var range=document.getElementById('profileWeightRange'), s=layingSnapshot(hen);
         if(range && !(s.minWeight!==null&&s.maxWeight!==null)) range.textContent='Notez le poids de quelques œufs juste au-dessus pour faire apparaître la plage habituelle de cette poule.';
       }catch(e){}
