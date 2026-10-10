@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=237;
+  var APP_V=238;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14238,6 +14238,61 @@ body.v81-prem #extraInfoToggle .v237-tag{display:none}
       return base.apply(this,arguments);
     };
   }
+})();
+</script>
+<style id="v238-card-press-css">
+#profile .v58-profile-id .v58-id{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:transform .15s}
+#profile .v58-profile-id .v58-id.v238-press{transform:scale(.98)}
+.v238-hint{margin:6px 0 0;text-align:center;font-size:11.5px;color:#8a7d66}
+.v238-bg{position:fixed;inset:0;z-index:120;background:rgba(30,25,20,.38);opacity:0;transition:opacity .2s}
+.v238-bg.open{opacity:1}
+.v238-sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,100%);transition:transform .22s;width:min(430px,100%);background:#fffdf8;border-radius:22px 22px 0 0;padding:14px 16px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -8px 30px rgba(40,30,20,.2)}
+.v238-bg.open .v238-sheet{transform:translate(-50%,0)}
+.v238-sheet h4{margin:4px 4px 10px;font:800 18px Georgia,serif;color:#235b3d}
+.v238-sheet button{display:flex;align-items:center;gap:12px;width:100%;padding:13px 12px;margin-bottom:7px;border:1px solid #efe5d2;border-radius:15px;background:#fff;text-align:left;font-size:15px;font-weight:750;color:#3b3328}
+.v238-sheet button.v238-danger{color:#a0452d;border-color:#f0d2c4;background:#fff7f3}
+.v238-sheet button.v238-cancel{justify-content:center;background:#f4efe6;font-weight:700}
+.v238-sheet button span{font-size:19px;width:24px;text-align:center}
+</style>
+<script id="v238-card-press-js">
+/* v238 : appui long sur la carte de la poule (fiche) → modifier sa carte, changer/retirer la photo, supprimer la poule */
+(function(){
+  var timer=null, sx=0, sy=0, card=null, fired=false;
+  function hen(){ try{ return currentProfileHen(); }catch(e){ return null; } }
+  function close(w){ w.classList.remove('open'); setTimeout(function(){ w.remove(); },220); }
+  function openMenu(){
+    var h=hen(); if(!h) return;
+    if(navigator.vibrate) try{ navigator.vibrate(15); }catch(e){}
+    var w=document.createElement('div'); w.className='v238-bg';
+    var coq=h.sex==='coq';
+    w.innerHTML='<div class="v238-sheet" role="dialog" aria-label="Actions sur la carte"><h4>'+(h.name||'').replace(/[<>&]/g,'')+'</h4>'
+      +'<button type="button" data-a="edit"><span>✏️</span>Modifier sa carte</button>'
+      +'<button type="button" data-a="photo"><span>📷</span>'+(h.photoDataUrl?'Changer la photo':'Ajouter une photo')+'</button>'
+      +(h.photoDataUrl?'<button type="button" data-a="nophoto"><span>🖼️</span>Retirer la photo</button>':'')
+      +'<button type="button" data-a="del" class="v238-danger"><span>🗑</span>Supprimer '+(coq?'ce coq':'cette poule')+'</button>'
+      +'<button type="button" data-a="x" class="v238-cancel">Annuler</button></div>';
+    w.addEventListener('click',function(e){
+      var b=e.target.closest('button[data-a]'); if(e.target!==w&&!b) return;
+      var a=b?b.dataset.a:'x'; close(w);
+      if(a==='edit'){ var f=document.querySelector('#profile .v58-fam'); if(f){ window.scrollTo({top:f.getBoundingClientRect().top+window.scrollY-80,behavior:'smooth'}); setTimeout(function(){ var n=document.getElementById('v58Name'); if(n) try{ n.focus({preventScroll:true}); }catch(_){} },450); } }
+      else if(a==='photo'){ try{ triggerHenPhotoUpload(); }catch(_){} }
+      else if(a==='nophoto'){ try{ removeHenPhoto(); }catch(_){} }
+      else if(a==='del'){ var id=h.id; Promise.resolve(window.confirmDeleteHen(id)).then(function(){ if(!popotes.some(function(x){ return x.id===id; })) try{ go('hens'); }catch(_){} }); }
+    });
+    document.body.appendChild(w); requestAnimationFrame(function(){ w.classList.add('open'); });
+  }
+  function target(e){ return e.target.closest&&e.target.closest('#profile .v58-profile-id .v58-id'); }
+  function cancel(){ clearTimeout(timer); timer=null; if(card) card.classList.remove('v238-press'); card=null; }
+  document.addEventListener('pointerdown',function(e){ var c=target(e); if(!c) return; cancel(); card=c; fired=false; sx=e.clientX; sy=e.clientY; c.classList.add('v238-press');
+    timer=setTimeout(function(){ fired=true; cancel(); openMenu(); },550); },true);
+  document.addEventListener('pointermove',function(e){ if(timer&&(Math.abs(e.clientX-sx)>10||Math.abs(e.clientY-sy)>10)) cancel(); },true);
+  ['pointerup','pointercancel','scroll'].forEach(function(t){ document.addEventListener(t,function(){ if(timer) cancel(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(target(e)) e.preventDefault(); },true);
+  document.addEventListener('click',function(e){ if(fired&&target(e)){ e.preventDefault(); e.stopPropagation(); fired=false; } },true);
+  /* petite indication sous la carte */
+  function hint(){ var box=document.querySelector('#profile .v58-profile-id .v58-id'); if(box&&!(box.nextElementSibling&&box.nextElementSibling.classList.contains('v238-hint'))) box.insertAdjacentHTML('afterend','<p class="v238-hint">Appui long sur la carte pour la modifier ou la supprimer</p>'); }
+  var base=window.renderHenProfile;
+  if(typeof base==='function') window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{ hint(); }catch(e){} return r; };
 })();
 </script>
 </body></html>
