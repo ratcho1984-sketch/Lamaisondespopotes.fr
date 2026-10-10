@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=239;
+  var APP_V=240;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14295,5 +14295,5 @@ body.v81-prem #extraInfoToggle .v237-tag{display:none}
   if(typeof base==='function') window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{ hint(); }catch(e){} return r; };
 })();
 </script>
-<style id="v239-hide-photo-btns-css">/* v239 : boutons photo sous la carte retirés (actions via l’appui long) */#profile .v58-profile-id .v58-id-actions{display:none!important}</style>
+<style id="v239-hide-photo-btns-css">/* v239 : boutons photo sous la carte retirés (actions via l’appui long) */#profile .v58-profile-id .v58-id-actions:has(.v58-id-btn.ghost){display:none!important}</style>
 </body></html>
