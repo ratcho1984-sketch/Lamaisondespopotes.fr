@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=242;
+  var APP_V=243;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11475,7 +11475,7 @@ renderStarterStep = function(){
       const open=isP()||!!g.allFree; const nf=g.freeParts||0;
       body.innerHTML=`<div class="v81-ghead"><span>${g.icon}</span><div><h2>${esc(g.title)}</h2><small>${esc(g.sub)}</small></div></div>
         <p class="v81-lead">${esc(g.intro)}</p>
-        ${g.parts.filter((p,i)=>open||i<nf+1).map((p,i)=>`<div class="v81-gpart${!open&&i>=nf?' v81-blur':''}"><h3>${esc(p[0])}</h3><ul>${p[1].map(t=>`<li>${esc(t)}</li>`).join('')}</ul>${/Élodie/.test(p[0])&&!g.allFree&&open?elodieOffer():''}</div>`).join('')}
+        ${g.parts.filter((p,i)=>open||i<nf+1).map((p,i)=>`<div class="v81-gpart${/regard d.Élodie/.test(p[0])?' v243-elo':''}${!open&&i>=nf?' v81-blur':''}"><h3>${esc(p[0])}</h3><ul>${p[1].map(t=>`<li>${esc(t)}</li>`).join('')}</ul>${/Élodie/.test(p[0])&&!g.allFree&&open?elodieOffer():''}</div>`).join('')}
         ${open?'':`<div class="v81-gate">${nf?`<b>♛ La suite de ce guide est dans Premium</b><p>Les ${g.parts.length-nf} parties suivantes, pas à pas, sont réservées à Premium.</p><button type="button" class="primary" onclick="v81Lock('guides','${key}')">♛ Lire la suite</button>`:`<b>♛ Ce guide approfondi fait partie de Premium</b><p>Les conseils de base de chaque thème restent gratuits. Le guide complet, en ${g.parts.length} parties pas à pas, est réservé à Premium.</p><button type="button" class="primary" onclick="v81Lock('guides','${key}')">♛ Lire le guide complet</button>`}</div>`}
         ${g.allFree?`<div class="elodie-alt elodie-alt-free">${elodieOffer()}</div>`:''}
         ${open?'':`<div class="elodie-alt"><div class="elodie-alt-or"><span>ou</span></div>${elodieOffer()}</div>`}
@@ -14316,4 +14316,10 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
   window.v81Export=function(){ if(!(window.v81IsPremium&&v81IsPremium())){ try{ v81Open('export'); }catch(e){} return; } return base.apply(this,arguments); };
 })();
 </script>
+<style id="v243-elodie-terracotta-css">/* v243 : tous les encadrés « Le regard d'Élodie » en terracotta (même couleur que « Parlez de votre situation avec Élodie ») ; le violet reste pour le Premium */
+.v243-elo,#foodguide .food-queen-card:has(.food-elodie-title),#parktour .park-elodie-card,.v199-tip,#plantes .v214-tip,.v81-queen{background:linear-gradient(150deg,#fbe9d6,#f6dcc0)!important;border:2px solid #d9a774!important;color:#4a2c17!important}
+#foodguide .food-queen-card:has(.food-elodie-title) .food-queen-head,#parktour .park-elodie-card .park-elodie-card-head,#parktour .park-elodie-card .park-elodie-card-body{background:transparent!important}
+#foodguide .food-queen-card:has(.food-elodie-title) .food-queen-title,#parktour .park-elodie-card .park-elodie-card-head,.v243-elo h3,.v199-tip b,#plantes .v214-tip b,.v81-queen b{color:#7a3f17!important}
+#foodguide .food-queen-card:has(.food-elodie-title) p,#parktour .park-elodie-card p,.v81-queen p,.v243-elo li{color:#4a2c17!important}
+</style>
 </body></html>
