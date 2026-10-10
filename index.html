@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=243;
+  var APP_V=244;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -10804,6 +10804,7 @@ renderStarterStep = function(){
         <h3>🪪 Sa carte de membre de la famille</h3>
         <label for="v58Name">${hen.sex==='coq'?'Nom':'Prénom'}</label>
         <input id="v58Name" type="text" maxlength="30" value="${escapeHtml(hen.name)}" placeholder="${hen.sex==='coq'?'Ex. Gaston':'Ex. Joséphine'}" autocomplete="off">
+        <label>Race</label><div id="v244BreedSlot"></div>
         ${hen.sex==='coq'?`<label>Son caractère <small style="font-weight:600;color:#8a7d66">(facultatif)</small></label><div class="v199-chips" data-target="profile">${V199_CHARS.map(c=>`<button type="button" class="${hen.character===c?'on':''}" onclick="v199SetChar(this,'${c}')">${c}</button>`).join('')}</div>`:''}
         <label for="v58Birth">${hen.sex==='coq'?'Né vers':'Née vers'} <small style="font-weight:600;color:#8a7d66">(mois et année, approximatifs)</small></label>
         <input id="v58Birth" type="month" value="${escapeHtml((hen.birth||'').slice(0,7))}">
@@ -10811,10 +10812,10 @@ renderStarterStep = function(){
         <input id="v58Arrival" type="date" value="${escapeHtml(hen.arrival||'')}">
         <label for="v58Weight">Poids <small style="font-weight:600;color:#8a7d66">(en kg, facultatif)</small></label>
         <input id="v58Weight" type="text" inputmode="decimal" maxlength="5" value="${escapeHtml(hen.weight||'')}" placeholder="Ex. 2,3" autocomplete="off">
-        <label for="v58Trait">Info importante</label>
+        <label>Photo <small style="font-weight:600;color:#8a7d66">(facultatif)</small></label><div id="v244Photo"></div>
+        <label for="v58Trait">Signe particulier</label>
         <input id="v58Trait" type="text" maxlength="38" value="${escapeHtml(hen.trait||'')}" placeholder="Ex. Adore les vers de terre">
         <button type="button" class="v58-fam-save" onclick="v58SaveCard()">✓ Enregistrer sa carte</button>
-        <button type="button" class="v58-fam-go" onclick="v58MakeIdImage()">Créer l’image de sa carte</button>
       </div>`;
       const nameEl=document.getElementById('v58Name'), arrEl=document.getElementById('v58Arrival'), trEl=document.getElementById('v58Trait'), biEl=document.getElementById('v58Birth');
       // La carte au-dessus se remplit pendant la saisie
@@ -14322,4 +14323,29 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
 #foodguide .food-queen-card:has(.food-elodie-title) .food-queen-title,#parktour .park-elodie-card .park-elodie-card-head,.v243-elo h3,.v199-tip b,#plantes .v214-tip b,.v81-queen b{color:#7a3f17!important}
 #foodguide .food-queen-card:has(.food-elodie-title) p,#parktour .park-elodie-card p,.v81-queen p,.v243-elo li{color:#4a2c17!important}
 </style>
+<style id="v244-fiche-css">
+#v244BreedSlot .breed-picker{width:100%}
+#profile .profile-detail-row.v244-moved{display:none!important}
+#profile .profile-details-card:not(:has(.profile-detail-row:not(.v244-moved):not([style*="none"]))){display:none}
+#profile .v58-profile-id .v58-id-actions,#profile .v58-profile-id .v58-id-note{display:none!important}
+#v244Photo{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#v244Photo img{width:52px;height:52px;border-radius:12px;object-fit:cover;border:1px solid #e5dac8}
+#v244Photo button{min-height:44px;border-radius:12px;border:1px solid #cfe0cd;background:#f1f7ee;color:#224f37;font-weight:800;font-size:14px;padding:0 14px;cursor:pointer;font-family:inherit}
+#v244Photo button.ghost{background:#fff;border-color:#e5dac8;color:#7a5a3a}
+</style>
+<script id="v244-fiche-js">
+(function(){
+  function place(){
+    var slot=document.getElementById('v244BreedSlot'), pk=document.getElementById('profileBreedPicker');
+    if(slot&&pk&&pk.parentNode!==slot){ var row=pk.closest('.profile-detail-row'); slot.appendChild(pk); if(row) row.classList.add('v244-moved'); }
+    var ph=document.getElementById('v244Photo'); var h=typeof currentProfileHen==='function'?currentProfileHen():null;
+    if(ph&&h){ ph.innerHTML=(h.photoDataUrl?'<img src="'+h.photoDataUrl+'" alt="">':'')+
+      '<button type="button" onclick="triggerHenPhotoUpload()">📷 '+(h.photoDataUrl?'Changer la photo':'Ajouter une photo')+'</button>'+
+      (h.photoDataUrl?'<button type="button" class="ghost" onclick="removeHenPhoto()">Retirer</button>':''); }
+  }
+  var base=window.renderHenProfile;
+  if(base){ window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{place();}catch(e){} return r; }; }
+  document.addEventListener('DOMContentLoaded',function(){try{place();}catch(e){}});
+})();
+</script>
 </body></html>
