@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=240;
+  var APP_V=241;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14296,4 +14296,11 @@ body.v81-prem #extraInfoToggle .v237-tag{display:none}
 })();
 </script>
 <style id="v239-hide-photo-btns-css">/* v239 : boutons photo sous la carte retirés (actions via l’appui long) */#profile .v58-profile-id .v58-id-actions:has(.v58-id-btn.ghost){display:none!important}</style>
+<style id="v241-lay-colors-css">/* v241 : « Ajouter une ponte » — détails de l'œuf (Premium) en violet, évolution de la ponte (gratuit) en vert */
+#lay #extraInfoToggle{border:1.5px solid var(--v81-vi3)!important;background:linear-gradient(135deg,#faf5fd,#f3eafa)!important;color:#3b1d4a!important}
+#lay #extraInfoToggle.open{background:#f3eafa!important;border-color:#cdb4e6!important}
+#lay .v81-mnt-lay .v81-enc{border-color:#cfe2cf!important;background:linear-gradient(135deg,#f7fbf4,#edf5ea)!important}
+#lay .v81-mnt-lay .v81-enc-t b{color:#1f5a35!important}#lay .v81-mnt-lay .v81-enc-t small{color:#5c6b58!important}
+#lay .v81-mnt-lay .v81-enc-ic{box-shadow:0 2px 6px rgba(47,122,74,.15)!important}
+</style>
 </body></html>
