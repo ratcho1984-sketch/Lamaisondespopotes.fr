@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=227;
+  var APP_V=228;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14045,6 +14045,77 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
     }finally{ busy=false; }
   }
   function hook(){ var box=document.getElementById('v81Cal'); if(!box) return false; new MutationObserver(function(){ if(!busy) decorate(); }).observe(box,{childList:true}); decorate(); return true; }
+  if(!hook()) document.addEventListener('DOMContentLoaded',hook);
+})();
+</script>
+<style id="v228-undo-css">
+.v228-undo{position:fixed;left:50%;bottom:140px;transform:translate(-50%,12px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:96;display:flex;align-items:center;gap:12px;background:#fff;color:#2f2a22;border:1px solid #e1d8ca;box-shadow:0 8px 24px rgba(40,30,20,.18);border-radius:18px;padding:9px 10px 9px 14px;font-size:13px;max-width:92vw}
+.v228-undo.on{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+.v228-undo button{border:0;border-radius:12px;background:#244534;color:#fff;font-weight:850;font-size:13px;padding:8px 12px}
+.v228-del{display:inline-block;margin-top:5px;border:1px solid #e7c9b4;background:#fff7f1;color:#a0522d;border-radius:10px;padding:5px 9px;font-size:11.5px;font-weight:800}
+</style>
+<script id="v228-undo-js">
+/* v228 : annuler une ponte juste après l'enregistrement, ou supprimer un œuf depuis le calendrier de ponte */
+(function(){
+  function save(){ try{ window.v58Persist&&window.v58Persist(); }catch(e){} }
+  function rerender(){ ['renderPopotes','renderEggHenChoices','renderHenProfile'].forEach(function(f){ try{ typeof window[f]==='function'&&window[f](); }catch(e){} }); try{ window.v58RefreshHome&&window.v58RefreshHome(false); }catch(e){} }
+  /* retire n œufs d'un enregistrement et met à jour les compteurs de la poule */
+  function removeEggs(rec,n){
+    var i=eggRecords.indexOf(rec); if(i<0) return;
+    n=Math.min(n||rec.count||0,rec.count||0);
+    var hen=rec.henId?popotes.find(function(h){ return h.id===rec.henId; }):null;
+    if(hen){
+      if(rec.aspect==='unusual'){ hen.unusualEggs=Math.max(0,(hen.unusualEggs||0)-n); if(Array.isArray(hen.unusualDates)) for(var k=0;k<n;k++){ var j=hen.unusualDates.indexOf(rec.createdAt); if(j>=0) hen.unusualDates.splice(j,1); } }
+      else if(rec.aspect==='normal') hen.normalEggs=Math.max(0,(hen.normalEggs||0)-n);
+    }
+    if(n>=(rec.count||0)) eggRecords.splice(i,1); else rec.count-=n;
+  }
+  window.v228RemoveEggs=removeEggs;
+
+  /* 1. Bouton « Annuler » juste après l'enregistrement */
+  var bar=document.createElement('div'); bar.className='v228-undo'; bar.setAttribute('role','status');
+  bar.innerHTML='<span id="v228Txt">Ponte enregistrée</span><button type="button" id="v228Btn">Annuler</button>';
+  document.body.appendChild(bar);
+  var pending=null, timer=null;
+  function hide(){ bar.classList.remove('on'); pending=null; }
+  document.getElementById('v228Btn').onclick=function(){
+    if(!pending) return; var recs=pending; hide();
+    recs.forEach(function(r){ removeEggs(r,r.count); });
+    save(); rerender(); try{ toast('↩️ Ponte annulée'); }catch(e){}
+  };
+  var base=window.saveEgg;
+  if(typeof base==='function'){
+    window.saveEgg=function(){
+      var before=new Set(eggRecords);
+      var r=base.apply(this,arguments);
+      setTimeout(function(){
+        var added=eggRecords.filter(function(x){ return !before.has(x) && (x.count||0)>0; });
+        if(!added.length) return;
+        var n=added.reduce(function(s,x){ return s+(x.count||0); },0);
+        document.getElementById('v228Txt').textContent='Une erreur ? Vous pouvez annuler '+(n>1?'ces '+n+' œufs':'cet œuf');
+        pending=added; bar.classList.add('on'); clearTimeout(timer); timer=setTimeout(hide,8000);
+      },0);
+      return r;
+    };
+  }
+
+  /* 2. Supprimer un œuf depuis le calendrier de ponte (jour sélectionné) */
+  function dk(t){ var d=new Date(t); return d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate(); }
+  function decorate(){
+    var box=document.getElementById('v81Cal'); if(!box) return;
+    var det=box.querySelector('.v81-cdet'); if(!det||det.querySelector('.v228-del')||box.querySelector('.v81-demo.on')) return;
+    var sel=box.querySelector('.v81-cd.sel'), m=sel&&/v81CalDay\('([\d-]+)'\)/.exec(sel.getAttribute('onclick')||''); if(!m) return;
+    var hen; try{ hen=currentProfileHen(); }catch(e){} if(!hen) return;
+    var recs=eggRecords.filter(function(r){ return r.henId===hen.id && (r.count||0)>0 && dk(r.createdAt)===m[1]; });
+    var rows=[].slice.call(det.children).filter(function(c){ return c.tagName==='DIV'; });
+    recs.forEach(function(rec,i){ var row=rows[i]; if(!row) return;
+      var b=document.createElement('button'); b.type='button'; b.className='v228-del'; b.textContent=(rec.count>1?'🗑 Supprimer un œuf':'🗑 Supprimer cet œuf');
+      b.onclick=async function(ev){ ev.stopPropagation();
+        var ok=window.v58Confirm?await window.v58Confirm('Supprimer cet œuf ?','Il sera retiré du calendrier et des compteurs de '+hen.name+'.','Supprimer'):window.confirm('Supprimer cet œuf ?');
+        if(!ok) return; removeEggs(rec,1); save(); rerender(); try{ toast('🗑 Œuf supprimé'); }catch(e){} };
+      row.appendChild(b); });
+  }
+  function hook(){ var box=document.getElementById('v81Cal'); if(!box) return false; new MutationObserver(function(){ setTimeout(decorate,0); }).observe(box,{childList:true}); decorate(); return true; }
   if(!hook()) document.addEventListener('DOMContentLoaded',hook);
 })();
 </script>
