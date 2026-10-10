@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=233;
+  var APP_V=234;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14190,4 +14190,21 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
 </script>
 <style id="v232-elodie-violet-css">.v81-queen>span.v232-elo{flex:0 0 58px;width:58px;height:58px;overflow:hidden;border:2px solid #fff;box-shadow:0 2px 6px rgba(60,30,80,.15)}.v81-queen>span.v232-elo img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}.v81-queen{align-items:flex-start}</style>
 <style id="v233-hide-suivi-css">/* v233 : « Suivi de ses œufs » retiré (redondant) — affichage seulement, aucune donnée supprimée */#profile .laying-dashboard{display:none!important}</style>
+<style id="v234-lay-icons-css">#lay .lay-card-title .icon.v234-ic{overflow:hidden;font-size:0}#lay .lay-card-title .icon.v234-ic img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(.82);border-radius:50%}</style>
+<script id="v234-lay-icons-js">
+/* v234 : « Ajouter une ponte » — même œuf et même poule que sur l'accueil devant les titres */
+(function(){
+  function src(k){ var im=document.querySelector('#home .h58-card[onclick="'+k+'"] img'); return im&&im.getAttribute('src'); }
+  function apply(){
+    var egg=src("go('lay')"), hen=src("go('hens')");
+    document.querySelectorAll('#lay .lay-card-title').forEach(function(t){
+      var ic=t.querySelector('.icon'), txt=t.textContent; if(!ic||ic.classList.contains('v234-ic')) return;
+      var s=/De quelle poule/.test(txt)?hen:(/Combien d.œufs|Aspect de/.test(txt)?egg:null);
+      if(!s) return; ic.classList.add('v234-ic'); ic.innerHTML='<img src="'+s+'" alt="">';
+    });
+  }
+  function hook(){ apply(); var lay=document.getElementById('lay'); if(lay) new MutationObserver(apply).observe(lay,{childList:true,subtree:true}); }
+  if(document.readyState!=='loading') hook(); else document.addEventListener('DOMContentLoaded',hook);
+})();
+</script>
 </body></html>
