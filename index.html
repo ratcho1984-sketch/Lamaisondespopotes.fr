@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=228;
+  var APP_V=229;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11734,7 +11734,7 @@ renderStarterStep = function(){
     if(!calBox) return;
     if(!isP()){
       calBox.innerHTML=`<button type="button" class="v81-block v81-teaser" onclick="v81Lock('calendrier')">
-        <h3>📅 Calendrier de ponte <span class="v81-lk">♛ Premium</span></h3>
+        <h3>📅 Le calendrier ${/^[aeiouyàâäéèêëîïôöûüù]/i.test(hen.name||'')?'d’':'de '}${esc(hen.name)} <span class="v81-lk">♛ Premium</span></h3>
         <div class="v81-fake v81-fakecal">${Array.from({length:21},(_,i)=>`<i class="${[1,2,4,5,8,9,11,15,16,18].includes(i)?'n':i===12?'u':''}"></i>`).join('')}</div>
         <small>Chaque œuf de ${esc(hen.name)} sur un calendrier, la dernière ponte, les œufs inhabituels, et une fiche de suivi à montrer au vétérinaire.</small>
       </button>`; return;
@@ -11754,7 +11754,7 @@ renderStarterStep = function(){
       detail=`<div class="v81-cdet"><b>${frDate(d0)}</b>${x.recs.map(r=>`<div class="${r._p?'p':r.aspect==='unusual'?'u':''}"><span>${r._p?'❔ Possible'+(r.aspect==='unusual'?' · inhabituel':''):r.aspect==='unusual'?'⚠️ Inhabituel':r.aspect==='unknown'?'🥚 Aspect non renseigné':'🥚 Normal'}${r.count>1?' × '+r.count:''}</span>${r._p?`<small>Pondeuse incertaine${otherSus(r,hen.id).length?' : '+esc(ouList([hen.name].concat(otherSus(r,hen.id)))):''}</small>`:''}${DETAIL(r)?`<small>${esc(DETAIL(r))}</small>`:''}${r.note?`<small>« ${esc(r.note)} »</small>`:''}</div>`).join('')}</div>`;
     }else if(calDay){ detail=`<div class="v81-cdet"><small>Aucune ponte enregistrée ce jour-là.</small></div>`; }
     calBox.innerHTML=`<div class="v81-block v81-calb">
-      <h3>📅 Calendrier de ponte</h3>
+      <h3>📅 Le calendrier ${/^[aeiouyàâäéèêëîïôöûüù]/i.test(hen.name||'')?'d’':'de '}${esc(hen.name)}</h3>
       ${calDemo?`<div class="v81-demo on">🧪 Exemple : ces pontes sont inventées pour montrer le rendu. <button type="button" onclick="v81CalDemo(false)">Revenir à ses données</button></div>`:''}
       <div class="v81-ctiles">
         <div class="${last&&(t0-new Date(last.createdAt).setHours(0,0,0,0))/DAY>=7?'warn':''}"><span>Dernière ponte</span><b>${last?frDate(last.createdAt):'—'}</b><small>${last?agoTxt(last.createdAt):'aucune enregistrée'}</small></div>
@@ -14116,6 +14116,25 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
       row.appendChild(b); });
   }
   function hook(){ var box=document.getElementById('v81Cal'); if(!box) return false; new MutationObserver(function(){ setTimeout(decorate,0); }).observe(box,{childList:true}); decorate(); return true; }
+  if(!hook()) document.addEventListener('DOMContentLoaded',hook);
+})();
+</script>
+<style id="v229-coq-cal-css">
+#profile.v229-coq .laying-glance,#profile.v229-coq .laying-dashboard{display:none!important}
+#profile.v229-coq #v81Cal .v81-ctiles,#profile.v229-coq #v81Cal .v81-empty,#profile.v229-coq #v81Cal .v229-egg{display:none!important}
+</style>
+<script id="v229-coq-cal-js">
+/* v229 : sur la fiche d'un coq, pas de blocs de ponte ; on garde son calendrier (mue) */
+(function(){
+  function apply(){
+    var p=document.getElementById('profile'); if(!p) return; var h=null; try{ h=currentProfileHen(); }catch(e){}
+    var coq=!!(h&&h.sex==='coq'); p.classList.toggle('v229-coq',coq);
+    var leg=p.querySelector('#v81Cal .v81-clegend');
+    if(leg&&!leg.dataset.v229){ leg.dataset.v229='1'; [].slice.call(leg.children).forEach(function(s){ if(/œuf/.test(s.textContent)) s.classList.add('v229-egg'); }); }
+  }
+  var base=window.renderHenProfile;
+  if(typeof base==='function') window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{ apply(); }catch(e){} return r; };
+  function hook(){ var box=document.getElementById('v81Cal'); if(!box) return false; new MutationObserver(function(){ apply(); }).observe(box,{childList:true}); apply(); return true; }
   if(!hook()) document.addEventListener('DOMContentLoaded',hook);
 })();
 </script>
