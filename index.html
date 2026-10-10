@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=235;
+  var APP_V=236;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -10811,7 +10811,7 @@ renderStarterStep = function(){
         <input id="v58Arrival" type="date" value="${escapeHtml(hen.arrival||'')}">
         <label for="v58Weight">Poids <small style="font-weight:600;color:#8a7d66">(en kg, facultatif)</small></label>
         <input id="v58Weight" type="text" inputmode="decimal" maxlength="5" value="${escapeHtml(hen.weight||'')}" placeholder="Ex. 2,3" autocomplete="off">
-        <label for="v58Trait">Signe particulier</label>
+        <label for="v58Trait">Info importante</label>
         <input id="v58Trait" type="text" maxlength="38" value="${escapeHtml(hen.trait||'')}" placeholder="Ex. Adore les vers de terre">
         <button type="button" class="v58-fam-save" onclick="v58SaveCard()">✓ Enregistrer sa carte</button>
         <button type="button" class="v58-fam-go" onclick="v58MakeIdImage()">Créer l’image de sa carte</button>
