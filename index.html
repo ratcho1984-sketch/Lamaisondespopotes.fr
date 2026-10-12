@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=254;
+  var APP_V=255;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -10770,8 +10770,9 @@ renderStarterStep = function(){
     const hd=document.getElementById('popotesHeading'); if(hd) hd.textContent=lbl+' à la maison';
     grid.classList.add('v58-id-grid');
     grid.innerHTML=popotes.map(h=>idCard(h,false)).join('')+
-      `<button type="button" class="popote-add" onclick="go('addpopote')"><span class="plus">＋</span>Ajouter une Popote ou un coq</button>`+
-      (popotes.some(h=>h.sex==='coq')?V199_TIP:'');
+      `<button type="button" class="popote-add" onclick="go('addpopote')"><span class="plus">＋</span>Ajouter une Popote ou un coq</button>`;
+      /* v255 : « Le regard d’Élodie » sur les coqs tout en bas de « Mes Popotes » */
+      setTimeout(()=>{ try{ const sc=document.getElementById('hens'); if(!sc) return; let t=document.getElementById('v255CoqTip'); if(!t){ t=document.createElement('div'); t.id='v255CoqTip'; t.style.margin='14px 0 0'; } t.innerHTML=popotes.some(h=>h.sex==='coq')?V199_TIP:''; const last=[...sc.children].filter(e=>e!==t&&!/spacer|v201/i.test(e.id+' '+e.className)).pop(); if(last) last.after(t); else sc.appendChild(t); }catch(e){} },0);
   };
   // Fiche : la grande carte remplace la photo, avec ses boutons photo juste dessous
   const hero=document.querySelector('#profile .hen-profile-hero');
@@ -10788,8 +10789,7 @@ renderStarterStep = function(){
     cardPart.innerHTML=idCard(view,true)+
       `<div class="v58-id-actions"><button type="button" class="v58-id-btn" onclick="triggerHenPhotoUpload()">📷 ${hen.photoDataUrl?'Changer la photo':'Ajouter une photo'}</button>`+
       (hen.photoDataUrl?`<button type="button" class="v58-id-btn ghost" onclick="removeHenPhoto()">Retirer la photo</button>`:'')+`</div>`+
-      (hen.photoDataUrl?'':(hen.sex==='coq'?'<p class="v58-id-note">Sans photo, l’illustration de sa race s’affiche automatiquement.</p>':'<p class="v58-id-note">Sans photo, l’illustration de sa race s’affiche automatiquement.</p>'))+
-      (hen.sex==='coq'?V199_TIP:'');
+      (hen.photoDataUrl?'':(hen.sex==='coq'?'<p class="v58-id-note">Sans photo, l’illustration de sa race s’affiche automatiquement.</p>':'<p class="v58-id-note">Sans photo, l’illustration de sa race s’affiche automatiquement.</p>'));
   }
   window.renderHenProfile=function(){
     baseRenderProfile.apply(this,arguments);
