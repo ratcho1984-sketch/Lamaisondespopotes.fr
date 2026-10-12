@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=256;
+  var APP_V=257;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -10769,7 +10769,8 @@ renderStarterStep = function(){
     const c=document.getElementById('popotesCount'); if(c) c.textContent=lbl;
     const hd=document.getElementById('popotesHeading'); if(hd) hd.textContent=lbl+' à la maison';
     grid.classList.add('v58-id-grid');
-    grid.innerHTML=popotes.map(h=>idCard(h,false)).join('')+
+    /* v257 : classement par ordre alphabétique (les poules, puis les coqs) */
+    grid.innerHTML=popotes.slice().sort((a,b)=>((a.sex==='coq')-(b.sex==='coq'))||String(a.name||'').localeCompare(String(b.name||''),'fr',{sensitivity:'base',numeric:true})).map(h=>idCard(h,false)).join('')+
       `<button type="button" class="popote-add" onclick="go('addpopote')"><span class="plus">＋</span>Ajouter une Popote ou un coq</button>`;
       /* v255 : « Le regard d’Élodie » sur les coqs tout en bas de « Mes Popotes » */
       setTimeout(()=>{ try{ const sc=document.getElementById('hens'); if(!sc) return; let t=document.getElementById('v255CoqTip'); if(!t){ t=document.createElement('div'); t.id='v255CoqTip'; t.style.margin='14px 0 0'; } t.innerHTML=popotes.some(h=>h.sex==='coq')?V199_TIP:''; const last=[...sc.children].filter(e=>e!==t&&!/spacer|v201/i.test(e.id+' '+e.className)).pop(); if(last) last.after(t); else sc.appendChild(t); }catch(e){} },0);
