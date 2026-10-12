@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=251;
+  var APP_V=252;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11820,7 +11820,7 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
     bullets:['Ses pontes en un coup d’œil et le suivi de ses œufs','Calendrier de ponte et fiche de suivi pour le vétérinaire','Son journal de vie','Les modèles de sa carte d’identité, en HD']};
   const tools=document.createElement('div'); tools.id='v81Tools'; tools.dataset.open='';
   const TOOLS=[['suivi','📊','Ses pontes'],['cal','📅','Calendrier'],['journal','📔','Journal'],['carte','🎨','Sa carte']];
-  tools.innerHTML=`<button type="button" class="v81-tfree" onclick="v81Tool()" aria-expanded="false"><span class="v81-tfic">♛</span><span><b>Outils Premium</b><small class="v81-tsub">Suivi de ponte, calendrier, journal, modèles de carte</small></span><span class="v81-chev v81-tchev">›</span></button>
+  tools.innerHTML=`<button type="button" class="v81-tfree" onclick="v81Tool()" aria-expanded="false"><span class="v81-tfic">♛</span><span><b>Outils Premium</b><small class="v81-tsub">Suivi de ponte, calendrier personnel, couleur des œufs, journal, modèle de carte</small></span><span class="v81-chev v81-tchev">›</span></button>
     <div class="v81-tpanels"></div>`;
   const panels=tools.querySelector('.v81-tpanels');
   const glance2=prof&&prof.querySelector('.laying-glance'), dash=prof&&prof.querySelector('.laying-dashboard');
@@ -11833,7 +11833,7 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
     if(!isP()){ lock('fiche'); return; }
     const open=tools.dataset.open!=='all'; tools.dataset.open=open?'all':'';
     const b=tools.querySelector('.v81-tfree'); b.setAttribute('aria-expanded',String(open));
-    tools.querySelector('.v81-tsub').textContent=open?'Touchez pour replier':'Suivi de ponte, calendrier, journal, modèles de carte';
+    tools.querySelector('.v81-tsub').textContent=open?'Touchez pour replier':'Suivi de ponte, calendrier personnel, couleur des œufs, journal, modèle de carte';
     if(open) setTimeout(()=>{ const y=b.getBoundingClientRect().top+window.scrollY-76; window.scrollTo({top:y,behavior:'smooth'}); },30);
   };
 
