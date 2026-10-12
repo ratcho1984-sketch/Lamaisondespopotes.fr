@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=250;
+  var APP_V=251;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -10747,7 +10747,7 @@ renderStarterStep = function(){
           <div><dt>Race</dt><dd>${escapeHtml(h.breed||'Non renseignée')}</dd></div>
           <div><dt>Parc</dt><dd>${escapeHtml(parkNameForIndex(h.parkIndex))}</dd></div>
           <div><dt>Statut</dt><dd class="v58-pills">${pills.join('')}</dd></div>
-          ${isCoq?`<div><dt>Ses poules</dt><dd class="v199-hens">${hensInPark?hensInPark+' dans son parc':'—'}</dd></div>`:`<div><dt>Œufs · 30 j</dt><dd class="v58-id-eggs">${eggs30}</dd></div>`}${big?`
+          ${isCoq?`<div><dt>Ses poules</dt><dd class="v199-hens">${hensInPark?hensInPark+' dans son parc':'—'}</dd></div>`:`<div><dt>Œufs · 30 j</dt><dd class="v58-id-eggs">${eggs30}</dd></div>`}${big?'':(isCoq?`<div class="wide"><dt>Caractère</dt><dd>${escapeHtml([h.character,h.trait].filter(Boolean).join(' · ')||'—')}</dd></div>`:`<div class="wide"><dt>Signe particulier</dt><dd>${escapeHtml(h.trait||'—')}</dd></div>`)}${big?`
           <div><dt>Âge</dt><dd>${henAgeShort(h)}</dd></div>
           <div><dt>Arrivée</dt><dd>${h.arrival?h.arrival.split('-').reverse().join('/'):'—'}</dd></div>
           ${isCoq?`<div class="wide"><dt>Caractère</dt><dd>${escapeHtml([h.character,h.trait].filter(Boolean).join(' · ')||'—')}</dd></div>`:`<div class="wide"><dt>Signe particulier</dt><dd>${escapeHtml(h.trait||'—')}</dd></div>`}`:''}
