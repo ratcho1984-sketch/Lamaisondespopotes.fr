@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=246;
+  var APP_V=247;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14468,4 +14468,10 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
   if(document.readyState!=='loading') refresh(); else document.addEventListener('DOMContentLoaded',refresh);
 })();
 </script>
+<style id="v247-profile-order-css">
+/* v247 : « Modèle de sa carte » tout en bas (sous le journal) ; plus de bouton « Ajouter une ponte » sur la fiche (uniquement depuis l’accueil) */
+#v81ProfileExtra{display:flex;flex-direction:column}
+#v81ProfileExtra>.v81-themes-wrap{order:10}
+#profile .profile-actions>button.primary{display:none!important}
+</style>
 </body></html>
