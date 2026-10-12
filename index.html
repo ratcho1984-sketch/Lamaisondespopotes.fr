@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=252;
+  var APP_V=253;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11997,9 +11997,16 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
   const henList=document.getElementById('eggHenChoices'); if(henList) henList.after(susBox);
   function renderSuspects(){
     const U=unk(); Object.keys(sus).forEach(k=>{ if(+k.slice(2)>=U) delete sus[k]; else sus[k]=sus[k].filter(id=>!named.includes(id)&&popotes.some(h=>h.id===id)); });
-    const cand=popotes.filter(h=>h.sex!=='coq'&&!named.includes(h.id));
+    /* v253 : une poule pond au plus 1 œuf par jour — celles qui ont déjà un œuf certain aujourd'hui ne sont plus proposées */
+    const _d=new Date(), _t0=new Date(_d.getFullYear(),_d.getMonth(),_d.getDate()).getTime(), _t1=_t0+864e5;
+    const laid=new Set((Array.isArray(eggRecords)?eggRecords:[]).filter(r=>r&&r.henId&&(r.count||0)>0&&r.createdAt>=_t0&&r.createdAt<_t1).map(r=>r.henId));
+    Object.keys(sus).forEach(k=>{ sus[k]=sus[k].filter(id=>!laid.has(id)); });
+    const done=popotes.filter(h=>h.sex!=='coq'&&laid.has(h.id)&&!named.includes(h.id));
+    const cand=popotes.filter(h=>h.sex!=='coq'&&!named.includes(h.id)&&!laid.has(h.id));
+    const doneNote=done.length?`<small class="v88-note">${done.map(h=>escapeHtml(h.name)).join(done.length>2?', ':' et ').replace(/, ([^,]*)$/,' et $1')} ${done.length>1?'ont':'a'} déjà pondu aujourd’hui.</small>`:'';
+    if(U&&!cand.length&&done.length){ susBox.innerHTML=`<div class="v88-head">❔ Vous avez une idée de qui a pondu ?</div>${doneNote}`; return; }
     if(!U||!cand.length){ susBox.innerHTML=''; return; }
-    susBox.innerHTML=`<div class="v88-head">❔ Vous avez une idée de qui a pondu ? <small>Facultatif · plusieurs choix possibles</small></div>`+
+    susBox.innerHTML=`<div class="v88-head">❔ Vous avez une idée de qui a pondu ? <small>Facultatif · plusieurs choix possibles</small></div>`+doneNote+
       Array.from({length:U},(_,i)=>{ const k='u:'+i, sel=sus[k]||[];
         return `<div class="v88-egg">${U>1?`<b>Œuf inconnu ${i+1}</b>`:''}<div class="v88-chips">${cand.map(h=>`<button type="button" class="${sel.includes(h.id)?'on':''}" onclick="v88Sus('${k}','${h.id}')" aria-pressed="${sel.includes(h.id)}">${sel.includes(h.id)?'✓ ':''}${escapeHtml(h.name)}</button>`).join('')}</div>
           ${sel.length?`<small class="v88-note">Noté comme <b>possible</b> dans le calendrier de ${sel.map(id=>escapeHtml(popotes.find(h=>h.id===id).name)).join(sel.length>2?', ':' et ').replace(/, ([^,]*)$/,' et $1')}, sans compter comme une ponte certaine.</small>`:''}</div>`; }).join('');
