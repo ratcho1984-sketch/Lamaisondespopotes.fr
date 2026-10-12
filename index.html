@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=253;
+  var APP_V=254;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11323,7 +11323,7 @@ renderStarterStep = function(){
   function jForm(henId){
     const h=popotes.find(x=>x.id===henId); const nm=h?h.name:'elle';
     return `<div class="v81-jform" data-hen="${henId}">
-      <div class="v81-jtypes">${JTYPES.map(t=>`<button type="button" data-k="${t[0]}" class="${jDraft.type===t[0]?'on':''}" onclick="v81JType(this)">${t[1]} ${t[2]}</button>`).join('')}</div>
+      <div class="v81-jtypes">${JTYPES.filter(t=>!(h&&h.sex==='coq'&&/couv/i.test(t[2]))).map(t=>`<button type="button" data-k="${t[0]}" class="${jDraft.type===t[0]?'on':''}" onclick="v81JType(this)">${t[1]} ${t[2]}</button>`).join('')}</div>
       <div class="v81-jrow"><label>Date</label><input class="v81-jdate" type="date" value="${todayISO()}" max="${todayISO()}"></div>
       <textarea class="v81-jtext" maxlength="500" placeholder="Ex. ${esc(nm)} passe beaucoup de temps seule près de l’abreuvoir depuis deux jours…"></textarea>
       <div class="v81-jprev" style="display:${jDraft.photo?'flex':'none'}">${jDraft.photo?jPrevHTML():''}</div>
