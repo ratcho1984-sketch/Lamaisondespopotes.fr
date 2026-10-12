@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=247;
+  var APP_V=248;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11467,6 +11467,7 @@ renderStarterStep = function(){
   const elodieOffer=()=>`<div class="elodie-offer"><div class="elodie-offer-head">${(()=>{const im=document.querySelector('.elodie-photo-frame img');return im?`<img class="elodie-offer-photo" src="${im.src}" alt="Élodie">`:'<span class="elodie-offer-photo elodie-offer-ini">É</span>';})()}<div><b>Parlez de votre situation avec Élodie</b><small>Comportementaliste · sans abonnement Premium</small></div></div><p>Problème de comportement, aménagement du parc, saisonnalité, naissance de poussins… Élodie regarde avec vous ce qui se passe chez vous et vous propose des pistes adaptées à votre situation.</p><button type="button" class="elodie-offer-btn" onclick="go('behaviorhealthfilter')">📅 Prendre rendez-vous avec Élodie</button><div class="elodie-offer-price"><strong>${ELODIE_PRICE}</strong> · ${ELODIE_LABEL}</div></div>`;
   window.elodieOfferHTML=elodieOffer;
   F.export={icon:'📥',title:'Exporter mon historique',pitch:'Téléchargez tout l’historique de vos pontes dans un tableur.',bullets:['Toutes vos pontes, date par date','Poule par poule, avec l’aspect et les détails','À ouvrir dans un tableur ou à garder en sauvegarde'],action(){ try{ (window.v242ExportBase||window.v81Export)(); }catch(e){} }};
+  F.traitement={icon:'💊',title:'Suivi des traitements médicaux',pitch:'Notez le traitement prescrit par votre vétérinaire : produit, dose exacte, dates et photo de l’ordonnance.',bullets:['Le produit et la dose exacte à donner','Les dates de début et de fin, et le délai pour les œufs','La photo de l’ordonnance toujours sous la main'],action(){ try{ window.v245Open&&v245Open('medical'); }catch(e){} }};
   F.oeufinfo={icon:'🥚',title:'Détails de chaque œuf',pitch:'Notez le poids, la taille, la couleur, les particularités et la photo de chaque œuf.',bullets:['Poids, taille et couleur de l’œuf','Particularités et photo d’un œuf inhabituel','Un historique précis pour chaque Popote'],action(){ try{ toggleEggExtraInfo(true); }catch(e){} }};
   F.guide={icon:'📚',title:'Guide approfondi',free:true,
     pitch:'Des guides complets, pas à pas, écrits à partir de notre expérience et de l’observation.',
@@ -11890,7 +11891,7 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
   }
 
   /* ---------- Page Premium : liste des services + mode test ---------- */
-  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['bilan','Bilan du mois'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['food','Calendrier alimentaire et rappels'],['plan','Plan d’action pour vos installations'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon vos Popotes'],['compare','Comparateur de races']];
+  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['bilan','Bilan du mois'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements médicaux (vitamines et vermifuge restent gratuits)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['food','Calendrier alimentaire et rappels'],['plan','Plan d’action pour vos installations'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon vos Popotes'],['compare','Comparateur de races']];
   function renderPremiumPage(){
     const list=document.querySelector('#premium .pm-list');
     if(list) list.innerHTML=PM_LIST.map(([k,t])=>`<button type="button" class="pm-item v81-pmi" onclick="v81Open('${k}')"><span class="pm-ic">${F[k].icon}</span><div><b>${esc(t)}</b><small>${esc(F[k].pitch)}</small></div><span class="v81-chev">›</span></button>`).join('');
@@ -14401,13 +14402,18 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
   function refresh(){
     var h=hen(); if(!h||!ensure()) return;
     var t=h.treatment&&h.treatment.type&&h.treatment.type!=='aucun'?h.treatment:null;
+    labels(document.getElementById('v245Type'));
     document.getElementById('v245Type').value=t?t.type:'aucun';
     var sum=document.getElementById('v245Sum');
     if(t){ sum.style.display=''; sum.innerHTML='<span>'+esc(LAB[t.type])+(t.name?' · '+esc(t.name):'')+'<small>'+[t.dose?'Dose : '+esc(t.dose):'',t.freq?esc(t.freq):'',t.end?'jusqu’au '+fr(t.end):''].filter(Boolean).join(' · ')+(t.hasPhoto?' · 📄 ordonnance':'')+'</small></span><i>›</i>'; }
     else sum.style.display='none';
   }
+  function prem(){ try{ return !!(window.v81IsPremium&&v81IsPremium()); }catch(e){ return false; } }
+  function locked(v){ return v==='medical'&&!prem(); }
+  function labels(sel,skip){ if(!sel) return; var p=prem(); [].forEach.call(sel.options,function(o){ var t=(TYPES.find(function(x){ return x[0]===o.value; })||['',o.text])[1]; o.text=t+(o.value==='medical'&&!p?'  ♛ Premium':''); }); }
   window.v245Pick=function(v){
     var h=hen(); if(!h) return;
+    if(locked(v)){ refresh(); try{ v81Open('traitement'); }catch(e){} return; }
     var cur=h.treatment&&h.treatment.type&&h.treatment.type!=='aucun'?h.treatment.type:'aucun';
     if(v==='aucun'){ if(cur!=='aucun') v245Stop(); return; }
     v245Open(v);
@@ -14415,6 +14421,7 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
   var photoTmp; /* undefined = inchangée, null = retirée, chaîne = nouvelle */
   window.v245Open=function(type){
     var h=hen(); if(!h) return;
+    if(locked(type||(h.treatment&&h.treatment.type))&&type){ try{ v81Open('traitement'); }catch(e){} return; }
     var t=Object.assign({},h.treatment||{}); var isNew=!(t.type&&t.type!=='aucun');
     if(type) t.type=type; if(!t.type||t.type==='aucun') t.type='medical';
     photoTmp=undefined;
@@ -14435,6 +14442,7 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
       (isNew?'':'<button type="button" class="v245-b stop" id="v245Stop">Traitement terminé</button>')+
       '<button type="button" class="v245-b ghost" id="v245Close">Fermer</button></div>';
     document.body.appendChild(bg);
+    var tsel=document.getElementById('v245T'); labels(tsel); var prevT=tsel.value; tsel.addEventListener('change',function(){ if(locked(tsel.value)){ tsel.value=prevT; bg.remove(); refresh(); try{ v81Open('traitement'); }catch(e){} } else prevT=tsel.value; });
     function close(){ bg.remove(); refresh(); }
     bg.addEventListener('click',function(e){ if(e.target===bg) close(); });
     document.getElementById('v245Close').onclick=close;
