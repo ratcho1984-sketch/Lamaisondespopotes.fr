@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=257;
+  var APP_V=258;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13925,7 +13925,7 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
     if(document.getElementById('v225Note')) return;
     var range=document.getElementById('profileWeightRange'); if(!range) return;
     var box=document.createElement('div'); box.id='v225Note'; box.className='v225-note';
-    box.innerHTML='<h4>⚖️ Noter le poids et la couleur de son œuf</h4><p id="v225Lead">Tout est facultatif.</p>'
+    box.innerHTML='<h4>⚖️ Poids et couleur habituels de son œuf</h4><p id="v225Lead">Tout est facultatif.</p>'
       +'<label class="v225-lab" for="v225Weight">Poids de l’œuf</label><div class="v225-w"><input id="v225Weight" type="number" inputmode="decimal" min="20" max="150" step="1" placeholder="Ex. 58"><span>g</span></div>'
       +'<span class="v225-lab">Couleur de l’œuf</span><div class="v225-colors">'
       +COLORS.map(function(c){ return '<button type="button" class="v225-c" data-c="'+c[0]+'"><i style="background:'+c[1]+'"></i>'+c[0]+'</button>'; }).join('')
@@ -13940,20 +13940,11 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
     var raw=(document.getElementById('v225Weight').value||'').trim().replace(',','.'), w=raw?Number(raw):null;
     if(raw && !(Number.isFinite(w)&&w>=20&&w<=150)){ toast('Indiquez un poids entre 20 et 150 g'); return; }
     if(!raw && !color){ toast('Indiquez un poids ou une couleur'); return; }
-    var today=dayKey(Date.now());
-    var rec=eggRecords.filter(function(r){ return r.henId===hen.id && (r.count||0)>0 && dayKey(r.createdAt)===today; }).sort(function(a,b){ return b.createdAt-a.createdAt; })[0];
-    if(rec){
-      if(raw){ rec.weight=w; if(!rec.size||rec.v225AutoSize){ rec.size=autoEggSizeFromWeight(w); rec.v225AutoSize=true; } }
-      if(color) rec.color=color;
-      toast('✓ Ajouté à l’œuf de '+hen.name+' d’aujourd’hui');
-    } else {
-      /* une poule pond au plus un œuf par jour : on enregistre son œuf du jour */
-      rec={createdAt:Date.now(),count:1,henId:hen.id,henName:hen.name,aspect:'normal',weight:raw?w:null,size:raw?autoEggSizeFromWeight(w):null,v225AutoSize:!!raw,color:color||null,unusualDetails:[],photoDataUrl:null,note:null};
-      eggRecords.push(rec); hen.normalEggs=(hen.normalEggs||0)+1;
-      toast('✓ Œuf du jour enregistré pour '+hen.name);
-    }
-    document.getElementById('v225Weight').value=''; color=null;
-    document.querySelectorAll('#v225Note .v225-c').forEach(function(x){ x.classList.remove('on'); });
+    /* v258 : on note seulement le poids et la couleur HABITUELS de son œuf — aucune ponte n'est ajoutée (les pontes se notent uniquement depuis l'accueil) */
+    if(raw) hen.usualEggWeight=Math.round(w);
+    if(color) hen.usualEggColor=color;
+    toast('✓ Œuf habituel de '+hen.name+' noté');
+    color=null;
     try{ window.v58Persist&&window.v58Persist(); }catch(e){}
     ['renderHenProfile','renderPopotes'].forEach(function(f){ try{ typeof window[f]==='function'&&window[f](); }catch(e){} });
     try{ window.v58RefreshHome&&window.v58RefreshHome(false); }catch(e){}
@@ -13965,12 +13956,18 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
       try{
         setup();
         var lead=document.getElementById('v225Lead');
-        if(lead&&hen) lead.innerHTML='Pour un œuf de <b>'+esc(hen.name)+'</b> pondu aujourd’hui. Tout est facultatif.';
+        if(lead&&hen) lead.innerHTML='Ce que pond habituellement <b>'+esc(hen.name)+'</b>. Cela n’ajoute pas de ponte : les œufs se notent depuis « Ajouter une ponte » sur l’accueil.';
+        if(hen){ var wi=document.getElementById('v225Weight'); if(wi&&document.activeElement!==wi) wi.value=hen.usualEggWeight||'';
+          color=hen.usualEggColor||null; document.querySelectorAll('#v225Note .v225-c').forEach(function(x){ x.classList.toggle('on',x.dataset.c===color); });
+          var snp=layingSnapshot(hen);
+          if(hen.usualEggColor){ var uce=document.getElementById('profileUsualColor'); if(uce) uce.textContent=hen.usualEggColor; }
+          (function(){ var a0=document.getElementById('profileAvgWeight'), c0=a0&&a0.closest('.glance-card'); if(c0){ var l0=[...c0.querySelectorAll('*')].find(function(x){ return !x.children.length&&/poids (moyen|habituel)/i.test(x.textContent); }); if(l0) l0.textContent='poids moyen'; } })();
+          if(hen.usualEggWeight&&snp.avgWeight===null){ var awe=document.getElementById('profileAvgWeight'); if(awe){ awe.textContent=hen.usualEggWeight+' g'; var lb=[...awe.closest('.glance-card').querySelectorAll('*')].find(function(x){ return !x.children.length&&/poids moyen/i.test(x.textContent); }); if(lb) lb.textContent='poids habituel'; } } }
         /* v226 : un œuf de la couleur habituelle à la place de la palette */
         var cc=document.getElementById('profileUsualColor'), ic=cc&&cc.closest('.glance-card')&&cc.closest('.glance-card').querySelector('.g-icon');
-        if(ic){ var m={}; COLORS.forEach(function(c){ m[c[0]]=c[1]; }); var uc=layingSnapshot(hen).usualColor; ic.innerHTML='<i class="v226-egg" style="background:'+(m[uc]||'#f3ece1')+'"></i>'; }
+        if(ic){ var m={}; COLORS.forEach(function(c){ m[c[0]]=c[1]; }); var uc=hen.usualEggColor||layingSnapshot(hen).usualColor; ic.innerHTML='<i class="v226-egg" style="background:'+(m[uc]||'#f3ece1')+'"></i>'; }
         var range=document.getElementById('profileWeightRange'), s=layingSnapshot(hen);
-        if(range && !(s.minWeight!==null&&s.maxWeight!==null)) range.textContent='Notez le poids de quelques œufs juste au-dessus pour faire apparaître la plage habituelle de cette poule.';
+        if(range && !(s.minWeight!==null&&s.maxWeight!==null)){ if(hen.usualEggWeight) range.innerHTML='<b>Poids habituel noté :</b> '+hen.usualEggWeight+' g'; else range.textContent='Notez le poids habituel de son œuf juste au-dessus.'; }
       }catch(e){}
       return r;
     };
