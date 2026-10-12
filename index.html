@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=258;
+  var APP_V=259;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14547,4 +14547,55 @@ html,body{overscroll-behavior:none}
 body{overflow-x:clip}
 nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transform:translate3d(-50%,0,0)!important;-webkit-backface-visibility:hidden;backface-visibility:hidden;will-change:transform;touch-action:manipulation}
 </style>
+<style id="v259-grid-press-css">
+#popotesGrid .v58-id{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:transform .15s}
+#popotesGrid .v58-id.v238-press{transform:scale(.98)}
+.v259-hint{margin:0 0 8px;text-align:center;font-size:12px;color:#8a7d66}
+</style>
+<script id="v259-grid-press-js">
+/* v259 : appui long sur une carte de « Mes Popotes » → voir sa fiche, modifier sa carte, changer/retirer la photo, supprimer */
+(function(){
+  var timer=null, sx=0, sy=0, card=null, fired=false;
+  function idOf(c){ var m=(c.getAttribute('onclick')||'').match(/openHenProfile\('([^']+)'\)/); return m?m[1]:null; }
+  function close(w){ w.classList.remove('open'); setTimeout(function(){ w.remove(); },220); }
+  function openMenu(id){
+    var h=popotes.find(function(x){ return x.id===id; }); if(!h) return;
+    if(navigator.vibrate) try{ navigator.vibrate(15); }catch(e){}
+    var w=document.createElement('div'); w.className='v238-bg'; var coq=h.sex==='coq';
+    w.innerHTML='<div class="v238-sheet" role="dialog" aria-label="Actions sur la carte"><h4>'+(h.name||'').replace(/[<>&]/g,'')+'</h4>'
+      +'<button type="button" data-a="open"><span>📋</span>Voir sa fiche</button>'
+      +'<button type="button" data-a="edit"><span>✏️</span>Modifier ses informations</button>'
+      +'<button type="button" data-a="photo"><span>📷</span>'+(h.photoDataUrl?'Changer la photo':'Ajouter une photo')+'</button>'
+      +(h.photoDataUrl?'<button type="button" data-a="nophoto"><span>🖼️</span>Retirer la photo</button>':'')
+      +'<button type="button" data-a="del" class="v238-danger"><span>🗑</span>Supprimer '+(coq?'ce coq':'cette poule')+'</button>'
+      +'<button type="button" data-a="x" class="v238-cancel">Annuler</button></div>';
+    w.addEventListener('click',function(e){
+      var b=e.target.closest('button[data-a]'); if(e.target!==w&&!b) return;
+      var a=b?b.dataset.a:'x'; close(w);
+      if(a==='open'){ try{ openHenProfile(id); }catch(_){} }
+      else if(a==='edit'){ try{ openHenProfile(id); }catch(_){} setTimeout(function(){ var f=document.querySelector('#profile .v58-fam'); if(f) window.scrollTo({top:f.getBoundingClientRect().top+window.scrollY-80,behavior:'smooth'}); },500); }
+      else if(a==='photo'){ selectedProfileHenId=id; try{ triggerHenPhotoUpload(); }catch(_){} }
+      else if(a==='nophoto'){ selectedProfileHenId=id; try{ removeHenPhoto(); renderPopotes(); }catch(_){} }
+      else if(a==='del'){ Promise.resolve(window.confirmDeleteHen(id)).then(function(){ try{ renderPopotes(); }catch(_){} }); }
+    });
+    document.body.appendChild(w); requestAnimationFrame(function(){ w.classList.add('open'); });
+  }
+  function target(e){ return e.target.closest&&e.target.closest('#popotesGrid .v58-id'); }
+  function cancel(){ clearTimeout(timer); timer=null; if(card) card.classList.remove('v238-press'); card=null; }
+  document.addEventListener('pointerdown',function(e){ var c=target(e); if(!c) return; cancel(); card=c; fired=false; sx=e.clientX; sy=e.clientY; c.classList.add('v238-press');
+    var id=idOf(c); timer=setTimeout(function(){ fired=true; cancel(); openMenu(id); },550); },true);
+  document.addEventListener('pointermove',function(e){ if(timer&&(Math.abs(e.clientX-sx)>10||Math.abs(e.clientY-sy)>10)) cancel(); },true);
+  ['pointerup','pointercancel','scroll'].forEach(function(t){ document.addEventListener(t,function(){ if(timer) cancel(); },true); });
+  document.addEventListener('contextmenu',function(e){ if(target(e)) e.preventDefault(); },true);
+  document.addEventListener('click',function(e){ if(fired&&target(e)){ e.preventDefault(); e.stopPropagation(); fired=false; } },true);
+  /* la photo choisie depuis « Mes Popotes » met aussi la grille à jour */
+  var bp=window.onHenPhotoSelected; if(typeof bp==='function') window.onHenPhotoSelected=function(){ var r=bp.apply(this,arguments); setTimeout(function(){ try{ renderPopotes(); }catch(_){} },400); return r; };
+  function hint(){ var g=document.getElementById('popotesGrid'); if(!g) return; var has=g.querySelector('.v58-id'); var p=document.getElementById('v259Hint');
+    if(!p){ p=document.createElement('p'); p.id='v259Hint'; p.className='v259-hint'; p.textContent='Touchez une carte pour ouvrir sa fiche · appui long pour plus d’options'; g.before(p); }
+    p.style.display=has?'':'none'; }
+  var base=window.renderPopotes;
+  if(typeof base==='function') window.renderPopotes=function(){ var r=base.apply(this,arguments); try{ hint(); }catch(e){} return r; };
+  if(document.readyState!=='loading') hint(); else document.addEventListener('DOMContentLoaded',hint);
+})();
+</script>
 </body></html>
