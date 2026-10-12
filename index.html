@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=249;
+  var APP_V=250;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11627,7 +11627,7 @@ renderStarterStep = function(){
     }};
   window.v81Buy=k=>{ const d=load(BKEY,{}); d[k]=!d[k]; save(BKEY,d); rerender(); };
   window.v81PlanFile=function(){
-    const html=`<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>La Petite Maison · plan</title><style>body{font-family:Georgia,serif;max-width:760px;margin:24px auto;padding:0 16px;color:#2e2a22}h1{color:#1f5a35}h2{color:#1f5a35;border-bottom:2px solid #eadfca;padding-bottom:4px}td,th{border:1px solid #d8cdb6;padding:6px 8px;text-align:left}table{border-collapse:collapse;width:100%}.n{background:#fff4dc;padding:10px;border-radius:8px}</style></head><body>
+    const html=`<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>La Petite Maison · plan</title><style>body{font-family:Georgia,serif;max-width:760px;margin:24px auto;padding:0 16px;color:#2e2a22}h1{color:#1f5a35}h2{color:#1f5a35;border-bottom:2px solid #eadfca;padding-bottom:4px}td,th{border:1px solid #d8cdb6;padding:6px 8px;text-align:left}table{border-collapse:collapse;width:100%}.n{background:#fff4dc;padding:10px;border-radius:8px}</style></head><body>
 <h1>La Petite Maison</h1><p>Poulailler familial surélevé pour 4 poules · emprise 1,20 × 0,90 m · un week-end · difficulté facile.</p>
 <p class="n">Prototype La Maison des Popotes : quantités et cotes indicatives, à valider avant achat.</p>
 <h2>Liste d’achats</h2><table><tr><th>Élément</th><th>Quantité</th></tr>${BUY.map(b=>`<tr><td>${b[2]}</td><td>${b[3]}</td></tr>`).join('')}</table>
@@ -11792,7 +11792,7 @@ renderStarterStep = function(){
     const unusual=list.filter(r=>!r._p&&r.aspect==='unusual'&&r.createdAt>=from).sort((a,b)=>a.createdAt-b.createdAt);
     const notes=(load(JKEY,{})[hen.id]||[]).filter(e=>e.ts>=from).sort((a,b)=>a.ts-b.ts);
     const status=[hen.laying?'Pond actuellement':'Au repos (ne pond pas)',hen.brooding?'Couve':'',hen.molting?'En mue':''].filter(Boolean).join(' · ');
-    const html=`<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Suivi de ponte · ${esc(hen.name)}</title><style>
+    const html=`<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Suivi de ponte · ${esc(hen.name)}</title><style>
 body{font-family:system-ui,Arial,sans-serif;max-width:780px;margin:20px auto;padding:0 16px;color:#222}h1{font-family:Georgia,serif;color:#1f5a35;margin:0}h2{font-size:17px;color:#1f5a35;border-bottom:2px solid #e6dcc8;padding-bottom:3px;margin-top:22px}h3{font-size:14px;margin:14px 0 6px}
 .id{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;background:#f7f3ea;padding:10px 12px;border-radius:8px;font-size:14px}.sum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.sum div{border:1px solid #ddd;border-radius:8px;padding:8px;text-align:center}.sum b{display:block;font-size:20px}.sum span{font-size:12px;color:#555}
 table{border-collapse:collapse;width:100%}.cal td,.cal th{border:1px solid #ccc;text-align:center;padding:4px;font-size:12px;width:14.2%;vertical-align:top;height:34px}.cal td.n{background:#e3f1dc}.cal td.u{background:#fde3cf;font-weight:700}.cal span{color:#2f7a4a}.cal td.u span{color:#b0521d}.cal td.p{background:#f4f1fa}.cal i{font-style:normal;color:#6b3fa0}
@@ -14536,4 +14536,10 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
   document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible' && Date.now()-lastShow>30*60*1000){ lastShow=Date.now(); tryShow(0); } });
 })();
 </script>
+<style id="v250-nav-fixe-css">
+/* v250 : barre du bas toujours fixe (pas de rebond, pas de glissement latéral, pas de zoom accidentel) */
+html,body{overscroll-behavior:none}
+body{overflow-x:clip}
+nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transform:translate3d(-50%,0,0)!important;-webkit-backface-visibility:hidden;backface-visibility:hidden;will-change:transform;touch-action:manipulation}
+</style>
 </body></html>
