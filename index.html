@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=248;
+  var APP_V=249;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11467,7 +11467,7 @@ renderStarterStep = function(){
   const elodieOffer=()=>`<div class="elodie-offer"><div class="elodie-offer-head">${(()=>{const im=document.querySelector('.elodie-photo-frame img');return im?`<img class="elodie-offer-photo" src="${im.src}" alt="Élodie">`:'<span class="elodie-offer-photo elodie-offer-ini">É</span>';})()}<div><b>Parlez de votre situation avec Élodie</b><small>Comportementaliste · sans abonnement Premium</small></div></div><p>Problème de comportement, aménagement du parc, saisonnalité, naissance de poussins… Élodie regarde avec vous ce qui se passe chez vous et vous propose des pistes adaptées à votre situation.</p><button type="button" class="elodie-offer-btn" onclick="go('behaviorhealthfilter')">📅 Prendre rendez-vous avec Élodie</button><div class="elodie-offer-price"><strong>${ELODIE_PRICE}</strong> · ${ELODIE_LABEL}</div></div>`;
   window.elodieOfferHTML=elodieOffer;
   F.export={icon:'📥',title:'Exporter mon historique',pitch:'Téléchargez tout l’historique de vos pontes dans un tableur.',bullets:['Toutes vos pontes, date par date','Poule par poule, avec l’aspect et les détails','À ouvrir dans un tableur ou à garder en sauvegarde'],action(){ try{ (window.v242ExportBase||window.v81Export)(); }catch(e){} }};
-  F.traitement={icon:'💊',title:'Suivi des traitements médicaux',pitch:'Notez le traitement prescrit par votre vétérinaire : produit, dose exacte, dates et photo de l’ordonnance.',bullets:['Le produit et la dose exacte à donner','Les dates de début et de fin, et le délai pour les œufs','La photo de l’ordonnance toujours sous la main'],action(){ try{ window.v245Open&&v245Open('medical'); }catch(e){} }};
+  F.traitement={icon:'💊',title:'Suivi des traitements',pitch:'Vitamines, vermifuge ou traitement médical : notez le produit, la dose exacte, les dates, la photo de l’ordonnance, et recevez un rappel chaque jour de traitement.',bullets:['Vitamines, vermifuge et traitements médicaux','Le produit et la dose exacte à donner','Un rappel à l’ouverture de l’appli chaque jour de traitement','La photo de l’ordonnance toujours sous la main'],action(){ try{ var h=currentProfileHen&&currentProfileHen(); if(h&&document.getElementById('v245Row')&&document.querySelector('#profile.active, #profile.screen.active')) v245Open(); else { go('hens'); toast('Choisissez une Popote, puis « Traitement actuel » sur sa fiche'); } }catch(e){} }};
   F.oeufinfo={icon:'🥚',title:'Détails de chaque œuf',pitch:'Notez le poids, la taille, la couleur, les particularités et la photo de chaque œuf.',bullets:['Poids, taille et couleur de l’œuf','Particularités et photo d’un œuf inhabituel','Un historique précis pour chaque Popote'],action(){ try{ toggleEggExtraInfo(true); }catch(e){} }};
   F.guide={icon:'📚',title:'Guide approfondi',free:true,
     pitch:'Des guides complets, pas à pas, écrits à partir de notre expérience et de l’observation.',
@@ -11891,7 +11891,7 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
   }
 
   /* ---------- Page Premium : liste des services + mode test ---------- */
-  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['bilan','Bilan du mois'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements médicaux (vitamines et vermifuge restent gratuits)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['food','Calendrier alimentaire et rappels'],['plan','Plan d’action pour vos installations'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon vos Popotes'],['compare','Comparateur de races']];
+  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['bilan','Bilan du mois'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements et rappel quotidien (vitamines, vermifuge, médical)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['food','Calendrier alimentaire et rappels'],['plan','Plan d’action pour vos installations'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon vos Popotes'],['compare','Comparateur de races']];
   function renderPremiumPage(){
     const list=document.querySelector('#premium .pm-list');
     if(list) list.innerHTML=PM_LIST.map(([k,t])=>`<button type="button" class="pm-item v81-pmi" onclick="v81Open('${k}')"><span class="pm-ic">${F[k].icon}</span><div><b>${esc(t)}</b><small>${esc(F[k].pitch)}</small></div><span class="v81-chev">›</span></button>`).join('');
@@ -14409,8 +14409,8 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
     else sum.style.display='none';
   }
   function prem(){ try{ return !!(window.v81IsPremium&&v81IsPremium()); }catch(e){ return false; } }
-  function locked(v){ return v==='medical'&&!prem(); }
-  function labels(sel,skip){ if(!sel) return; var p=prem(); [].forEach.call(sel.options,function(o){ var t=(TYPES.find(function(x){ return x[0]===o.value; })||['',o.text])[1]; o.text=t+(o.value==='medical'&&!p?'  ♛ Premium':''); }); }
+  function locked(v){ return !!v&&v!=='aucun'&&!prem(); }
+  function labels(sel,skip){ if(!sel) return; var p=prem(); [].forEach.call(sel.options,function(o){ var t=(TYPES.find(function(x){ return x[0]===o.value; })||['',o.text])[1]; o.text=t+(o.value!=='aucun'&&!p?'  ♛ Premium':''); }); }
   window.v245Pick=function(v){
     var h=hen(); if(!h) return;
     if(locked(v)){ refresh(); try{ v81Open('traitement'); }catch(e){} return; }
@@ -14432,7 +14432,7 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
       '<label for="v245N">Ce que c’est <small>(nom du produit ou du médicament)</small></label><input id="v245N" maxlength="60" value="'+esc(t.name)+'" placeholder="Ex. nom inscrit sur la boîte">'+
       '<label for="v245D">Dose à donner <small>(quantité exacte)</small></label><input id="v245D" maxlength="60" value="'+esc(t.dose)+'" placeholder="Ex. 0,5 ml, 1 comprimé, 2 gouttes…">'+
       '<label for="v245F">Quand et comment</label><input id="v245F" maxlength="80" value="'+esc(t.freq)+'" placeholder="Ex. 2 fois par jour, dans l’eau de boisson">'+
-      '<div class="v245-two"><div><label for="v245S">Début</label><input id="v245S" type="date" value="'+esc(t.start||new Date().toISOString().slice(0,10))+'"></div><div><label for="v245E">Fin</label><input id="v245E" type="date" value="'+esc(t.end)+'"></div></div>'+
+      '<small style="color:#5d6b60;font-size:12.5px;margin-top:6px">🔔 Un rappel s’ouvrira à chaque ouverture de l’appli, du début à la fin du traitement, tant qu’il n’est pas noté comme donné.</small><div class="v245-two"><div><label for="v245S">Début</label><input id="v245S" type="date" value="'+esc(t.start||new Date().toISOString().slice(0,10))+'"></div><div><label for="v245E">Fin</label><input id="v245E" type="date" value="'+esc(t.end)+'"></div></div>'+
       '<label for="v245W">Œufs à ne pas consommer jusqu’au <small>(si le vétérinaire l’indique)</small></label><input id="v245W" type="date" value="'+esc(t.eggs)+'">'+
       '<label>Ordonnance du vétérinaire <small>(photo, facultatif)</small></label><div class="v245-ph" id="v245Ph"></div>'+
       '<input id="v245File" type="file" accept="image/*" style="display:none">'+
@@ -14482,4 +14482,58 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
 #v81ProfileExtra>.v81-themes-wrap{order:10}
 #profile .profile-actions>button.primary{display:none!important}
 </style>
+<style id="v249-rappel-css">
+.v249-bg{position:fixed;inset:0;z-index:9500;background:rgba(30,26,18,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.v249-box{width:min(400px,100%);max-height:88vh;overflow:auto;background:#fffdf8;border-radius:22px;padding:18px 16px;box-shadow:0 12px 40px rgba(40,30,20,.3);box-sizing:border-box}
+.v249-box h4{margin:0 0 4px;font:800 20px Georgia,serif;color:#235b3d;text-align:center}
+.v249-box>p{margin:0 0 12px;text-align:center;color:#5d6b60;font-size:14px}
+.v249-it{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid #efe5d2;border-radius:16px;background:#fff;margin-bottom:8px}
+.v249-it img{width:48px;height:48px;border-radius:12px;object-fit:cover;flex:0 0 48px}
+.v249-it div{flex:1;font-size:14px;color:#3b3328;line-height:1.35}
+.v249-it b{display:block;font-size:15.5px;color:#224f37}
+.v249-it button{margin-top:8px;min-height:40px;border-radius:12px;border:0;background:#2f7a4a;color:#fff;font-weight:800;font-size:14px;padding:0 14px;cursor:pointer;font-family:inherit}
+.v249-it.done{opacity:.6}.v249-it.done button{background:#cfe0cd;color:#224f37}
+.v249-vet{font-size:12.5px;color:#6b3d17;background:#fff4e8;border:1px solid #f1d3b0;border-radius:12px;padding:8px 10px;margin:4px 0 10px}
+.v249-close{width:100%;min-height:46px;border-radius:14px;border:1px solid #e5dac8;background:#fff;color:#5d4a33;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit}
+</style>
+<script id="v249-rappel-js">
+/* v249 : rappel quotidien des traitements (Premium) — à chaque ouverture de l'appli, tant que le traitement du jour n'est pas noté comme donné */
+(function(){
+  var LAB={medical:'💊 Traitement médical',vitamine:'🍊 Vitamines',vermifuge:'🪱 Vermifuge',autre:'🧴 Autre traitement'};
+  function today(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function prem(){ try{ return !!(window.v81IsPremium&&v81IsPremium()); }catch(e){ return false; } }
+  function due(){
+    var t=today(), list=[];
+    try{ (popotes||[]).forEach(function(h){ var x=h&&h.treatment; if(!x||!x.type||x.type==='aucun') return; if(x.start&&x.start>t) return; if(x.end&&x.end<t) return; list.push(h); }); }catch(e){}
+    return list;
+  }
+  function img(h){ try{ return avatarSrcForHen(h); }catch(e){ return ''; } }
+  window.v249Show=function(force){
+    if(!prem()) return;
+    var t=today(), list=due(); if(!list.length) return;
+    if(!force && list.every(function(h){ return (h.treatment.done||[]).indexOf(t)>=0; })) return;
+    if(document.querySelector('.v249-bg')) return;
+    var bg=document.createElement('div'); bg.className='v249-bg';
+    function draw(){
+      bg.innerHTML='<div class="v249-box" role="dialog" aria-label="Rappel de traitement"><h4>💊 Rappel de traitement</h4><p>Aujourd’hui, pensez à donner :</p>'+
+        list.map(function(h,i){ var x=h.treatment, ok=(x.done||[]).indexOf(t)>=0;
+          return '<div class="v249-it'+(ok?' done':'')+'"><img src="'+img(h)+'" alt=""><div><b>'+esc(h.name)+'</b>'+esc(LAB[x.type]||'Traitement')+(x.name?' · '+esc(x.name):'')+
+            (x.dose?'<br>Dose : <b style="display:inline;font-size:14px">'+esc(x.dose)+'</b>':'')+(x.freq?'<br>'+esc(x.freq):'')+(x.end?'<br><small>Jusqu’au '+x.end.split('-').reverse().join('/')+'</small>':'')+
+            '<br><button type="button" data-i="'+i+'">'+(ok?'✓ Donné aujourd’hui':'C’est fait ✓')+'</button></div></div>'; }).join('')+
+        '<div class="v249-vet">Suivez exactement l’ordonnance de votre vétérinaire. Si son comportement change, appelez-le.</div>'+
+        '<button type="button" class="v249-close">Fermer</button></div>';
+      bg.querySelectorAll('button[data-i]').forEach(function(b){ b.onclick=function(){ var h=list[+b.dataset.i], x=h.treatment; x.done=x.done||[]; var k=x.done.indexOf(t); if(k>=0) x.done.splice(k,1); else x.done.push(t); x.done=x.done.slice(-120); try{ v58Persist(); }catch(e){} draw(); if(list.every(function(h){ return (h.treatment.done||[]).indexOf(t)>=0; })) setTimeout(function(){ bg.remove(); try{ toast('Traitement du jour noté ✓'); }catch(e){} },500); }; });
+      bg.querySelector('.v249-close').onclick=function(){ bg.remove(); };
+    }
+    draw(); document.body.appendChild(bg);
+  };
+  function tryShow(n){ if(document.querySelector('.v186-bg')){ if(n<120) setTimeout(function(){ tryShow(n+1); },1000); return; } v249Show(false); }
+  function start(){ setTimeout(function(){ tryShow(0); },1400); }
+  if(document.readyState==='complete') start(); else window.addEventListener('load',start);
+  /* appli rouverte depuis l'arrière-plan (téléphone) : un nouveau rappel si un autre jour a commencé ou si rien n'a été noté */
+  var lastShow=Date.now();
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible' && Date.now()-lastShow>30*60*1000){ lastShow=Date.now(); tryShow(0); } });
+})();
+</script>
 </body></html>
