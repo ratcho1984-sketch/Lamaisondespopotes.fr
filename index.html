@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=255;
+  var APP_V=256;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14344,8 +14344,8 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
 <script id="v244-fiche-js">
 (function(){
   function place(){
-    var slot=document.getElementById('v244BreedSlot'), pk=document.getElementById('profileBreedPicker');
-    if(slot&&pk&&pk.parentNode!==slot){ var row=pk.closest('.profile-detail-row'); slot.appendChild(pk); if(row) row.classList.add('v244-moved'); }
+    var slot=document.getElementById('v244BreedSlot'), pk=document.getElementById('profileBreedPicker')||window.v256PK; if(pk) window.v256PK=pk; /* v256 : on garde la liste des races même quand la carte est reconstruite (changement de poule) */
+    if(slot&&pk&&pk.parentNode!==slot){ var row=pk.closest('.profile-detail-row'); slot.appendChild(pk); if(row) row.classList.add('v244-moved'); } try{ var h0=currentProfileHen(); if(slot&&pk&&h0) renderBreedPicker('profile',h0.breed||''); }catch(e){}
     var ph=document.getElementById('v244Photo'); var h=typeof currentProfileHen==='function'?currentProfileHen():null;
     if(ph&&h){ ph.innerHTML=(h.photoDataUrl?'<img src="'+h.photoDataUrl+'" alt="">':'')+
       '<button type="button" onclick="triggerHenPhotoUpload()">📷 '+(h.photoDataUrl?'Changer la photo':'Ajouter une photo')+'</button>'+
