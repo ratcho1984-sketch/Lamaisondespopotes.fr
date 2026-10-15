@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=288;
+  var APP_V=289;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15061,18 +15061,9 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
     document.body.appendChild(bg); requestAnimationFrame(function(){ bg.classList.add('open'); });
   }
   window.v285OpenToday=openSheet;
-  function bind(){
-    var st=document.querySelector('#home .h58-stat[onclick="go(\'lay\')"]'); if(!st||st.dataset.v285) return; st.dataset.v285='1';
-    var tm=null, fired=false, sx=0, sy=0;
-    function start(e){ fired=false; var p=e.touches?e.touches[0]:e; sx=p.clientX; sy=p.clientY; clearTimeout(tm); tm=setTimeout(function(){ fired=true; try{ navigator.vibrate&&navigator.vibrate(15); }catch(x){} openSheet(); },550); }
-    function move(e){ var p=e.touches?e.touches[0]:e; if(Math.abs(p.clientX-sx)>10||Math.abs(p.clientY-sy)>10) clearTimeout(tm); }
-    function end(){ clearTimeout(tm); }
-    st.addEventListener('touchstart',start,{passive:true}); st.addEventListener('touchmove',move,{passive:true}); st.addEventListener('touchend',end); st.addEventListener('touchcancel',end);
-    st.addEventListener('mousedown',start); st.addEventListener('mouseup',end); st.addEventListener('mouseleave',end);
-    st.addEventListener('contextmenu',function(e){ e.preventDefault(); });
-    st.addEventListener('click',function(e){ if(fired){ e.preventDefault(); e.stopImmediatePropagation(); fired=false; } },true);
-    st.setAttribute('aria-label','Œufs aujourd’hui — touchez pour ajouter une ponte, appui long pour supprimer un œuf');
-  }
+  /* v289 : appui simple sur « œufs aujourd'hui » = liste des œufs du jour (plus d'appui long) */
+  document.addEventListener('click',function(e){ var st=e.target.closest&&e.target.closest('#home .h58-stat[onclick="go(\'lay\')"]'); if(!st) return; e.preventDefault(); e.stopImmediatePropagation(); openSheet(); },true);
+  function bind(){ var st=document.querySelector('#home .h58-stat[onclick="go(\'lay\')"]'); if(st) st.setAttribute('aria-label','Œufs aujourd’hui : touchez pour voir et supprimer les œufs du jour'); }
   if(document.readyState!=='loading') bind(); else document.addEventListener('DOMContentLoaded',bind);
 })();
 </script>
@@ -15094,7 +15085,7 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
   function warn(){
     var H=hens(), T=doneToday();
     if(!H){ alertBox('🐔 Aucune poule enregistrée','Ajoutez d’abord vos poules dans « Mes Popotes » : chaque œuf vient d’une poule de votre poulailler.'); return; }
-    alertBox('🥚 Pas plus d’œufs que de poules','Vous avez '+H+' poule'+(H>1?'s':'')+' : on ne peut pas enregistrer plus de '+H+' œuf'+(H>1?'s':'')+' par jour, pondeuses inconnues comprises.'+(T?' Aujourd’hui, '+T+' œuf'+(T>1?'s sont':' est')+' déjà enregistré'+(T>1?'s':'')+'. Pour corriger, faites un appui long sur « œufs aujourd’hui » sur l’accueil.':''));
+    alertBox('🥚 Pas plus d’œufs que de poules','Vous avez '+H+' poule'+(H>1?'s':'')+' : on ne peut pas enregistrer plus de '+H+' œuf'+(H>1?'s':'')+' par jour, pondeuses inconnues comprises.'+(T?' Aujourd’hui, '+T+' œuf'+(T>1?'s sont':' est')+' déjà enregistré'+(T>1?'s':'')+'. Pour corriger, touchez « œufs aujourd’hui » sur l’accueil.':''));
   }
   window.v286Left=left;
   var eg=window.egg;
