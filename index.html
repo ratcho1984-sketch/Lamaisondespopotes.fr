@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=282;
+  var APP_V=283;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14778,6 +14778,7 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
 #coops .v277-surf{margin:-2px 2px 4px}
 #coops .park-fields{display:grid;gap:12px}
 </style>
+<style id="v283-coops-css">#coops .v283-sel{width:100%;min-height:44px;border:0;background:transparent;font-size:16px;font-weight:600;color:#24241f;padding:4px 0}</style>
 <style id="v272-coops-css">
 #coops .v272-wrap{display:grid;gap:14px;padding-bottom:110px}
 #coops .v272-park{font:800 17px Georgia,serif;color:#235b3d;margin:6px 2px -4px}
@@ -14838,6 +14839,8 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
       '<div class="soft-field"><label class="v173-lbl">Son modèle <i>(facultatif)</i></label><input data-f="model" type="text" maxlength="60" value="'+esc(c.model)+'" placeholder="Nom du modèle"></div>'+
       '<div class="park-metrics">'+met('l','📏','Longueur',2000)+met('w','↔️','Largeur',2000)+met('h','↕️','Hauteur',500)+'</div>'+
       '<div class="field-help v277-surf" data-surf>'+surf(c)+'</div>'+
+      '<div class="soft-field"><label class="v173-lbl">Nombre de pondoirs</label><select data-f="nests" class="v283-sel"><option value="">Choisir…</option>'+Array.from({length:20},function(_,k){ var v=String(k+1); return '<option value="'+v+'"'+(String(c.nests||'')===v?' selected':'')+'>'+v+' pondoir'+(k?'s':'')+'</option>'; }).join('')+'</select></div>'+
+      chips('A-t-il une porte automatique ?','data-door',[{v:'oui',t:'Oui'},{v:'non',t:'Non'}],c.door||'','Une trappe qui s’ouvre et se ferme toute seule.')+
       (P.length>1?chips('Dans quel parc ?','data-park',P.map(function(p,j){return {v:j,t:pname(j)};}),c.park,'Touchez le parc où se trouve ce poulailler.'):'')+
       chips('En quelle matière ?','data-mat',MATS.map(function(m){return {v:m,t:m};}),c.mat||'','Touchez la matière principale de ce poulailler.')+
       '<div class="soft-field"><label class="v173-lbl">Prévu pour combien de poules ? <i>(facultatif)</i></label><input data-f="cap" type="number" min="0" max="200" value="'+esc(c.cap)+'" placeholder="Ex. 4"></div>'+
@@ -14875,9 +14878,12 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
       c[f]=e.target.value.trim(); save();
       if(f==='name'){ var t=cd.querySelector('[data-title]'); if(t) t.textContent=title(c,i+1); }
       if(f==='l'||f==='w'){ var s=cd.querySelector('[data-surf]'); if(s) s.innerHTML=surf(c); summary(); } });
-    sc.addEventListener('click',function(e){ var m=e.target.closest('[data-mat],[data-park]'); if(!m) return; var cd=m.closest('[data-i]'); if(!cd) return; var i=+cd.getAttribute('data-i'), c=L[i]; if(!c) return;
+    sc.addEventListener('change',function(e){ var f=e.target.getAttribute('data-f'); if(f!=='nests') return; var cd=e.target.closest('[data-i]'); if(!cd) return; var c=L[+cd.getAttribute('data-i')]; if(!c) return; c.nests=e.target.value; save(); });
+    sc.addEventListener('click',function(e){ var m=e.target.closest('[data-mat],[data-park],[data-door]'); if(!m) return; var cd=m.closest('[data-i]'); if(!cd) return; var i=+cd.getAttribute('data-i'), c=L[i]; if(!c) return;
       if(m.hasAttribute('data-mat')){ var v=m.getAttribute('data-mat'); c.mat=c.mat===v?'':v; save();
         cd.querySelectorAll('[data-mat]').forEach(function(x){ var on=x.getAttribute('data-mat')===c.mat; x.classList.toggle('on',on); x.textContent=x.getAttribute('data-mat')+(on?' ✓':''); }); }
+      else if(m.hasAttribute('data-door')){ var dv=m.getAttribute('data-door'); c.door=c.door===dv?'':dv; save();
+        cd.querySelectorAll('[data-door]').forEach(function(x){ var on=x.getAttribute('data-door')===c.door; x.classList.toggle('on',on); x.textContent=(x.getAttribute('data-door')==='oui'?'Oui':'Non')+(on?' ✓':''); }); }
       else { c.park=+m.getAttribute('data-park'); save(); pushToParks();
         cd.querySelectorAll('[data-park]').forEach(function(x){ var on=+x.getAttribute('data-park')===c.park; x.classList.toggle('on',on); x.textContent=pname(+x.getAttribute('data-park'))+(on?' ✓':''); }); } });
   }
