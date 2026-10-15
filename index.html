@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=280;
+  var APP_V=281;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14331,6 +14331,10 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{content:"♛ Premium
   window.v81Export=function(){ if(!(window.v81IsPremium&&v81IsPremium())){ try{ v81Open('export'); }catch(e){} return; } return base.apply(this,arguments); };
 })();
 </script>
+<style id="v281-export-tag-css">
+body:not(.v81-prem) .v81-link[onclick="v81Export()"]{flex-wrap:wrap!important;justify-content:center!important;text-align:center!important;row-gap:6px!important}
+body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{display:block!important;flex-basis:100%;width:max-content;max-width:max-content;margin:6px auto 0!important;white-space:nowrap!important;font-size:12px!important;padding:3px 10px!important;line-height:1.3}
+</style>
 <style id="v243-elodie-terracotta-css">/* v243 : tous les encadrés « Le regard d'Élodie » en terracotta (même couleur que « Parlez de votre situation avec Élodie ») ; le violet reste pour le Premium */
 .v243-elo,#foodguide .food-queen-card:has(.food-elodie-title),#parktour .park-elodie-card,.v199-tip,#plantes .v214-tip,.v81-queen{background:linear-gradient(150deg,#fbe9d6,#f6dcc0)!important;border:2px solid #d9a774!important;color:#4a2c17!important}
 #foodguide .food-queen-card:has(.food-elodie-title) .food-queen-head,#parktour .park-elodie-card .park-elodie-card-head,#parktour .park-elodie-card .park-elodie-card-body{background:transparent!important}
