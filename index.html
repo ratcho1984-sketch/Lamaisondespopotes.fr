@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=271;
+  var APP_V=272;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14742,6 +14742,81 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
   window.v269Sync=sync;
   if(document.readyState!=='loading') sync(); else document.addEventListener('DOMContentLoaded',sync);
   document.addEventListener('click',function(){ setTimeout(sync,50); },true);
+})();
+</script>
+<style id="v272-coops-css">
+#coops .v272-wrap{display:grid;gap:14px;padding-bottom:110px}
+#coops .v272-park{font:800 17px Georgia,serif;color:#235b3d;margin:6px 2px -4px}
+#coops .v272-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#coops .v272-grid input{width:100%;min-width:0;text-align:center;border:1.5px solid #e2d6c3!important;border-radius:12px!important;padding:9px 4px!important;background:#fffdf8!important;font-weight:700}
+#coops .v272-grid small{display:block;text-align:center;font-size:12px;color:#6b6b6b;margin-top:3px}
+#coops .v272-chips{display:flex;flex-wrap:wrap;gap:7px}
+#coops .v272-chips button{border:1.5px solid #d8cdb9;background:#fff;border-radius:99px;padding:8px 13px;font:700 14px system-ui,sans-serif;color:#3d3a33;cursor:pointer}
+#coops .v272-chips button.on{background:#2f7a4a;border-color:#2f7a4a;color:#fff}
+#coops .v272-surf{font-size:13.5px;color:#5d6b60;margin-top:2px}
+#coops .v272-empty{background:#fff;border:1px solid #e9dfcc;border-radius:20px;padding:16px;text-align:center;color:#5d6b60;line-height:1.45}
+#coops .v272-none{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2px dashed #b9d5b8;background:#f1f7ef;border-radius:20px;padding:14px;cursor:pointer;font:inherit;color:#235b3d}
+#coops .v272-none i{font-style:normal;font-size:30px}
+#coops .v272-none b{display:block;font-size:16.5px}
+#coops .v272-none small{display:block;color:#5d6b60;font-size:13.5px;margin-top:2px}
+#coops .v272-none .chev{margin-left:auto;font-size:24px}
+</style>
+<script id="v272-coops-js">
+(function(){
+  var KEY='maisonPopotesCoopsV272', MATS=['Bois','Plastique recyclé','Métal','Maçonné','Fait maison','Autre'];
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ return {}; } }
+  function save(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){} }
+  var D=load();
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function parks(){ try{ return parkState||[]; }catch(e){ return []; } }
+  function surf(c){ var l=parseFloat(c.l), w=parseFloat(c.w); if(!(l>0&&w>0)) return ''; var m=l*w/10000; return 'Surface au sol : <b>'+m.toLocaleString('fr-FR',{maximumFractionDigits:2})+' m²</b>'; }
+  function card(k,n,pname,c){
+    return '<div class="park-card" data-k="'+k+'"><div class="park-card-head"><span class="park-num">'+n+'</span><strong>Poulailler '+n+'</strong></div><div class="park-fields">'+
+      '<div class="soft-field"><label class="v173-lbl">Marque <i>(facultatif)</i></label><input data-f="brand" type="text" maxlength="60" value="'+esc(c.brand)+'" placeholder="Ex. Omlet, Gardenstyle, fait maison…"></div>'+
+      '<div class="soft-field"><label class="v173-lbl">Modèle <i>(facultatif)</i></label><input data-f="model" type="text" maxlength="60" value="'+esc(c.model)+'" placeholder="Nom du modèle"></div>'+
+      '<div class="soft-field"><label class="v173-lbl">Taille du poulailler <i>(en cm)</i></label><div class="v272-grid">'+
+        '<div><input data-f="l" type="number" inputmode="decimal" min="0" max="2000" value="'+esc(c.l)+'"><small>Longueur</small></div>'+
+        '<div><input data-f="w" type="number" inputmode="decimal" min="0" max="2000" value="'+esc(c.w)+'"><small>Largeur</small></div>'+
+        '<div><input data-f="h" type="number" inputmode="decimal" min="0" max="500" value="'+esc(c.h)+'"><small>Hauteur</small></div></div>'+
+        '<div class="v272-surf" data-surf>'+surf(c)+'</div></div>'+
+      '<div class="soft-field"><label class="v173-lbl">Matière</label><div class="v272-chips">'+MATS.map(function(m){return '<button type="button" data-mat="'+m+'" class="'+(c.mat===m?'on':'')+'">'+m+'</button>';}).join('')+'</div></div>'+
+      '<div class="soft-field"><label class="v173-lbl">Pour combien de poules ? <i>(capacité annoncée, facultatif)</i></label><input data-f="cap" type="number" min="0" max="200" value="'+esc(c.cap)+'" placeholder="Ex. 4"></div>'+
+      '<div class="soft-field"><label class="v173-lbl">Une remarque ? <i>(facultatif)</i></label><input data-f="note" type="text" maxlength="140" value="'+esc(c.note)+'" placeholder="Ex. toit qui fuit, pondoir trop petit…"></div>'+
+    '</div></div>';
+  }
+  function render(){
+    var b=$('v272Body'); if(!b) return; var P=parks(), html='', n=0;
+    P.forEach(function(p,i){ var k=Number(p.coops)||0; if(!k) return; html+='<div class="v272-park">🌿 '+esc(p.name||('Parc '+(i+1)))+'</div>';
+      for(var j=0;j<k;j++){ n++; var key=i+'-'+j; html+=card(key,n,p.name,D[key]||{}); } });
+    if(!n) html='<div class="v272-empty">Aucun poulailler indiqué pour l’instant.<br>Indiquez le nombre de poulaillers de chaque parc dans « Mes parcs ».<br><br><button type="button" class="secondary" onclick="go(\'parks\')">Aller à Mes parcs</button></div>';
+    else html+='<button class="primary" type="button" onclick="v272Save()">Enregistrer mes poulaillers</button>';
+    html+='<button type="button" class="v272-none" onclick="go(\'coopgallery\')"><i>🔨</i><span><b>Je n’ai pas encore mon poulailler</b><small>Construire mon poulailler : modèles, achats et étapes pas à pas</small></span><span class="chev">›</span></button>';
+    b.innerHTML=html;
+  }
+  function ensure(){
+    if($('coops')) return;
+    var sc=document.createElement('section'); sc.className='screen'; sc.id='coops';
+    sc.innerHTML='<div class="top"><button class="back" onclick="v272Save(true)">‹</button><div class="title">Mon poulailler</div></div>'+
+      '<div class="setup-intro"><h2>Faisons l’état des lieux</h2><p>Pour chaque poulailler de vos parcs, notez ce que vous savez. Tout est facultatif : remplissez seulement ce qui vous est utile.</p></div>'+
+      '<div class="v272-wrap" id="v272Body"></div>';
+    var ref=$('parks'); (ref&&ref.parentNode?ref.parentNode:document.body).insertBefore(sc,ref?ref.nextSibling:null);
+    sc.addEventListener('input',function(e){ var f=e.target.getAttribute('data-f'); if(!f) return; var cd=e.target.closest('[data-k]'), k=cd.getAttribute('data-k'); D[k]=D[k]||{}; D[k][f]=e.target.value.trim(); save(D);
+      if(f==='l'||f==='w'){ var s=cd.querySelector('[data-surf]'); if(s) s.innerHTML=surf(D[k]); } });
+    sc.addEventListener('click',function(e){ var m=e.target.closest('[data-mat]'); if(!m) return; var cd=m.closest('[data-k]'), k=cd.getAttribute('data-k'); D[k]=D[k]||{};
+      D[k].mat=D[k].mat===m.getAttribute('data-mat')?'':m.getAttribute('data-mat'); save(D); cd.querySelectorAll('[data-mat]').forEach(function(x){ x.classList.toggle('on',x.getAttribute('data-mat')===D[k].mat); }); });
+  }
+  window.v272Save=function(quiet){ save(D); if(!quiet){ try{ toast('Vos poulaillers ont été enregistrés ✓'); }catch(e){} } go('install'); };
+  window.v272Open=function(){ ensure(); D=load(); render(); go('coops'); try{ document.querySelectorAll('nav.bottom .nav').forEach(function(n,i){ n.classList.toggle('active',i===2); }); }catch(e){} };
+  function menu(){
+    var env=document.querySelector('#install .install-menu button[onclick="go(\'envsecurity\')"]'); if(!env||$('v272Row')) return;
+    var build=document.querySelector('#install .install-menu button.signature'), img=build&&build.querySelector('img');
+    var row=document.createElement('button'); row.className='install-row'; row.id='v272Row'; row.setAttribute('onclick','v272Open()');
+    row.innerHTML='<span class="install-icon premium-illustration install-photo">'+(img?'<img src="'+img.src+'" alt="" aria-hidden="true">':'🏡')+'</span><span><strong>Mon poulailler</strong><small>Marque, taille et matière de vos poulaillers</small></span><span class="chev">›</span>';
+    env.parentNode.insertBefore(row,env);
+    if(build) build.style.display='none';
+  }
+  if(document.readyState!=='loading') menu(); else document.addEventListener('DOMContentLoaded',menu);
 })();
 </script>
 </body></html>
