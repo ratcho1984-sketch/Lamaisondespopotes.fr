@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=284;
+  var APP_V=285;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14979,6 +14979,101 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
   document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('#lay')) setTimeout(function(){ render(); },40); },true);
   var g=window.go; if(typeof g==='function'){ window.go=function(id){ var r=g.apply(this,arguments); if(id==='lay') setTimeout(function(){ render(true); },30); return r; }; }
   var rs=window.resetEggExtraInfo; if(typeof rs==='function'){ window.resetEggExtraInfo=function(){ var r=rs.apply(this,arguments); window.V282W={}; last=''; setTimeout(function(){ render(true); },30); return r; }; }
+})();
+</script>
+<style id="v285-one-egg-css">
+#eggHenChoices .egg-hen-choice.v285-done{opacity:.55;filter:grayscale(.6)}
+#eggHenChoices .egg-hen-choice.v285-done small{color:#a0452d!important;font-weight:700}
+.v285-list{max-height:52vh;overflow:auto;margin-bottom:6px}
+.v285-row{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:7px;border:1px solid #efe5d2;border-radius:15px;background:#fff}
+.v285-row div{flex:1;min-width:0}
+.v285-row b{display:block;font-size:15px;color:#2e2a22}
+.v285-row small{display:block;font-size:12.5px;color:#6b624f;margin-top:2px}
+.v238-sheet .v285-row button{width:auto;margin:0;padding:9px 12px;color:#a0452d;border-color:#f0d2c4;background:#fff7f3;font-weight:800;font-size:14px}
+.v285-empty{padding:14px;text-align:center;color:#6b624f}
+</style>
+<script id="v285-one-egg-js">
+/* v285 : une poule = un œuf par jour (blocage + alerte) ; appui long sur « œufs aujourd'hui » pour supprimer des œufs */
+(function(){
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function dayBounds(){ var d=new Date(), t0=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime(); return [t0,t0+864e5]; }
+  function todayRecs(){ var b=dayBounds(); return (Array.isArray(eggRecords)?eggRecords:[]).filter(function(r){ return r&&(r.count||0)>0&&r.createdAt>=b[0]&&r.createdAt<b[1]; }); }
+  function laidToday(id){ return todayRecs().some(function(r){ return r.henId===id; }); }
+  function henName(id){ var h=(popotes||[]).find(function(x){return x.id===id;}); return h?h.name:'Cette poule'; }
+  function alertBox(title,text){
+    var w=document.createElement('div'); w.className='v58-dlg-bg';
+    w.innerHTML='<div class="v58-dlg" role="alertdialog" aria-modal="true"><h4></h4><p></p><div class="v58-dlg-btns"><button type="button" class="v58-yes">J’ai compris</button></div></div>';
+    w.querySelector('h4').textContent=title; w.querySelector('p').textContent=text;
+    w.addEventListener('click',function(e){ if(e.target===w||e.target.classList.contains('v58-yes')){ w.classList.remove('open'); setTimeout(function(){ w.remove(); },200); } });
+    document.body.appendChild(w); requestAnimationFrame(function(){ w.classList.add('open'); });
+  }
+  function warn(id){ alertBox('🥚 Un œuf par jour', henName(id)+' a déjà pondu un œuf aujourd’hui. Une poule ne pond qu’un œuf par jour : on ne peut pas lui en ajouter un deuxième.'); }
+  window.v285LaidToday=laidToday;
+
+  /* 1. Choix de la poule : bloqué si elle a déjà un œuf aujourd'hui */
+  var sel=window.selectEggHen;
+  if(typeof sel==='function') window.selectEggHen=function(id){
+    var chosen=window.v82Named?v82Named():[];
+    if(id&&chosen.indexOf(id)<0&&laidToday(id)){ warn(id); return; }
+    return sel.apply(this,arguments);
+  };
+  var rend=window.renderEggHenChoices;
+  if(typeof rend==='function') window.renderEggHenChoices=function(){
+    var r=rend.apply(this,arguments);
+    try{ document.querySelectorAll('#eggHenChoices .egg-hen-choice:not(.v82-unk)').forEach(function(b){
+      var m=(b.getAttribute('onclick')||'').match(/selectEggHen\('([^']+)'\)/); if(!m) return;
+      var done=laidToday(m[1])&&!b.classList.contains('on'); b.classList.toggle('v285-done',done);
+      if(done){ var s=b.querySelector('small'); if(s) s.textContent='A déjà pondu aujourd’hui'; } }); }catch(e){}
+    return r;
+  };
+  /* Sécurité à l'enregistrement */
+  var save=window.saveEgg;
+  if(typeof save==='function') window.saveEgg=function(){
+    var chosen=window.v82Named?v82Named():[], bad=chosen.filter(laidToday);
+    if(bad.length){ warn(bad[0]); return; }
+    return save.apply(this,arguments);
+  };
+
+  /* 2. Appui long sur « œufs aujourd'hui » : supprimer des œufs */
+  var ASP={normal:'aspect normal',unusual:'aspect inhabituel',unknown:'aspect non renseigné'};
+  function closeSheet(bg){ bg.classList.remove('open'); setTimeout(function(){ bg.remove(); },230); }
+  function openSheet(){
+    var old=document.querySelector('.v285-bg'); if(old) old.remove();
+    var recs=todayRecs().slice().sort(function(a,b){ return a.createdAt-b.createdAt; });
+    var bg=document.createElement('div'); bg.className='v238-bg v285-bg';
+    var rows=recs.map(function(r,i){ var t=new Date(r.createdAt), hh=('0'+t.getHours()).slice(-2)+'h'+('0'+t.getMinutes()).slice(-2);
+      var who=r.henId?esc(r.henName||henName(r.henId)):'Pondeuse inconnue';
+      return '<div class="v285-row"><div><b>'+who+'</b><small>'+(r.count||1)+' œuf'+((r.count||1)>1?'s':'')+' · '+(ASP[r.aspect]||'')+(r.weight?' · '+r.weight+' g':'')+' · '+hh+'</small></div><button type="button" data-i="'+i+'">🗑 Supprimer'+((r.count||1)>1?' 1':'')+'</button></div>'; }).join('');
+    bg.innerHTML='<div class="v238-sheet" role="dialog" aria-modal="true"><h4>🥚 Les œufs d’aujourd’hui</h4><div class="v285-list">'+(rows||'<div class="v285-empty">Aucun œuf enregistré aujourd’hui.</div>')+'</div><button type="button" class="v238-cancel">Fermer</button></div>';
+    bg.addEventListener('click',function(e){
+      if(e.target===bg||e.target.classList.contains('v238-cancel')){ closeSheet(bg); return; }
+      var b=e.target.closest('button[data-i]'); if(!b) return;
+      var r=recs[+b.getAttribute('data-i')]; if(!r) return;
+      var who=r.henId?(r.henName||henName(r.henId)):'la pondeuse inconnue';
+      Promise.resolve(window.v58Confirm?v58Confirm('Supprimer cet œuf ?','L’œuf de '+who+' sera retiré d’aujourd’hui et du calendrier.','Supprimer'):true).then(function(ok){
+        if(!ok) return;
+        try{ if(window.v228RemoveEggs) v228RemoveEggs(r,1); else { var k=eggRecords.indexOf(r); if(k>=0){ if((r.count||1)>1) r.count--; else eggRecords.splice(k,1); } } }catch(x){}
+        try{ window.v58Persist&&v58Persist(); }catch(x){} try{ v58RefreshHome&&v58RefreshHome(true); }catch(x){} try{ renderPopotes(); renderHenProfile(); }catch(x){}
+        try{ toast('Œuf supprimé ✓'); }catch(x){}
+        closeSheet(bg); setTimeout(openSheet,240);
+      });
+    });
+    document.body.appendChild(bg); requestAnimationFrame(function(){ bg.classList.add('open'); });
+  }
+  window.v285OpenToday=openSheet;
+  function bind(){
+    var st=document.querySelector('#home .h58-stat[onclick="go(\'lay\')"]'); if(!st||st.dataset.v285) return; st.dataset.v285='1';
+    var tm=null, fired=false, sx=0, sy=0;
+    function start(e){ fired=false; var p=e.touches?e.touches[0]:e; sx=p.clientX; sy=p.clientY; clearTimeout(tm); tm=setTimeout(function(){ fired=true; try{ navigator.vibrate&&navigator.vibrate(15); }catch(x){} openSheet(); },550); }
+    function move(e){ var p=e.touches?e.touches[0]:e; if(Math.abs(p.clientX-sx)>10||Math.abs(p.clientY-sy)>10) clearTimeout(tm); }
+    function end(){ clearTimeout(tm); }
+    st.addEventListener('touchstart',start,{passive:true}); st.addEventListener('touchmove',move,{passive:true}); st.addEventListener('touchend',end); st.addEventListener('touchcancel',end);
+    st.addEventListener('mousedown',start); st.addEventListener('mouseup',end); st.addEventListener('mouseleave',end);
+    st.addEventListener('contextmenu',function(e){ e.preventDefault(); });
+    st.addEventListener('click',function(e){ if(fired){ e.preventDefault(); e.stopImmediatePropagation(); fired=false; } },true);
+    st.setAttribute('aria-label','Œufs aujourd’hui — touchez pour ajouter une ponte, appui long pour supprimer un œuf');
+  }
+  if(document.readyState!=='loading') bind(); else document.addEventListener('DOMContentLoaded',bind);
 })();
 </script>
 </body></html>
