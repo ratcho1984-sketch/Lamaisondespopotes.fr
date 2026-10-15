@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=285;
+  var APP_V=286;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15074,6 +15074,40 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
     st.setAttribute('aria-label','Œufs aujourd’hui — touchez pour ajouter une ponte, appui long pour supprimer un œuf');
   }
   if(document.readyState!=='loading') bind(); else document.addEventListener('DOMContentLoaded',bind);
+})();
+</script>
+<script id="v286-max-eggs-js">
+/* v286 : pas plus d'œufs par jour que de poules enregistrées (pondeuses inconnues comprises : ce sont des poules du cheptel) */
+(function(){
+  function hens(){ return (Array.isArray(popotes)?popotes:[]).filter(function(h){ return h&&h.sex!=='coq'; }).length; }
+  function doneToday(){ var d=new Date(), t0=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime(), t1=t0+864e5;
+    return (Array.isArray(eggRecords)?eggRecords:[]).reduce(function(s,r){ return s+(r&&r.createdAt>=t0&&r.createdAt<t1?(r.count||0):0); },0); }
+  function cur(){ var e=document.getElementById('eggnum'); return parseInt(e&&e.textContent,10)||0; }
+  function left(){ return Math.max(0,hens()-doneToday()); }
+  function alertBox(title,text){
+    var w=document.createElement('div'); w.className='v58-dlg-bg';
+    w.innerHTML='<div class="v58-dlg" role="alertdialog" aria-modal="true"><h4></h4><p></p><div class="v58-dlg-btns"><button type="button" class="v58-yes">J’ai compris</button></div></div>';
+    w.querySelector('h4').textContent=title; w.querySelector('p').textContent=text;
+    w.addEventListener('click',function(e){ if(e.target===w||e.target.classList.contains('v58-yes')){ w.classList.remove('open'); setTimeout(function(){ w.remove(); },200); } });
+    document.body.appendChild(w); requestAnimationFrame(function(){ w.classList.add('open'); });
+  }
+  function warn(){
+    var H=hens(), T=doneToday();
+    if(!H){ alertBox('🐔 Aucune poule enregistrée','Ajoutez d’abord vos poules dans « Mes Popotes » : chaque œuf vient d’une poule de votre poulailler.'); return; }
+    alertBox('🥚 Pas plus d’œufs que de poules','Vous avez '+H+' poule'+(H>1?'s':'')+' : on ne peut pas enregistrer plus de '+H+' œuf'+(H>1?'s':'')+' par jour, pondeuses inconnues comprises.'+(T?' Aujourd’hui, '+T+' œuf'+(T>1?'s sont':' est')+' déjà enregistré'+(T>1?'s':'')+'. Pour corriger, faites un appui long sur « œufs aujourd’hui » sur l’accueil.':''));
+  }
+  window.v286Left=left;
+  var eg=window.egg;
+  if(typeof eg==='function') window.egg=function(d){ if(d>0&&cur()+d>left()){ warn(); return; } return eg.apply(this,arguments); };
+  var sel=window.selectEggHen;
+  if(typeof sel==='function') window.selectEggHen=function(id){
+    var named=window.v82Named?v82Named():[];
+    var adds=id===null||(named.indexOf(id)<0&&named.length+1>cur());
+    if(adds&&!(id&&window.v285LaidToday&&v285LaidToday(id))&&cur()+1>left()){ warn(); return; }
+    return sel.apply(this,arguments);
+  };
+  var save=window.saveEgg;
+  if(typeof save==='function') window.saveEgg=function(){ if(cur()>0&&cur()>left()){ warn(); return; } return save.apply(this,arguments); };
 })();
 </script>
 </body></html>
