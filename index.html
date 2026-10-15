@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=281;
+  var APP_V=282;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -12040,6 +12040,7 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
     updateUnusualExtraFields();
   }
   window.v82Asp=(k,a)=>{ asp[k]=a; renderAspects(); };
+  window.v82Named=()=>named.slice(); window.v82Unk=()=>unk();
   window.updateUnusualExtraFields=function(){
     const box=document.getElementById('eggUnusualDetails'), hint=document.getElementById('eggNormalDetailHint');
     const unusual=n>=2?eggsList().some(e=>asp[e.k]==='unusual'):selectedEggAspect==='unusual';
@@ -12059,7 +12060,7 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
     eggs.forEach(e=>{ const g=(e.henId||'_')+'|'+e.aspect+'|'+e.suspects.join(','); (groups[g]=groups[g]||{henId:e.henId,aspect:e.aspect,suspects:e.suspects,count:0}).count++; });
     Object.values(groups).forEach(g=>{
       const hen=g.henId?popotes.find(h=>h.id===g.henId):null;
-      const ex={...extra}; if(g.aspect!=='unusual') ex.unusualDetails=[];
+      const ex={...extra}; if(g.aspect!=='unusual') ex.unusualDetails=[]; if(g.henId&&window.V282W&&window.v81IsPremium&&v81IsPremium()){ const w=parseFloat(String(V282W[g.henId]||'').replace(',','.')); ex.weight=Number.isFinite(w)?w:null; ex.size=ex.weight?(typeof autoEggSizeFromWeight==='function'?autoEggSizeFromWeight(ex.weight):ex.size)||null:ex.size; }
       const rec={createdAt:ts,count:g.count,henId:g.henId,henName:hen?hen.name:null,aspect:g.aspect,...ex}; if(!g.henId&&g.suspects.length) rec.suspects=g.suspects; eggRecords.push(rec);
       if(hen){
         if(g.aspect==='normal') hen.normalEggs=(hen.normalEggs||0)+g.count;
@@ -14932,6 +14933,45 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
   if(base){ window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{fill();}catch(e){} return r; }; }
   var g=window.go; if(typeof g==='function'){ window.go=function(id){ var r=g.apply(this,arguments); if(id==='profile'){ try{fill();}catch(e){} } return r; }; }
   document.addEventListener('click',function(){ setTimeout(function(){ var b=document.getElementById('v280EggColor'); if(b&&b.classList.contains('v280-free')===prem()) fill(); },60); });
+})();
+</script>
+<style id="v282-weight-each-css">
+#v282Rows{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+#v282Rows .v282-row{display:flex;align-items:center;gap:10px;background:#fffdf8;border:1.5px solid #eadfca;border-radius:16px;padding:8px 10px}
+#v282Rows .v282-who{flex:1;min-width:0;font-weight:800;font-size:14px;color:#2e2a22;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#v282Rows input{width:92px;font-size:18px;font-weight:800;text-align:center;padding:8px;border:1.5px solid #e2d6c3;border-radius:12px;background:#fff}
+#v282Rows span.g{font-weight:800;color:#5d4a7a}
+#v269WeightCard.v282-multi .v269-row,#v269WeightCard.v282-multi .v269-note{display:none}
+</style>
+<script id="v282-weight-each-js">
+/* v282 : Premium — « Poids de chaque œuf » : une ligne par poule choisie plus haut (comme « Aspect de chaque œuf ») */
+(function(){
+  window.V282W={};
+  function prem(){ return !!(window.v81IsPremium&&v81IsPremium()); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  var last='';
+  function render(force){
+    var card=document.getElementById('v269WeightCard'); if(!card) return;
+    var named=(window.v82Named?v82Named():[]), U=(window.v82Unk?v82Unk():0), p=prem();
+    var multi=p&&named.length>0, key=(p?1:0)+'|'+named.join(',')+'|'+U;
+    if(!force&&key===last) return; last=key;
+    card.classList.toggle('v282-multi',multi);
+    var t=card.querySelector('.lay-card-title span:nth-child(2)'); if(t) t.textContent=multi&&(named.length+(U?1:0))>1?'Poids de chaque œuf':'Poids de l’œuf';
+    var box=document.getElementById('v282Rows');
+    if(!multi){ if(box) box.remove(); return; }
+    if(!box){ box=document.createElement('div'); box.id='v282Rows'; var row=card.querySelector('.v269-row'); (row||card).after?row.after(box):card.appendChild(box); }
+    Object.keys(V282W).forEach(function(id){ if(named.indexOf(id)<0) delete V282W[id]; });
+    var gv=(document.getElementById('v269Weight')||{}).value||'';
+    box.innerHTML=named.map(function(id){ var h=(popotes||[]).find(function(x){return x.id===id;})||{};
+        return '<div class="v282-row"><span class="v282-who">'+esc(h.name||'Poule')+'</span><input data-h="'+id+'" type="number" inputmode="decimal" min="20" max="150" step="1" placeholder="Ex. 58" value="'+esc(V282W[id]||'')+'"><span class="g">g</span></div>'; }).join('')+
+      (U?'<div class="v282-row"><span class="v282-who">Pondeuse inconnue'+(U>1?' ('+U+' œufs)':'')+'</span><input data-h="_" type="number" inputmode="decimal" min="20" max="150" step="1" placeholder="Ex. 58" value="'+esc(gv)+'"><span class="g">g</span></div>':'');
+  }
+  window.v282Render=render;
+  document.addEventListener('input',function(e){ var i=e.target; if(!i.closest||!i.closest('#v282Rows')) return; var h=i.getAttribute('data-h');
+    if(h==='_'){ var a=document.getElementById('v269Weight'), b=document.getElementById('eggWeight'); if(a) a.value=i.value; if(b) b.value=i.value; } else V282W[h]=i.value.trim(); });
+  document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('#lay')) setTimeout(function(){ render(); },40); },true);
+  var g=window.go; if(typeof g==='function'){ window.go=function(id){ var r=g.apply(this,arguments); if(id==='lay') setTimeout(function(){ render(true); },30); return r; }; }
+  var rs=window.resetEggExtraInfo; if(typeof rs==='function'){ window.resetEggExtraInfo=function(){ var r=rs.apply(this,arguments); window.V282W={}; last=''; setTimeout(function(){ render(true); },30); return r; }; }
 })();
 </script>
 </body></html>
