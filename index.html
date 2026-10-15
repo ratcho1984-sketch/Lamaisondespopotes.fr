@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=270;
+  var APP_V=271;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14708,6 +14708,12 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
   if(document.readyState!=='loading') upgrade(); else document.addEventListener('DOMContentLoaded',upgrade);
 })();
 </script>
+<style id="v271-weight-free-css">
+#v269WeightCard.v271-free{cursor:pointer;background:#f3f1ee!important;border-color:#d9d4cc!important}
+#v269WeightCard.v271-free .lay-card-title>span,#v269WeightCard.v271-free .v269-row{filter:grayscale(1);opacity:.55}
+#v269WeightCard.v271-free .v269-row input{background:#ebe8e3;pointer-events:none}
+#v269WeightCard.v271-free .v269-note{color:#7b4fb0;font-weight:700}
+</style>
 <style id="v270-sus-vert-css">
 .v88-sus{background:#f1f7ef!important;border-color:#b9d5b8!important}
 .v88-sus .v88-head{color:#235b3d!important}.v88-sus .v88-head small,.v88-sus .v88-note,.v88-sus .v88-lbl{color:#5d6b60!important}
@@ -14726,8 +14732,11 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
 <script id="v269-egg-weight-js">
 (function(){
   function sync(){ var c=document.getElementById('v269WeightCard'); if(!c) return;
-    var p=!!(window.v81IsPremium&&v81IsPremium()); c.classList.toggle('v269-on',p);
-    if(!p){ var i=document.getElementById('v269Weight'); if(i) i.value=''; } }
+    var p=!!(window.v81IsPremium&&v81IsPremium()); c.classList.add('v269-on'); c.classList.toggle('v271-free',!p);
+    var i=document.getElementById('v269Weight'), n=c.querySelector('.v269-note');
+    if(i){ i.readOnly=!p; if(!p) i.value=''; }
+    if(n){ if(!n.dataset.v271) n.dataset.v271=n.textContent; n.textContent=p?n.dataset.v271:'Disponible avec Premium : touchez pour découvrir.'; } }
+  document.addEventListener('click',function(e){ var c=e.target.closest&&e.target.closest('#v269WeightCard.v271-free'); if(!c) return; e.preventDefault(); e.stopPropagation(); try{ v81Open('oeufinfo'); }catch(x){} },true);
   var g=window.go; if(typeof g==='function'){ window.go=function(id){ var r=g.apply(this,arguments); if(id==='lay') sync(); return r; }; }
   var rs=window.resetEggExtraInfo; if(typeof rs==='function'){ window.resetEggExtraInfo=function(){ var r=rs.apply(this,arguments); var i=document.getElementById('v269Weight'); if(i) i.value=''; return r; }; }
   window.v269Sync=sync;
