@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=277;
+  var APP_V=278;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13782,7 +13782,7 @@ window.VetSource = {
     const hens=document.getElementById('hens'); if(!hens) return;
     let b=document.getElementById('v217Adopt');
     if(!b){
-      const img=document.querySelector("#advice .tile[onclick*=\"go('henchooser')\"] img");
+      const img=document.querySelector("#henchooser .hen-stage-visual img")||document.querySelector("#advice .tile[onclick*=\"go('henchooser')\"] img");
       b=document.createElement('button'); b.type='button'; b.id='v217Adopt'; b.className='v184-vac v217-adopt'; b.setAttribute('onclick',"go('henchooser')");
       b.innerHTML=(img?'<img src="'+img.src+'" alt="">':'')+'<span><strong>Adopter une nouvelle poule</strong><small>Trouvez la race qui convient à votre installation</small></span><span class="chev">›</span>';
     }
