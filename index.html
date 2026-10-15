@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=287;
+  var APP_V=288;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11768,7 +11768,7 @@ renderStarterStep = function(){
     let detail='';
     if(calDay&&st.by[calDay]){ const x=st.by[calDay]; const d0=x.recs[0].createdAt;
       detail=`<div class="v81-cdet"><b>${frDate(d0)}</b>${x.recs.map(r=>`<div class="${r._p?'p':r.aspect==='unusual'?'u':''}"><span>${r._p?'❔ Possible'+(r.aspect==='unusual'?' · inhabituel':''):r.aspect==='unusual'?'⚠️ Inhabituel':r.aspect==='unknown'?'🥚 Aspect non renseigné':'🥚 Normal'}${r.count>1?' × '+r.count:''}</span>${r._p?`<small>Pondeuse incertaine${otherSus(r,hen.id).length?' : '+esc(ouList([hen.name].concat(otherSus(r,hen.id)))):''}</small>`:''}${DETAIL(r)?`<small>${esc(DETAIL(r))}</small>`:''}${r.note?`<small>« ${esc(r.note)} »</small>`:''}</div>`).join('')}</div>`;
-    }else if(calDay){ detail=`<div class="v81-cdet"><small>Aucune ponte enregistrée ce jour-là.</small></div>`; }
+    }else if(calDay){ detail=`<div class="v81-cdet"><small>Aucune ponte enregistrée ce jour-là.</small>${hen.sex!=='coq'&&!calDemo&&window.v288AddPast?`<button type="button" class="v288-add" onclick="v288AddPast('${calDay}')">🥚 Ajouter une ponte</button>`:''}</div>`; }
     calBox.innerHTML=`<div class="v81-block v81-calb">
       <h3>📅 Le calendrier ${/^[aeiouyàâäéèêëîïôöûüù]/i.test(hen.name||'')?'d’':'de '}${esc(hen.name)}</h3>
       ${calDemo?`<div class="v81-demo on">🧪 Exemple : ces pontes sont inventées pour montrer le rendu. <button type="button" onclick="v81CalDemo(false)">Revenir à ses données</button></div>`:''}
@@ -15112,4 +15112,34 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
 </script>
 <style id="v287-parks-frame-css">#parks .v287-frame{background:#fdf6e7;padding:11px 13px 18px}#parks .v287-frame img{box-sizing:border-box;width:100%;border:3px solid #c9ddbf!important;border-radius:34px!important;box-shadow:0 0 0 2px rgba(201,221,191,.35),0 6px 14px rgba(80,60,30,.10)}</style>
 <script id="v287-parks-frame-js">(function(){function wrap(){var im=document.querySelector('#parks .v173-hero > img');if(!im||im.parentNode.classList.contains('v287-frame'))return;var f=document.createElement('div');f.className='v287-frame';im.before(f);f.appendChild(im);}wrap();document.addEventListener('DOMContentLoaded',wrap);var g=window.go;if(typeof g==='function')window.go=function(id){var r=g.apply(this,arguments);if(id==='parks')wrap();return r;};})();</script>
+<style id="v288-cal-add-css">#v81Cal .v81-cdet .v288-add{display:block;width:100%;margin:10px 0 2px;padding:11px 12px;border:0;border-radius:14px;background:#2f7a4a;color:#fff;font-weight:800;font-size:15px;text-align:center}.v288-sub{margin:-4px 4px 12px;color:#6b624f;font-size:14px}</style>
+<script id="v288-cal-add-js">
+/* v288 : calendrier de la poule — ajouter exceptionnellement une ponte oubliée sur un jour sans ponte */
+(function(){
+  var MO=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  function hen(){ return (popotes||[]).find(function(h){ return h.id===selectedProfileHenId; }); }
+  function parse(k){ var a=String(k).split('-').map(Number); return new Date(a[0],a[1],a[2],12,0,0); }
+  function dayEggs(d){ var t0=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime(), t1=t0+864e5; return (eggRecords||[]).filter(function(r){ return r&&(r.count||0)>0&&r.createdAt>=t0&&r.createdAt<t1; }); }
+  function msg(t,p){ var w=document.createElement('div'); w.className='v58-dlg-bg'; w.innerHTML='<div class="v58-dlg" role="alertdialog"><h4></h4><p></p><div class="v58-dlg-btns"><button type="button" class="v58-yes">J’ai compris</button></div></div>'; w.querySelector('h4').textContent=t; w.querySelector('p').textContent=p; w.addEventListener('click',function(e){ if(e.target===w||e.target.classList.contains('v58-yes')){ w.classList.remove('open'); setTimeout(function(){ w.remove(); },200); } }); document.body.appendChild(w); requestAnimationFrame(function(){ w.classList.add('open'); }); }
+  function close(bg){ bg.classList.remove('open'); setTimeout(function(){ bg.remove(); },230); }
+  window.v288AddPast=function(k){
+    var h=hen(); if(!h) return; var d=parse(k), recs=dayEggs(d), label=d.getDate()+' '+MO[d.getMonth()];
+    if(recs.some(function(r){ return r.henId===h.id; })){ msg('🥚 Un œuf par jour',h.name+' a déjà un œuf enregistré le '+label+'.'); return; }
+    var H=(popotes||[]).filter(function(x){ return x.sex!=='coq'; }).length, T=recs.reduce(function(s,r){ return s+(r.count||0); },0);
+    if(T>=H){ msg('🥚 Pas plus d’œufs que de poules','Le '+label+', '+T+' œuf'+(T>1?'s sont':' est')+' déjà enregistré'+(T>1?'s':'')+' pour '+H+' poule'+(H>1?'s':'')+'. On ne peut pas en ajouter un de plus ce jour-là.'); return; }
+    var bg=document.createElement('div'); bg.className='v238-bg v288-bg';
+    bg.innerHTML='<div class="v238-sheet" role="dialog" aria-modal="true"><h4>🥚 Ajouter une ponte</h4><p class="v288-sub"></p><button type="button" data-a="normal"><span>✅</span>Œuf normal</button><button type="button" data-a="unusual"><span>⚠️</span>Œuf inhabituel</button><button type="button" class="v238-cancel">Annuler</button></div>';
+    bg.querySelector('.v288-sub').textContent='Un œuf de '+h.name+' le '+label+', ajouté après coup.';
+    bg.addEventListener('click',function(e){
+      if(e.target===bg||e.target.classList.contains('v238-cancel')){ close(bg); return; }
+      var b=e.target.closest('button[data-a]'); if(!b) return; var a=b.getAttribute('data-a');
+      eggRecords.push({createdAt:d.getTime(),count:1,henId:h.id,henName:h.name,aspect:a,weight:null,size:null,color:null,unusualDetails:[],photoDataUrl:null,note:null,addedLater:true});
+      if(a==='unusual'){ h.unusualEggs=(h.unusualEggs||0)+1; h.unusualDates=h.unusualDates||[]; h.unusualDates.push(d.getTime()); } else h.normalEggs=(h.normalEggs||0)+1;
+      try{ window.v58Persist&&v58Persist(); }catch(x){} try{ renderHenProfile(); renderPopotes(); }catch(x){} try{ window.v58RefreshHome&&v58RefreshHome(true); }catch(x){}
+      close(bg); try{ toast('🥚 Ponte du '+label+' ajoutée pour '+h.name+' ✓'); }catch(x){}
+    });
+    document.body.appendChild(bg); requestAnimationFrame(function(){ bg.classList.add('open'); });
+  };
+})();
+</script>
 </body></html>
