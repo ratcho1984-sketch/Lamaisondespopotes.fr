@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=289;
+  var APP_V=290;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11294,7 +11294,7 @@ renderStarterStep = function(){
 
   /* ---------- 3. Mes Popotes : poules illimitées + journal de vie ---------- */
   const JKEY='maisonPopotesJournal';
-  const JTYPES=[['obs','👀','Observation'],['comport','💬','Comportement'],['mue','🪶','Mue'],['couv','🥚','Couvaison'],['sante','🩺','Santé'],['moment','💛','Joli moment']];
+  const JTYPES=[['obs','👀','Observation'],['comport','💬','Comportement'],['mue','🪶','Mue'],['couv','🥚','Couvaison'],['sante','🩺','Santé'],['moment','💛','Joli moment'],['trait','💊','Traitement']];
   const jAll=()=>load(JKEY,{});
   const jType=k=>JTYPES.find(t=>t[0]===k)||JTYPES[0];
   F.unlimited={icon:'🐔',title:'Poules illimitées',
@@ -11324,7 +11324,7 @@ renderStarterStep = function(){
   window.v81JFilter=id=>{ jFilter=id; rerender(); };
   function jItem(e,withHen){
     const t=jType(e.type);
-    return `<div class="v81-jit"><span class="v81-jic">${t[1]}</span><div><small>${frDate(e.ts)} · ${t[2]}${withHen?' · <b>'+esc(henName(e.henId)||'Popote')+'</b>':''}</small>${e.text?`<p>${esc(e.text)}</p>`:''}${e.photo?`<img src="${e.photo}" alt="Photo du ${frDate(e.ts)}">`:''}</div><button type="button" class="v81-jdel" onclick="v81JDel('${e.henId}','${e.id}')" aria-label="Supprimer cette note">✕</button></div>`;
+    return `<div class="v81-jit${e.type==='trait'?' v290-trait':''}"><span class="v81-jic">${esc(e.icon||t[1])}</span><div><small>${frDate(e.ts)} · ${t[2]}${withHen?' · <b>'+esc(henName(e.henId)||'Popote')+'</b>':''}</small>${e.title?`<b class="v290-t">${esc(e.title)}</b>`:''}${e.text?`<p>${esc(e.text)}</p>`:''}${e.photo?`<img src="${e.photo}" alt="Photo du ${frDate(e.ts)}">`:''}</div><button type="button" class="v81-jdel" onclick="v81JDel('${e.henId}','${e.id}')" aria-label="Supprimer cette note">✕</button></div>`;
   }
   /* Formulaire de note, utilisable dans la fiche ou dans la page Journal */
   let jDraft={type:'obs',photo:null};
@@ -11332,7 +11332,7 @@ renderStarterStep = function(){
   function jForm(henId){
     const h=popotes.find(x=>x.id===henId); const nm=h?h.name:'elle';
     return `<div class="v81-jform" data-hen="${henId}">
-      <div class="v81-jtypes">${JTYPES.filter(t=>!(h&&h.sex==='coq'&&/couv/i.test(t[2]))).map(t=>`<button type="button" data-k="${t[0]}" class="${jDraft.type===t[0]?'on':''}" onclick="v81JType(this)">${t[1]} ${t[2]}</button>`).join('')}</div>
+      <div class="v81-jtypes">${JTYPES.filter(t=>t[0]!=='trait'&&!(h&&h.sex==='coq'&&/couv/i.test(t[2]))).map(t=>`<button type="button" data-k="${t[0]}" class="${jDraft.type===t[0]?'on':''}" onclick="v81JType(this)">${t[1]} ${t[2]}</button>`).join('')}</div>
       <div class="v81-jrow"><label>Date</label><input class="v81-jdate" type="date" value="${todayISO()}" max="${todayISO()}"></div>
       <textarea class="v81-jtext" maxlength="500" placeholder="Ex. ${esc(nm)} passe beaucoup de temps seule près de l’abreuvoir depuis deux jours…"></textarea>
       <div class="v81-jprev" style="display:${jDraft.photo?'flex':'none'}">${jDraft.photo?jPrevHTML():''}</div>
@@ -11787,6 +11787,7 @@ renderStarterStep = function(){
       <small class="v81-note">Un relevé clair de ses 3 derniers mois de ponte, à télécharger ou imprimer. Ce n’est pas un diagnostic : c’est une aide pour que le vétérinaire ait les faits sous les yeux.</small>
     </div>`;
   }
+  window.v290RPE=f=>renderProfileExtra(f);
   window.v81CalMonth=d=>{ calOff=Math.min(0,calOff+d); calDay=null; const h=currentProfileHen(); if(h) renderCal(h); };
   window.v81CalDay=k=>{ calDay=calDay===k?null:k; const h=currentProfileHen(); if(h) renderCal(h); };
   window.v81CalDemo=on=>{ calDemo=on; calDay=null; const h=currentProfileHen(); if(h) renderCal(h); };
@@ -15130,6 +15131,34 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
       close(bg); try{ toast('🥚 Ponte du '+label+' ajoutée pour '+h.name+' ✓'); }catch(x){}
     });
     document.body.appendChild(bg); requestAnimationFrame(function(){ bg.classList.add('open'); });
+  };
+})();
+</script>
+<style id="v290-trait-journal-css">.v81-jit.v290-trait{background:#f1f7ee;border-color:#cfe0cd}.v81-jit.v290-trait .v290-t{display:block;margin-top:2px;font-size:14.5px;font-weight:800;color:#224f37}.v81-jit.v290-trait p{color:#5d6b60;font-size:13px}</style>
+<script id="v290-trait-journal-js">
+/* v290 : « Traitement terminé » → note automatique dans le journal de la poule (ex. « Vitamines données », avec les dates) */
+(function(){
+  var DONE={medical:['💊','Traitement médical terminé'],vitamine:['🍊','Vitamines données'],vermifuge:['🪱','Vermifuge donné'],autre:['🧴','Traitement terminé']};
+  function fr(d){ if(!d) return ''; var p=String(d).split('-'); return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:d; }
+  var base=window.v245Stop;
+  if(typeof base!=='function') return;
+  window.v245Stop=function(){
+    var h=null; try{ h=currentProfileHen(); }catch(e){}
+    var t=h&&h.treatment&&h.treatment.type&&h.treatment.type!=='aucun'?Object.assign({},h.treatment):null;
+    var r=base.apply(this,arguments);
+    if(t){
+      try{
+        var d=DONE[t.type]||DONE.autre, today=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+        var per=t.start?('Du '+fr(t.start)+' au '+fr(today)):('Terminé le '+fr(today));
+        var text=[t.name,t.dose?'Dose : '+t.dose:'',t.freq,per].filter(Boolean).join(' · ');
+        var all={}; try{ all=JSON.parse(localStorage.getItem('maisonPopotesJournal')||'{}')||{}; }catch(e){}
+        (all[h.id]=all[h.id]||[]).push({id:'j'+Date.now(),ts:Date.now(),type:'trait',icon:d[0],title:d[1],text:text,photo:null});
+        localStorage.setItem('maisonPopotesJournal',JSON.stringify(all));
+        try{ window.v290RPE&&v290RPE(true); }catch(e){}
+        try{ toast(h.name+' : « '+d[1]+' » noté dans son journal ✓'); }catch(e){}
+      }catch(e){}
+    }
+    return r;
   };
 })();
 </script>
