@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=279;
+  var APP_V=280;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -10813,6 +10813,7 @@ renderStarterStep = function(){
         <label for="v58Name">${hen.sex==='coq'?'Nom':'Prénom'}</label>
         <input id="v58Name" type="text" maxlength="30" value="${escapeHtml(hen.name)}" placeholder="${hen.sex==='coq'?'Ex. Gaston':'Ex. Joséphine'}" autocomplete="off">
         <label>Race</label><div id="v244BreedSlot"></div>
+        ${hen.sex==='coq'?'':'<label>Couleur de ses œufs</label><div id="v280EggColor"></div><div class="v280-free-note">Disponible avec Premium : touchez pour découvrir.</div>'}
         ${hen.sex==='coq'?`<label>Son caractère <small style="font-weight:600;color:#8a7d66">(facultatif)</small></label><div class="v199-chips" data-target="profile">${V199_CHARS.map(c=>`<button type="button" class="${hen.character===c?'on':''}" onclick="v199SetChar(this,'${c}')">${c}</button>`).join('')}</div>`:''}
         <label for="v58Birth">${hen.sex==='coq'?'Né vers':'Née vers'} <small style="font-weight:600;color:#8a7d66">(mois et année, approximatifs)</small></label>
         <input id="v58Birth" type="month" value="${escapeHtml((hen.birth||'').slice(0,7))}">
@@ -14886,6 +14887,47 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
     if(build) build.style.display='none';
   }
   if(document.readyState!=='loading') menu(); else document.addEventListener('DOMContentLoaded',menu);
+})();
+</script>
+<style id="v280-egg-color-css">
+#v280EggColor{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 4px}
+#v280EggColor button{display:inline-flex;align-items:center;gap:7px;border:1.5px solid #e2d6c3;background:#fffdf8;border-radius:99px;padding:6px 11px 6px 7px;font:700 13.5px system-ui,sans-serif;color:#3d3a33;cursor:pointer}
+#v280EggColor button i{width:16px;height:21px;border-radius:50% 50% 50% 50%/58% 58% 42% 42%;border:1px solid rgba(0,0,0,.18);display:inline-block}
+#v280EggColor button.on{border-color:#7b4fb0;background:#f4eefb;color:#4a2a6e}
+#v280EggColor.v280-free{cursor:pointer}
+#v280EggColor.v280-free button{filter:grayscale(1);opacity:.5;pointer-events:none}
+.v280-tag{margin-left:6px;font-style:normal;font-size:11px;font-weight:800;color:#fff;background:#7b4fb0;border-radius:999px;padding:2px 8px;vertical-align:middle}
+.v280-free-note{display:none;font-size:12.5px;font-weight:700;color:#7b4fb0;margin:-2px 0 4px}
+#v280EggColor.v280-free+.v280-free-note{display:block}
+</style>
+<script id="v280-egg-color-js">
+/* v280 : « Couleur de ses œufs » dans la carte de membre de la famille (Premium ; visible mais grisé en gratuit) */
+(function(){
+  var COLORS=[['Blanc','#fffef7'],['Crème','#f5e6c7'],['Beige','#dfbf91'],['Brun','#b87543'],['Chocolat','#70452f'],['Bleu','#bad9d4'],['Vert','#c7d5ab'],['Autre','linear-gradient(135deg,#f0d0b0,#c5d9c5)']];
+  function prem(){ return !!(window.v81IsPremium&&v81IsPremium()); }
+  function fill(){
+    var box=document.getElementById('v280EggColor'); if(!box) return;
+    var h=null; try{ h=currentProfileHen(); }catch(e){} if(!h) return;
+    var p=prem(), cur=h.usualEggColor||'';
+    box.classList.toggle('v280-free',!p);
+    box.innerHTML=COLORS.map(function(c){ return '<button type="button" data-c="'+c[0]+'" class="'+(p&&cur===c[0]?'on':'')+'"><i style="background:'+c[1]+'"></i>'+c[0]+'</button>'; }).join('');
+    var lab=box.previousElementSibling; if(lab&&!lab.querySelector('.v280-tag')) lab.insertAdjacentHTML('beforeend','<em class="v280-tag">♛ Premium</em>');
+  }
+  document.addEventListener('click',function(e){
+    var box=e.target.closest&&e.target.closest('#v280EggColor'); if(!box) return;
+    if(box.classList.contains('v280-free')){ try{ v81Open('oeufinfo'); }catch(x){} return; }
+    var b=e.target.closest('button[data-c]'); if(!b) return;
+    var h=null; try{ h=currentProfileHen(); }catch(x){} if(!h) return;
+    var c=b.getAttribute('data-c'); h.usualEggColor=(h.usualEggColor===c?'':c);
+    box.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on',x.getAttribute('data-c')===h.usualEggColor); });
+    try{ window.v58Persist&&v58Persist(); }catch(x){}
+    try{ var uce=document.getElementById('profileUsualColor'); if(uce) uce.textContent=h.usualEggColor||'—'; }catch(x){}
+    try{ document.querySelectorAll('#v225Note .v225-c').forEach(function(x){ x.classList.toggle('on',x.dataset.c===h.usualEggColor); }); }catch(x){}
+  },true);
+  var base=window.renderHenProfile;
+  if(base){ window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{fill();}catch(e){} return r; }; }
+  var g=window.go; if(typeof g==='function'){ window.go=function(id){ var r=g.apply(this,arguments); if(id==='profile'){ try{fill();}catch(e){} } return r; }; }
+  document.addEventListener('click',function(){ setTimeout(function(){ var b=document.getElementById('v280EggColor'); if(b&&b.classList.contains('v280-free')===prem()) fill(); },60); });
 })();
 </script>
 </body></html>
