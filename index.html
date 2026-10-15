@@ -6992,7 +6992,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=264;
+  var APP_V=265;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14681,7 +14681,8 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
   }
   window.v263Open=function(){ try{ updateInstallScore(); }catch(e){} ensure(); $('v263Body').innerHTML=build(); go('installadvice');
     try{ document.querySelectorAll('nav.bottom .nav').forEach(function(n,i){ n.classList.toggle('active',i===2); }); }catch(e){} };
-  function upgrade(){ var b=document.querySelector('#installAdviceNote button'); if(!b||b.classList.contains('v263-cta')) return; b.className='v263-cta'; b.setAttribute('onclick','v263Open()'); b.innerHTML='<span>💡</span>Voir les conseils adaptés'; }
+  window.v265OpenPark=function(){ go('parktour'); try{ var i=document.getElementById('parkTourIntroView'); if(i){ i.style.display=''; document.getElementById('parkTourQuestionView').style.display='none'; document.getElementById('parkTourResultView').style.display='none'; } }catch(e){} };
+  function upgrade(){ var b=document.querySelector('#installAdviceNote button'); if(!b||b.classList.contains('v263-cta')) return; b.className='v263-cta'; b.setAttribute('onclick','v265OpenPark()'); b.innerHTML='<span>💡</span>Voir les conseils adaptés'; }
   if(document.readyState!=='loading') upgrade(); else document.addEventListener('DOMContentLoaded',upgrade);
 })();
 </script>
