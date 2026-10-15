@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=278;
+  var APP_V=279;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14790,38 +14790,74 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
 #coops .v272-none .chev{margin-left:auto;font-size:24px}
 </style>
 <script id="v272-coops-js">
+/* v272 → v279 : « Mon poulailler » construit comme « Mon parc » (Combien de poulaillers ? + une fiche par poulailler) */
 (function(){
-  var KEY='maisonPopotesCoopsV272', MATS=['Bois','Plastique recyclé','Métal','Maçonné','Fait maison','Autre'];
-  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ return {}; } }
-  function save(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){} }
-  var D=load();
+  var OLD='maisonPopotesCoopsV272', KEY='maisonPopotesCoopsV279', MATS=['Bois','Plastique recyclé','Métal','Maçonné','Fait maison','Autre'], MAX=20;
   function $(id){ return document.getElementById(id); }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
   function parks(){ try{ return parkState||[]; }catch(e){ return []; } }
-  function surf(c){ var l=parseFloat(c.l), w=parseFloat(c.w); if(!(l>0&&w>0)) return ''; var m=l*w/10000; return '🏡 Surface au sol : <b>'+m.toLocaleString('fr-FR',{maximumFractionDigits:2})+' m²</b>'; }
-  function card(k,n,pname,c){
+  function pname(i){ var p=parks()[i]; return (p&&p.name)||('Parc '+(i+1)); }
+  var L=[];
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(L)); }catch(e){} }
+  function load(){
+    var x=null; try{ x=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){}
+    if(Array.isArray(x)){ L=x; return; }
+    var o={}; try{ o=JSON.parse(localStorage.getItem(OLD)||'{}')||{}; }catch(e){}
+    L=[]; parks().forEach(function(p,i){ var k=Number(p.coops)||0; for(var j=0;j<k;j++){ var c=Object.assign({},o[i+'-'+j]||{}); c.park=i; L.push(c); } });
+    save();
+  }
+  /* Le nombre de poulaillers de chaque parc (page Mon parc) reste cohérent avec la liste */
+  function reconcile(){
+    var P=parks(); L.forEach(function(c){ if(!(c.park>=0&&c.park<P.length)) c.park=0; });
+    P.forEach(function(p,i){ var want=Number(p.coops)||0, mine=L.filter(function(c){return c.park===i;});
+      while(mine.length<want){ var n={park:i}; L.push(n); mine.push(n); }
+      while(mine.length>want){ var r=mine.pop(); L.splice(L.lastIndexOf(r),1); } });
+    save();
+  }
+  function pushToParks(){
+    var P=parks(); P.forEach(function(p,i){ p.coops=L.filter(function(c){return c.park===i;}).length; });
+    try{ updateParkSummary(); }catch(e){} try{ window.v58Persist&&v58Persist(); }catch(e){}
+  }
+  function surf(c){ var l=parseFloat(c.l), w=parseFloat(c.w); if(!(l>0&&w>0)) return ''; return '🏡 Surface au sol : <b>'+(l*w/10000).toLocaleString('fr-FR',{maximumFractionDigits:2})+' m²</b>'; }
+  function title(c,n){ return c.name||('Poulailler '+n); }
+  function card(c,i){
+    var n=i+1, P=parks();
     function met(f,ic,lbl,max){ return '<div class="metric-field"><label><span class="v173-ic">'+ic+'</span>'+lbl+'</label><div class="metric-input-wrap"><input data-f="'+f+'" type="number" inputmode="decimal" min="0" max="'+max+'" value="'+esc(c[f])+'"><span class="metric-unit">cm</span></div></div>'; }
-    return '<div class="park-card" data-k="'+k+'"><div class="park-card-head"><span class="park-num">'+n+'</span><strong>Poulailler '+n+'</strong></div><div class="park-fields">'+
+    function chips(lbl,attr,items,cur,help){ return '<div class="park-popotes"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="park-popote-list">'+
+      items.map(function(it){ var on=String(cur)===String(it.v); return '<button type="button" '+attr+'="'+esc(it.v)+'" class="park-popote-chip'+(on?' on':'')+'">'+esc(it.t)+(on?' ✓':'')+'</button>'; }).join('')+
+      '</div><div class="field-help">'+help+'</div></div>'; }
+    return '<div class="park-card" data-i="'+i+'"><div class="park-card-head"><span class="park-num">'+n+'</span><strong data-title>'+esc(title(c,n))+'</strong></div><div class="park-fields">'+
+      '<div class="soft-field"><label class="v173-lbl">Son petit nom <i>(facultatif)</i></label><input data-f="name" type="text" maxlength="50" value="'+esc(c.name)+'" placeholder="Ex. La cabane, Le palace des copines…"></div>'+
       '<div class="soft-field"><label class="v173-lbl">Sa marque <i>(facultatif)</i></label><input data-f="brand" type="text" maxlength="60" value="'+esc(c.brand)+'" placeholder="Ex. Omlet, Gardenstyle, fait maison…"></div>'+
       '<div class="soft-field"><label class="v173-lbl">Son modèle <i>(facultatif)</i></label><input data-f="model" type="text" maxlength="60" value="'+esc(c.model)+'" placeholder="Nom du modèle"></div>'+
       '<div class="park-metrics">'+met('l','📏','Longueur',2000)+met('w','↔️','Largeur',2000)+met('h','↕️','Hauteur',500)+'</div>'+
       '<div class="field-help v277-surf" data-surf>'+surf(c)+'</div>'+
-      '<div class="park-popotes"><div class="park-popotes-title"><b>En quelle matière ?</b></div><div class="park-popote-list">'+
-        MATS.map(function(m){return '<button type="button" data-mat="'+m+'" class="park-popote-chip'+(c.mat===m?' on':'')+'">'+m+(c.mat===m?' ✓':'')+'</button>';}).join('')+
-      '</div><div class="field-help">Touchez la matière principale de ce poulailler.</div></div>'+
+      (P.length>1?chips('Dans quel parc ?','data-park',P.map(function(p,j){return {v:j,t:pname(j)};}),c.park,'Touchez le parc où se trouve ce poulailler.'):'')+
+      chips('En quelle matière ?','data-mat',MATS.map(function(m){return {v:m,t:m};}),c.mat||'','Touchez la matière principale de ce poulailler.')+
       '<div class="soft-field"><label class="v173-lbl">Prévu pour combien de poules ? <i>(facultatif)</i></label><input data-f="cap" type="number" min="0" max="200" value="'+esc(c.cap)+'" placeholder="Ex. 4"></div>'+
       '<div class="soft-field"><label class="v173-lbl">Une remarque ? <i>(facultatif)</i></label><input data-f="note" type="text" maxlength="140" value="'+esc(c.note)+'" placeholder="Ex. toit qui fuit, pondoir trop petit…"></div>'+
     '</div></div>';
   }
-  function render(){
-    var b=$('v272Body'); if(!b) return; var P=parks(), html='', n=0;
-    P.forEach(function(p,i){ var k=Number(p.coops)||0; if(!k) return; html+='<div class="v272-park">🌿 '+esc(p.name||('Parc '+(i+1)))+'</div>';
-      for(var j=0;j<k;j++){ n++; var key=i+'-'+j; html+=card(key,n,p.name,D[key]||{}); } });
-    if(!n) html='<div class="v272-empty">Aucun poulailler indiqué pour l’instant.<br>Indiquez le nombre de poulaillers de chaque parc dans « Mon parc ».<br><br><button type="button" class="secondary" onclick="go(\'parks\')">Aller à Mon parc</button></div>';
-    else html+='<button class="primary" type="button" onclick="v272Save()">Enregistrer mes poulaillers</button>';
-    html+='<button type="button" class="v272-none" onclick="go(\'coopgallery\')"><i>🔨</i><span><b>Je n’ai pas encore mon poulailler</b><small>Construire mon poulailler : modèles, achats et étapes pas à pas</small></span><span class="chev">›</span></button>';
-    b.innerHTML=html;
+  function summary(){
+    var s=$('v279Live'); if(!s) return; var n=L.length, a=0;
+    L.forEach(function(c){ var l=parseFloat(c.l), w=parseFloat(c.w); if(l>0&&w>0) a+=l*w/10000; });
+    s.textContent=n+' poulailler'+(n>1?'s':'')+(a?' · '+a.toLocaleString('fr-FR',{maximumFractionDigits:2})+' m² de surface au sol':'');
+    var d=$('v279Count'); if(d) d.textContent=n;
   }
+  function render(){
+    var b=$('v272Body'); if(!b) return;
+    b.innerHTML='<div class="park-count-card"><div class="park-count-copy"><b>Combien de poulaillers ?</b><span>Une cabane en bois, un poulailler du commerce, un abri fait maison… jusqu’à '+MAX+'.</span></div>'+
+      '<div class="park-stepper"><button type="button" onclick="v279Step(-1)" aria-label="Retirer un poulailler">−</button><strong id="v279Count">'+L.length+'</strong><button type="button" onclick="v279Step(1)" aria-label="Ajouter un poulailler">+</button></div></div>'+
+      L.map(card).join('')+
+      (L.length?'<div class="live-summary" id="v279Live"></div><button class="primary" type="button" onclick="v272Save()">Enregistrer mes poulaillers</button>':'')+
+      '<button type="button" class="v272-none" onclick="go(\'coopgallery\')"><i>🔨</i><span><b>Je n’ai pas encore mon poulailler</b><small>Construire mon poulailler : modèles, achats et étapes pas à pas</small></span><span class="chev">›</span></button>';
+    summary();
+  }
+  window.v279Step=function(d){
+    if(d>0&&L.length<MAX){ var P=parks(), best=0; L.push({park:P.length?Math.min(best,P.length-1):0}); }
+    else if(d<0&&L.length) L.pop();
+    save(); pushToParks(); render();
+  };
   function ensure(){
     if($('coops')) return;
     var sc=document.createElement('section'); sc.className='screen'; sc.id='coops';
@@ -14829,13 +14865,18 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
       '<div class="v273-hero"><img src="'+(window.V273_COOP||'')+'" alt="Poules dans leur poulailler"><div class="v273-hero-txt"><h2>Faisons l’état des lieux</h2><p>Racontez-nous en quelques mots comment est votre poulailler, ou vos poulaillers. Queen s’en sert pour adapter ses conseils à votre installation.</p></div></div>'+
       '<div class="v272-wrap" id="v272Body"></div>';
     var ref=$('parks'); (ref&&ref.parentNode?ref.parentNode:document.body).insertBefore(sc,ref?ref.nextSibling:null);
-    sc.addEventListener('input',function(e){ var f=e.target.getAttribute('data-f'); if(!f) return; var cd=e.target.closest('[data-k]'), k=cd.getAttribute('data-k'); D[k]=D[k]||{}; D[k][f]=e.target.value.trim(); save(D);
-      if(f==='l'||f==='w'){ var s=cd.querySelector('[data-surf]'); if(s) s.innerHTML=surf(D[k]); } });
-    sc.addEventListener('click',function(e){ var m=e.target.closest('[data-mat]'); if(!m) return; var cd=m.closest('[data-k]'), k=cd.getAttribute('data-k'); D[k]=D[k]||{};
-      D[k].mat=D[k].mat===m.getAttribute('data-mat')?'':m.getAttribute('data-mat'); save(D); cd.querySelectorAll('[data-mat]').forEach(function(x){ var on=x.getAttribute('data-mat')===D[k].mat; x.classList.toggle('on',on); x.textContent=x.getAttribute('data-mat')+(on?' ✓':''); }); });
+    sc.addEventListener('input',function(e){ var f=e.target.getAttribute('data-f'); if(!f) return; var cd=e.target.closest('[data-i]'); if(!cd) return; var i=+cd.getAttribute('data-i'), c=L[i]; if(!c) return;
+      c[f]=e.target.value.trim(); save();
+      if(f==='name'){ var t=cd.querySelector('[data-title]'); if(t) t.textContent=title(c,i+1); }
+      if(f==='l'||f==='w'){ var s=cd.querySelector('[data-surf]'); if(s) s.innerHTML=surf(c); summary(); } });
+    sc.addEventListener('click',function(e){ var m=e.target.closest('[data-mat],[data-park]'); if(!m) return; var cd=m.closest('[data-i]'); if(!cd) return; var i=+cd.getAttribute('data-i'), c=L[i]; if(!c) return;
+      if(m.hasAttribute('data-mat')){ var v=m.getAttribute('data-mat'); c.mat=c.mat===v?'':v; save();
+        cd.querySelectorAll('[data-mat]').forEach(function(x){ var on=x.getAttribute('data-mat')===c.mat; x.classList.toggle('on',on); x.textContent=x.getAttribute('data-mat')+(on?' ✓':''); }); }
+      else { c.park=+m.getAttribute('data-park'); save(); pushToParks();
+        cd.querySelectorAll('[data-park]').forEach(function(x){ var on=+x.getAttribute('data-park')===c.park; x.classList.toggle('on',on); x.textContent=pname(+x.getAttribute('data-park'))+(on?' ✓':''); }); } });
   }
-  window.v272Save=function(quiet){ save(D); if(!quiet){ try{ toast('Vos poulaillers ont été enregistrés ✓'); }catch(e){} } go('install'); };
-  window.v272Open=function(){ ensure(); D=load(); render(); go('coops'); try{ document.querySelectorAll('nav.bottom .nav').forEach(function(n,i){ n.classList.toggle('active',i===2); }); }catch(e){} };
+  window.v272Save=function(quiet){ save(); pushToParks(); if(!quiet){ try{ toast('Vos poulaillers ont été enregistrés ✓'); }catch(e){} } go('install'); };
+  window.v272Open=function(){ ensure(); load(); reconcile(); render(); go('coops'); try{ document.querySelectorAll('nav.bottom .nav').forEach(function(n,i){ n.classList.toggle('active',i===2); }); }catch(e){} };
   function menu(){
     var env=document.querySelector('#install .install-menu button[onclick="go(\'envsecurity\')"]'); if(!env||$('v272Row')) return;
     var build=document.querySelector('#install .install-menu button.signature'), img=build&&build.querySelector('img');
