@@ -6999,7 +6999,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=286;
+  var APP_V=287;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15110,4 +15110,6 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
   if(typeof save==='function') window.saveEgg=function(){ if(cur()>0&&cur()>left()){ warn(); return; } return save.apply(this,arguments); };
 })();
 </script>
+<style id="v287-parks-frame-css">#parks .v287-frame{background:#fdf6e7;padding:11px 13px 18px}#parks .v287-frame img{box-sizing:border-box;width:100%;border:3px solid #c9ddbf!important;border-radius:34px!important;box-shadow:0 0 0 2px rgba(201,221,191,.35),0 6px 14px rgba(80,60,30,.10)}</style>
+<script id="v287-parks-frame-js">(function(){function wrap(){var im=document.querySelector('#parks .v173-hero > img');if(!im||im.parentNode.classList.contains('v287-frame'))return;var f=document.createElement('div');f.className='v287-frame';im.before(f);f.appendChild(im);}wrap();document.addEventListener('DOMContentLoaded',wrap);var g=window.go;if(typeof g==='function')window.go=function(id){var r=g.apply(this,arguments);if(id==='parks')wrap();return r;};})();</script>
 </body></html>
