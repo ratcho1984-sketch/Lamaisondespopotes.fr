@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=294;
+  var APP_V=295;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11887,7 +11887,7 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
     // Conseils : guides approfondis
     const adv=document.querySelector('#advice .grid');
     if(adv&&!document.getElementById('v81Guides')){
-      adv.insertAdjacentHTML('afterend',`<div id="v81Guides"><h3 class="v81-h">Guides approfondis <span class="v81-lk">♛ Premium</span></h3>
+      adv.insertAdjacentHTML('afterend',`<div id="v81Guides"><h3 class="v81-h">Guides approfondis</h3>
         ${Object.entries(GUIDES).map(([k,g])=>`<button type="button" class="v81-guide" onclick="v81Open('guide','${k}')"><span class="v81-gic">${g.icon}</span><span><b>${esc(g.title)}</b><small>${esc(g.sub)}${g.allFree?' · <u>gratuit</u>':'<span class="v81-free-tag"> · <u>début gratuit</u></span>'}</small></span><span class="v81-chev">›</span></button>`).join('')}</div>`);
     }
     mount('#foodguide .food-disclaimer',{k:'food',pos:'beforebegin'},encart('food','Calendrier alimentaire & rappels','Quoi donner saison par saison, et rappels grit, coquilles, verdure'));
