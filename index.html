@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=292;
+  var APP_V=293;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11883,7 +11883,7 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
     const hero=document.querySelector('#home .h58-hero');
     if(hero&&!hero.querySelector('.v81-homeb')) hero.insertAdjacentHTML('beforeend','<button type="button" class="v81-homeb" onclick="v81Open(\'bilan\')" aria-label="Mon bilan du mois (Premium)">📊<span>♛</span></button>');
     const lay=document.getElementById('lay'); if(lay&&!lay.querySelector('.v81-mnt-lay')){ const d=document.createElement('div'); d.className='v81-mnt v81-mnt-lay'; d.innerHTML=encart('ponte','Voir l’évolution de la ponte','Graphiques sur 12 mois, poule par poule'); lay.appendChild(d); }
-    mount('#popotesGrid',{k:'hens',pos:'afterend'},encart('journal','Le journal de vos Popotes','Écrire une note, retrouver les observations, la mue, les photos…'));
+    mount('#popotesGrid',{k:'hens',pos:'afterend'},encart('journal','Le journal de vos Popotes','Écrire une note, retrouver les observations, le calendrier de ponte, la mue, les photos…'));
     // Conseils : guides approfondis
     const adv=document.querySelector('#advice .grid');
     if(adv&&!document.getElementById('v81Guides')){
