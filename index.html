@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=299;
+  var APP_V=300;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15225,4 +15225,8 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
   run();
 })();
 </script>
+<style id="v300-premium-open-css">/* v300 : en Premium, la fiche affiche directement tous les outils (plus de bouton « Outils Premium » à toucher) */
+.v81-prem #v81Tools .v81-tfree{display:none!important}
+.v81-prem #v81Tools .v81-tpanels{display:flex!important;flex-direction:column;gap:12px;margin-top:0!important}
+</style>
 </body></html>
