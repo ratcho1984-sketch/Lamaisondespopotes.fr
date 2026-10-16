@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=297;
+  var APP_V=298;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15203,4 +15203,26 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
 .v81-gate p{color:#6d5a78!important}
 .v81-gate button.primary{background:#fff6e0!important;color:#8a5d12!important;border:1.5px solid #f0d9a0!important;box-shadow:0 3px 10px rgba(138,93,18,.12)!important;font-weight:800}
 </style>
+<style id="v298-glance-compact-css">/* v298 : fiche Premium — « Ses pontes en un coup d'œil » resserré sur une ligne ; plus de bloc « Poids et couleur habituels » */
+#profile #v225Note,#profile #profileWeightRange,#profile .laying-glance .glance-head p{display:none!important}
+#profile .laying-glance{padding:14px 14px 12px!important}
+#profile .laying-glance .glance-head{margin-bottom:10px!important}
+#profile .laying-glance .glance-head h3{font-size:20px!important;margin:0!important}
+#profile .laying-glance .glance-grid{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:6px!important;margin:0 0 10px!important}
+#profile .laying-glance .glance-card{grid-column:auto!important;min-height:0!important;padding:8px 4px!important;border-radius:14px!important;text-align:center}
+#profile .laying-glance .glance-card .g-icon{font-size:18px!important;line-height:1!important;margin:0 0 3px!important;display:block}
+#profile .laying-glance .glance-card .g-icon .v226-egg{width:16px!important;height:20px!important}
+#profile .laying-glance .glance-card strong{font-size:17px!important;line-height:1.15!important;display:block;word-break:break-word}
+#profile .laying-glance .glance-card small{font-size:10.5px!important;line-height:1.2!important;display:block;margin-top:2px}
+#profile .laying-glance .glance-card small br{display:none}
+#profile .laying-glance .history-toggle{margin-top:0!important;padding:9px!important}
+</style>
+<script id="v298-glance-compact-js">
+(function(){
+  var L={profileEggs30d:'œufs · 30 j',profileAvgWeight:'poids moyen',profileUsualColor:'couleur',profileUnusual30d:'inhabituel(s)'};
+  function run(){ Object.keys(L).forEach(function(id){ var s=document.getElementById(id); var sm=s&&s.parentNode.querySelector('small'); if(sm&&sm.textContent!==L[id]) sm.textContent=L[id]; }); }
+  var base=window.renderHenProfile; if(typeof base==='function') window.renderHenProfile=function(){ var r=base.apply(this,arguments); try{ run(); }catch(e){} return r; };
+  run();
+})();
+</script>
 </body></html>
