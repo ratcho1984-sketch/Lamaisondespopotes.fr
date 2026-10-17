@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=303;
+  var APP_V=304;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11483,6 +11483,7 @@ renderStarterStep = function(){
   window.elodieOfferHTML=elodieOffer;
   F.export={icon:'📥',title:'Exporter mon historique',pitch:'Téléchargez tout l’historique de vos pontes dans un tableur.',bullets:['Toutes vos pontes, date par date','Poule par poule, avec l’aspect et les détails','À ouvrir dans un tableur ou à garder en sauvegarde'],action(){ try{ (window.v242ExportBase||window.v81Export)(); }catch(e){} }};
   F.traitement={icon:'💊',title:'Suivi des traitements',pitch:'Vitamines, vermifuge ou traitement médical : notez le produit, la dose exacte, les dates, la photo de l’ordonnance, et recevez un rappel chaque jour de traitement.',bullets:['Vitamines, vermifuge et traitements médicaux','Le produit et la dose exacte à donner','Un rappel à l’ouverture de l’appli chaque jour de traitement','La photo de l’ordonnance toujours sous la main'],action(){ try{ var h=currentProfileHen&&currentProfileHen(); if(h&&document.getElementById('v245Row')&&document.querySelector('#profile.active, #profile.screen.active')) v245Open(); else { go('hens'); toast('Choisissez une Popote, puis « Traitement actuel » sur sa fiche'); } }catch(e){} }};
+  F.parcplus={icon:'🛡️',title:'Aller plus loin pour votre parc',pitch:'Des solutions supplémentaires pour protéger vos poules et aménager votre parc.',bullets:['Clôtures et prédateurs au sol : poteaux, grillage, hauteur, fil électrique','Prédateurs du ciel : filet, ballons effaroucheurs, leurre de grand-duc','Les arbres et arbustes à planter, et ceux à éviter','Des idées d’aménagement selon la surface de votre parc'],action(){ try{ go('parkplus'); }catch(e){} }};
   F.oeufinfo={icon:'🥚',title:'Détails de chaque œuf',pitch:'Notez le poids, la taille, la couleur, les particularités et la photo de chaque œuf.',bullets:['Poids, taille et couleur de l’œuf','Particularités et photo d’un œuf inhabituel','Un historique précis pour chaque Popote'],action(){ try{ toggleEggExtraInfo(true); }catch(e){} }};
   F.guide={icon:'📚',title:'Guide approfondi',free:true,
     pitch:'Des guides complets, pas à pas, écrits à partir de notre expérience et de l’observation.',
@@ -11905,7 +11906,7 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
   }
 
   /* ---------- Page Premium : liste des services + mode test ---------- */
-  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['bilan','Bilan du mois'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements et rappel quotidien (vitamines, vermifuge, médical)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['food','Calendrier alimentaire et rappels'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon vos Popotes'],['compare','Comparateur de races']];
+  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['parcplus','Aller plus loin pour votre parc : prédateurs, plantes, surface'],['bilan','Bilan du mois'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements et rappel quotidien (vitamines, vermifuge, médical)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['food','Calendrier alimentaire et rappels'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon vos Popotes'],['compare','Comparateur de races']];
   function renderPremiumPage(){
     const list=document.querySelector('#premium .pm-list');
     if(list) list.innerHTML=PM_LIST.map(([k,t])=>`<button type="button" class="pm-item v81-pmi" onclick="v81Open('${k}')"><span class="pm-ic">${F[k].icon}</span><div><b>${esc(t)}</b><small>${esc(F[k].pitch)}</small></div><span class="v81-chev">›</span></button>`).join('');
@@ -13755,7 +13756,7 @@ window.VetSource = {
   const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const card=(x,bad)=>`<div class="v214-card${bad?' bad':''}"><span class="e">${x[0]}</span><div><h4>${esc(x[1])}${x[2]?` <span class="lat">${esc(x[2])}</span>`:''}</h4><p>${esc(x[3])}</p><div class="v214-tags">${x[4].map(t=>`<span>${esc(t)}</span>`).join('')}</div></div></div>`;
   const sec=document.createElement('section'); sec.className='screen'; sec.id='plantes';
-  sec.innerHTML=`<div class="top"><button class="back" onclick="go('parktour')">‹</button><div class="title">Plantes et arbustes</div></div>
+  sec.innerHTML=`<div class="top"><button class="back" onclick="go('parkplus')">‹</button><div class="title">Plantes et arbustes</div></div>
   <p class="v214-lead">Des arbustes de 1 à 2 m dans le parc donnent de l'ombre l'été, coupent le vent et offrent des cachettes contre les rapaces. Voici ceux qui poussent vite, et ceux à éviter absolument.</p>
   <div class="v214-seg" role="tablist"><button type="button" data-t="good" class="on">🌿 À planter</button><button type="button" data-t="bad" class="bad">☠️ À éviter</button></div>
   <div id="v214Good">${GOOD.map(x=>card(x,false)).join('')}
@@ -13779,8 +13780,6 @@ window.VetSource = {
     document.getElementById('v214Good').hidden=b.dataset.t!=='good'; document.getElementById('v214Bad').hidden=b.dataset.t!=='bad'; });
   const mk=()=>{ const b=document.createElement('button'); b.type='button'; b.className='v214-btn'; b.setAttribute('onclick',"go('plantes')");
     b.innerHTML='<span class="ic">🌳</span><span><b>Plantes et arbustes pour le parc</b><small>Ceux qui abritent, ceux à éviter (toxiques)</small></span><i>›</i>'; return b; };
-  const intro=document.querySelector('#parkTourIntroView .primary'); if(intro) intro.after(mk());
-  const res=document.getElementById('parkElodieCard'); if(res) res.after(mk());
 })();
 </script>
 
@@ -15234,4 +15233,76 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
 .v81-prem #v81Tools .v81-tfree{display:none!important}
 .v81-prem #v81Tools .v81-tpanels{display:flex!important;flex-direction:column;gap:12px;margin-top:0!important}
 </style>
+<style id="v304-parkplus-css">
+#parkplus .v304-intro{background:linear-gradient(135deg,#faf5fd,#f3eafa);border:1.5px solid var(--v81-vi3,#dccbec);border-radius:22px;padding:16px;margin:4px 0 14px}
+#parkplus .v304-intro h2{margin:0 0 6px;font:700 23px/1.2 Georgia,"Times New Roman",serif;color:#3b1d4a}
+#parkplus .v304-intro p{margin:0;font-size:14.5px;line-height:1.45;color:#5d4a68}
+#parkplus .v304-card{background:#fffdf8;border:1px solid #e5dac8;border-radius:20px;padding:14px 16px;margin:0 0 14px}
+#parkplus .v304-card h3{margin:0 0 8px;font:800 18px/1.25 Georgia,serif;color:#1f4d34}
+#parkplus .v304-card p{margin:0 0 8px;font-size:14.5px;line-height:1.5;color:#3d4a40}
+#parkplus .v304-card ul{margin:0;padding-left:18px}
+#parkplus .v304-card li{font-size:14.5px;line-height:1.5;color:#3d4a40;margin:0 0 7px}
+#parkplus .v304-card li b{color:#1f4d34}
+#parkplus .v304-note{background:#f4efe6;border-radius:14px;padding:10px 12px;font-size:13.5px;line-height:1.45;color:#5d5444;margin-top:8px}
+#parkplus .v304-surf{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 10px}
+#parkplus .v304-surf div{background:#f1f7ef;border:1px solid #cfe0cf;border-radius:14px;padding:8px 4px;text-align:center}
+#parkplus .v304-surf b{display:block;font-size:19px;color:#1f4d34}#parkplus .v304-surf small{font-size:11.5px;color:#5d6b60}
+#parkplus .v304-tier{border-left:4px solid #2f7a4a;padding:4px 0 4px 10px;margin:6px 0 10px}
+#parkplus .v304-tier.on{background:#f1f7ef;border-radius:0 12px 12px 0}
+#parkplus .v304-tier b{display:block;font-size:14.5px;color:#1f4d34}
+#parkplus .v304-tier span{font-size:14px;line-height:1.45;color:#3d4a40}
+#parkplus .v214-btn{margin:4px 0 0}
+#parktour .v304-enc{margin:16px 0 4px}
+</style>
+<script id="v304-parkplus-js">
+/* v304 : « Aller plus loin pour votre parc » (Premium) — encart violet en fin de résultat + page #parkplus */
+(function(){
+  if(document.getElementById('parkplus')) return;
+  var tour=document.getElementById('parktour'); if(!tour) return;
+  var sec=document.createElement('section'); sec.className='screen'; sec.id='parkplus';
+  sec.innerHTML='<div class="top"><button class="back" onclick="go(\'parktour\')">‹</button><div class="title">Aller plus loin</div></div>'+
+  '<div class="v304-intro"><h2>Aller plus loin pour votre parc</h2><p>Des solutions supplémentaires contre les prédateurs, les plantes à installer, et des idées d’aménagement selon la surface de votre parc.</p></div>'+
+  '<div class="v304-card"><h3>🌳 Plantes et arbustes</h3><p>Ceux qui donnent de l’ombre et des cachettes, et ceux à éviter parce qu’ils sont toxiques.</p>'+
+    '<button type="button" class="v214-btn" onclick="go(\'plantes\')"><span class="ic">🌳</span><span><b>Plantes et arbustes pour le parc</b><small>Ceux qui abritent, ceux à éviter (toxiques)</small></span><i>›</i></button></div>'+
+  '<div class="v304-card"><h3>🦊 Clôtures et prédateurs au sol</h3><p>Renard, fouine, chien errant, rat : la clôture est la première protection.</p><ul>'+
+    '<li><b>Des poteaux solides</b>, bien ancrés dans le sol, tous les 2 à 2,5 m environ, pour que le grillage reste tendu.</li>'+
+    '<li><b>Un grillage soudé</b> plutôt qu’un simple grillage à poules, qu’un renard peut déchirer.</li>'+
+    '<li><b>Une hauteur d’au moins 1,50 m</b>. Si les renards sont nombreux chez vous, visez plutôt 1,80 m.</li>'+
+    '<li><b>Une maille fine en bas</b> : 2,5 cm maximum sur le bas de la clôture, car une fouine passe par de très petits trous. Autour du poulailler, une maille d’environ 13 mm arrête aussi les rats.</li>'+
+    '<li><b>Contre ceux qui creusent</b> : enterrez le grillage sur 30 à 40 cm, ou repliez-le au sol vers l’extérieur sur 40 à 50 cm.</li>'+
+    '<li><b>Un fil électrique</b> en complément : un fil à environ 20 cm du sol, côté extérieur, et un en haut de la clôture. Utilisez un électrificateur prévu pour les animaux et signalez la clôture.</li>'+
+    '<li><b>Le soir</b> : fermez le poulailler chaque nuit. Une porte automatique évite les oublis.</li></ul></div>'+
+  '<div class="v304-card"><h3>🦅 Prédateurs venus du ciel</h3><p>Buse, épervier ou autour attaquent surtout les jeunes et les petites poules, dans les parcs très dégagés.</p><ul>'+
+    '<li><b>Un filet de volière</b> tendu au-dessus du parc, ou au moins au-dessus d’une partie, reste la protection la plus sûre.</li>'+
+    '<li><b>Des ballons effaroucheurs</b> (ballons « anti-buse ») : changez-les de place régulièrement pour qu’ils restent efficaces.</li>'+
+    '<li><b>Un leurre de hibou grand-duc</b>, comme un épouvantail : déplacez-le tous les 2 ou 3 jours, sinon les rapaces s’y habituent vite.</li>'+
+    '<li><b>Des cachettes partout</b> : buissons, abris bas, palettes. Une poule qui voit un rapace doit pouvoir se mettre à couvert en quelques secondes.</li></ul>'+
+    '<div class="v304-note">Les rapaces sont des espèces protégées en France : on les éloigne, on ne leur fait jamais de mal.</div></div>'+
+  '<div class="v304-card" id="v304Surf"></div>'+
+  '<div class="elodie-slot"></div>';
+  (document.getElementById('plantes')||tour).after(sec);
+  function surf(){
+    var box=document.getElementById('v304Surf'); if(!box) return;
+    var t={area:0,hens:0}; try{ t=parkTotals(); }catch(e){}
+    var hens=t.hens||(popotes||[]).filter(function(h){ return h.sex!=='coq'; }).length, area=Number(t.area)||0, per=hens&&area?Math.round(area/hens*10)/10:0;
+    var tier=!per?-1:per<5?0:per<10?1:2;
+    var T=[['Moins de 5 m² par poule','Un petit espace : l’enrichissement fait toute la différence. Plusieurs perchoirs à différentes hauteurs, des cachettes, un coin à gratter renouvelé souvent (feuilles, paille, broyat), et si possible des sorties surveillées dans le jardin.'],
+           ['De 5 à 10 m² par poule','Organisez des zones bien distinctes : un coin bain de poussière, un coin pour gratter, une zone d’ombre et des abris. Mettez du broyat dans les passages pour éviter la boue.'],
+           ['10 m² par poule ou plus','La surface souvent conseillée pour un parc enherbé. Si vous pouvez, divisez le parc en deux pour laisser l’herbe repousser à tour de rôle, et plantez des arbustes pour l’ombre et les cachettes.']];
+    box.innerHTML='<h3>📐 Aménager selon la surface</h3>'+
+      (per?'<div class="v304-surf"><div><b>'+area+' m²</b><small>de parc</small></div><div><b>'+hens+'</b><small>poule'+(hens>1?'s':'')+'</small></div><div><b>'+String(per).replace('.',',')+' m²</b><small>par poule</small></div></div>'
+          :'<p>Renseignez la surface de votre parc dans « Mon parc » et vos poules dans « Mes Popotes » pour voir où vous en êtes.</p>')+
+      T.map(function(x,i){ return '<div class="v304-tier'+(i===tier?' on':'')+'"><b>'+(i===tier?'👉 ':'')+x[0]+'</b><span>'+x[1]+'</span></div>'; }).join('');
+    var slot=sec.querySelector('.elodie-slot'); if(slot&&!slot.innerHTML&&window.elodieOfferHTML) slot.innerHTML=elodieOfferHTML();
+  }
+  var g=window.go; if(typeof g==='function') window.go=function(id){ if(id==='parkplus'&&window.v81IsPremium&&!v81IsPremium()){ try{ v81Lock('parcplus'); }catch(e){} return; } var r=g.apply(this,arguments); if(id==='parkplus') surf(); return r; };
+  /* Encart violet en fin de résultat, avant la carte d'Élodie */
+  var el=document.getElementById('parkElodieCard');
+  if(el&&!document.getElementById('v304Enc')){
+    var d=document.createElement('div'); d.id='v304Enc'; d.className='v304-enc';
+    d.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Aller plus loin pour votre parc</b><small>Solutions contre tous les prédateurs, arbres et arbustes à planter, aménagement selon la surface</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
+    el.before(d);
+  }
+})();
+</script>
 </body></html>
