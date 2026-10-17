@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=312;
+  var APP_V=313;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13713,76 +13713,55 @@ window.VetSource = {
 #plantes .v214-h{margin:18px 2px 4px;font:800 17px/1.3 Georgia,serif;color:#1f4d34}
 #plantes .v214-note{font-size:12.5px;color:#7a7060;margin:10px 2px}
 </style>
+<style id="v313-plantes-css">
+#plantes .v313-pills{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 4px}
+#plantes .v313-pills span{border-radius:999px;padding:3px 9px;font-size:12px;font-weight:800;border:1px solid transparent}
+#plantes .v313-pills .c{background:#efe3d3;color:#6b4423;border-color:#dcc6a8}
+#plantes .v313-pills .o{background:#fff1c9;color:#7a5a08;border-color:#f0d78a}
+#plantes .v313-pills .f{background:#e8f2e3;color:#1f4d34;border-color:#cfe0cf}
+#plantes .v313-pills .x{background:#eef3f8;color:#2d4a63;border-color:#d3e0ec}
+#plantes .v313-pills .t{background:#fbe3df;color:#8c2f26;border-color:#efc2ba}
+#plantes .v313-dl{margin:6px 0 0;font-size:14px;line-height:1.45;color:#3d4a40}
+#plantes .v313-dl dt{font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;color:#7a7060;margin-top:6px}
+#plantes .v214-card.bad .v313-dl dt{color:#9b5a50}
+#plantes .v313-dl dd{margin:1px 0 0}
+</style>
 <script id="v214-plantes-js">
 (function(){
   const tour=document.getElementById('parktour'); if(!tour||document.getElementById('plantes')) return;
   const GOOD=[
-    ['🫐','Cassissier, groseillier','Ribes',"Pousse vite et fait une touffe dense où les poules se glissent pour se reposer à l'ombre. Petits fruits à picorer.",['1 à 1,5 m','Pousse vite','Fruits'],'oc'],
-    ['🟢','Groseillier à maquereau','Ribes uva-crispa',"Ses épines en font une cachette sûre : les poules s'y abritent, les rapaces n'y entrent pas.",['≈ 1 m','Fruits'],'c'],
-    ['🍓','Framboisier','Rubus idaeus',"Très rapide : il drageonne et forme un fourré dès la 2e année. Il repousse même si les poules le malmènent.",['≈ 1,5 m','Très rapide','Fruits'],'oc'],
-    ['🫐','Mûre sans épines','Rubus fruticosus',"Pousse très vite, à palisser sur le grillage pour faire un écran vert. Les poules adorent les mûres tombées.",['1,5 à 2 m','Très rapide','Écran'],'o'],
-    ['🌿','Saule pourpre nain (osier)','Salix purpurea « Nana »',"Un des arbustes les plus rapides, il aime les coins humides. Se taille facilement et repart toujours.",['1 à 1,5 m','Très rapide','Sol humide'],'oc'],
-    ['🍂','Chalef','Elaeagnus × ebbingei',"Persistant, rustique, pousse vite et supporte la sécheresse. Il fait une haie brise-vent toute l'année.",['1,5 à 2 m','Pousse vite','Persistant'],'oc'],
-    ['🎋','Bambou non traçant','Fargesia',"Écran dense et persistant qui coupe le vent. Choisissez bien une variété non traçante, et taillez à la hauteur voulue.",['Taillé à 2 m','Pousse vite','Persistant'],'oc'],
-    ['🌺','Hibiscus de Syrie','Hibiscus syriacus',"Arbuste rustique, ombre légère l'été et fleurs comestibles appréciées des poules.",['1,5 à 2 m','Fleurs comestibles'],'o'],
-    ['🌾','Graminées hautes','Miscanthus',"Atteint sa hauteur en une saison. Les poules aiment se poser dans ces touffes à l'ombre. On coupe au printemps.",['1,5 à 2 m','En 1 saison','Ombre légère'],'oc'],
-    ['🌻','Topinambour, tournesol','Helianthus',"Le plus rapide de tous : un abri d'été en quelques semaines. Les graines de tournesol sont une friandise.",['Abri d’été','En quelques semaines'],'o'],
-    ['🌿','Romarin, lavande, thym, menthe, mélisse','Aromatiques',"Petites touffes qui parfument le parc et attirent les insectes. En bordure ou dans un coin protégé.",['Bas','Bordure','Insectes']],
-    ['🌸','Camélia du Japon','Camellia japonica',"Persistant, répertorié non toxique pour les volailles. Choisissez une grande variété rustique, à mi-ombre et à l'abri des vents froids, en sol acide à neutre, frais et drainé, avec des passages sous les branches.",['Persistant','Mi-ombre','Sol acide à neutre'],'oc'],
-    ['🎋','Bambou non traçant','Fargesia murielae',"Persistant. Choisissez une variété adaptée aux températures minimales de chez vous, à mi-ombre, en sol frais et drainé, à l'abri des vents desséchants. Préférez un port arqué qui laisse un espace accessible sous les cannes.",['Persistant','Résiste au froid','Sol frais et drainé'],'oc'],
-    ['🎋','Bambou non traçant','Fargesia robusta',"Persistant, en sol frais et drainé, dans un emplacement abrité, avec une variété adaptée aux gelées de chez vous. Arrosez pendant les périodes sèches. Attention : une touffe trop compacte ne constitue pas un refuge accessible.",['Persistant','Abrité','Arrosage l’été'],'oc'],
-    ['🍓','Arbousier','Arbutus unedo',"Persistant, adapté à la sécheresse une fois installé, mais il craint l'eau stagnante : sol bien drainé. Choisissez une forme de grand développement et ménagez des passages sous les branches. Compatibilité documentée chez les oiseaux, mais les données spécifiques aux poules sont limitées.",['Persistant','Résiste à la sécheresse','Sol bien drainé'],'o'],
-    ['🫒','Olivier','Olea europaea',"Persistant, adapté au soleil et aux sols drainés. Choisissez une couronne assez large pour offrir un véritable ombrage. Avec réserve : ramassez les olives tombées, la sécurité des noyaux est insuffisamment documentée chez les poules.",['Persistant','Soleil','Sol drainé'],'o'],
-    ['🌳','Magnolia persistant','Magnolia grandiflora',"Pour les grands terrains. Choisissez une variété rustique adaptée à votre région, en sol profond restant suffisamment frais, avec une couronne large et accessible dessous.",['Persistant','Grand terrain','Sol profond'],'o'],
-    ['🌲','Épicéa commun','Picea abies',"Très résistant au froid. Uniquement pour les très grands terrains, car il devient un grand arbre. Conservez un couvert bas tout en ménageant des passages pour les poules.",['Persistant','Très résistant au froid','Très grand terrain'],'oc']
-  ];
-  const TREES=[
-    ['🌳','Saule','Salix alba, Salix caprea',"Un des arbres qui poussent le plus vite (jusqu'à 1 m par an). Il aime les sols frais et fait vite une ombre légère. Taillé en têtard, il reste à hauteur raisonnable.",['Arbre','Jusqu’à 1 m par an','Sol frais'],'o'],
-    ['🍇','Mûrier','Morus alba, Morus nigra',"Pousse vite et donne une ombre épaisse l'été. Ses mûres tombées au sol sont un régal pour les poules. Le mûrier platane (sans fruits) fait aussi un bel arbre d'ombre.",['Arbre','Pousse vite','Fruits'],'o']
+    ['🌸','Camélia du Japon','Camellia japonica',['Cachette','Ombre','Persistant','Exposition : mi-ombre'],"Cachette et ombre, une fois développé.","Mi-ombre ; sol acide à neutre, frais et drainé ; emplacement abrité.","Choisissez une variété de grand développement et conservez des passages sous les branches."],
+    ['🌺','Hibiscus de Syrie','Hibiscus syriacus',['Cachette','Ombre d’été','Caduc','Exposition : soleil'],"Cachette et ombre légère en été.","Soleil ; sol drainé, avec de l’eau pendant les sécheresses.","Choisissez un port large, plutôt qu’une variété étroite ou naine. Le couvert disparaît en hiver."],
+    ['🌳','Mûrier blanc','Morus alba',['Ombre d’été','Caduc','Exposition : soleil'],"Ombre d’été ; cachette surtout si les branches restent assez basses.","Soleil ; terrain suffisamment grand, sol drainé.","Arbre de grand développement : vérifiez la place disponible à maturité."],
+    ['🌿','Romarin','Salvia rosmarinus',['Persistant','Exposition : soleil'],"Floraison pour les pollinisateurs, plantation complémentaire.","Soleil ; sol très drainé ; protection contre les froids importants selon la variété.","Ce n’est pas une cachette garantie, ni un antiparasitaire."],
+    ['🍃','Mélisse','Melissa officinalis',['Saisonnier','Exposition : soleil ou mi-ombre'],"Floraison pour les pollinisateurs, diversité végétale.","Soleil ou mi-ombre ; sol plutôt frais.","Ne forme pas de refuge dessous. Peut s’étendre et se ressemer."]
   ];
   const BAD=[
-    ['☠️','If','Taxus baccata',"Feuillage et graines très toxiques pour les animaux. À retirer du parc.",['Très toxique']],
-    ['☠️','Laurier-rose','Nerium oleander',"Très toxique, même en petite quantité. Fréquent dans le Sud : à garder hors du parc.",['Très toxique']],
-    ['☠️','Laurier-cerise (laurier palme)','Prunus laurocerasus',"Feuilles et noyaux toxiques. Souvent utilisé en haie : vérifiez votre clôture.",['Toxique','Haies']],
-    ['☠️','Cytise','Laburnum',"Graines et gousses très toxiques.",['Très toxique']],
-    ['☠️','Ricin','Ricinus communis',"Graines extrêmement toxiques.",['Très toxique']],
-    ['⚠️','Buis','Buxus',"Toutes les parties sont toxiques.",['Toxique','Haies']],
-    ['⚠️','Thuya','Thuja',"Feuillage toxique. Courant en haie de jardin.",['Toxique','Haies']],
-    ['⚠️','Rhododendron, azalée','Rhododendron',"Feuilles et fleurs toxiques.",['Toxique']],
-    ['⚠️','Lierre','Hedera helix',"Feuilles et baies toxiques. Il grimpe vite sur les grillages et les abris.",['Toxique','Grimpant']],
-    ['⚠️','Troène','Ligustrum',"Baies noires toxiques. Plante de haie très répandue.",['Toxique','Haies']],
-    ['⚠️','Fusain','Euonymus',"Feuilles et fruits toxiques. Arbuste de haie très courant.",['Toxique','Haies']],
-    ['⚠️','Hortensia','Hydrangea',"Feuilles et fleurs toxiques.",['Toxique']],
-    ['⚠️','Robinier (faux acacia)','Robinia pseudoacacia',"Écorce, graines et feuilles toxiques.",['Toxique']],
-    ['⚠️','Muguet, digitale','Convallaria, Digitalis',"Toxiques pour le cœur, même en petite quantité.",['Toxique']],
-    ['⚠️','Datura','Datura',"Toutes les parties sont toxiques.",['Toxique']],
-    ['⚠️','Fougère aigle','Pteridium aquilinum',"Toxique si elle est mangée régulièrement.",['Toxique']],
-    ['⚠️','Avocatier','Persea americana',"Feuilles, peau et noyau toxiques pour les oiseaux.",['Toxique']],
-    ['⚠️','Parties vertes de pomme de terre et de tomate','Solanacées',"Feuilles, tiges et pommes de terre vertes ou germées sont toxiques. Ne les mettez pas dans le parc ni au compost des poules.",['Toxique','Potager']]
+    ['☠️','Laurier-rose','Nerium oleander',"Contient des substances toxiques pour le cœur.","Toute la plante, fraîche ou sèche, y compris les déchets de taille."],
+    ['☠️','If','Taxus spp.',"Toxicité pouvant provoquer des troubles cardiaques graves.","Feuilles, rameaux, écorce et graines. La chair rouge autour de la graine ne rend pas le fruit entier sûr."],
+    ['☠️','Rhododendrons et azalées','Rhododendron spp.',"Contiennent des grayanotoxines.","Feuilles, fleurs et autres parties ; le nectar également."],
+    ['☠️','Ricin','Ricinus communis',"Contient de la ricine, une toxine très puissante.","Graines particulièrement dangereuses ; plante à maintenir hors d’accès."],
+    ['☠️','Laurier-cerise ou laurier-palme','Prunus laurocerasus',"Contient des composés pouvant libérer du cyanure.","Notamment les feuilles et les graines. Ne déposez jamais les tailles dans le parc."],
+    ['☠️','Avocatier','Persea americana',"Contient de la persine ; les oiseaux y sont particulièrement sensibles.","Feuilles, tiges, fruits et graines."]
   ];
   const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const mk307=x=>x[5]?`<div class="v307-mk">${x[5].includes('o')?'<span class="o">☀️ Donne de l’ombre</span>':''}${x[5].includes('c')?'<span class="c">🛡️ Fait une cachette</span>':''}</div>`:'';
-  const card=(x,bad)=>`<div class="v214-card${bad?' bad':''}"><span class="e">${x[0]}</span><div><h4>${esc(x[1])}${x[2]?` <span class="lat">${esc(x[2])}</span>`:''}</h4>${bad?'<div class="v307-mk"><span class="t">☠️ Toxique, à éviter</span></div>':mk307(x)}<p>${esc(x[3])}</p><div class="v214-tags">${x[4].map(t=>`<span>${esc(t)}</span>`).join('')}</div></div></div>`;
+  const pill=t=>{const c=t==='Cachette'?'c':/^Ombre/.test(t)?'o':/^Exposition/.test(t)?'x':'f';return `<span class="${c}">${esc(t)}</span>`;};
+  const head=x=>`<span class="e">${x[0]}</span><div><h4>${esc(x[1])} <span class="lat">${esc(x[2])}</span></h4>`;
+  const good=x=>`<div class="v214-card">${head(x)}<div class="v313-pills">${x[3].map(pill).join('')}</div><dl class="v313-dl"><dt>Intérêt</dt><dd>${esc(x[4])}</dd><dt>Conditions</dt><dd>${esc(x[5])}</dd><dt>Conseil</dt><dd>${esc(x[6])}</dd></dl></div></div>`;
+  const bad=x=>`<div class="v214-card bad">${head(x)}<div class="v313-pills"><span class="t">☠️ Toxique</span></div><dl class="v313-dl"><dt>Pourquoi l’éviter</dt><dd>${esc(x[3])}</dd><dt>Parties concernées</dt><dd>${esc(x[4])}</dd></dl></div></div>`;
   const sec=document.createElement('section'); sec.className='screen'; sec.id='plantes';
   sec.innerHTML=`<div class="top"><button class="back" onclick="go('parkplus')">‹</button><div class="title">Plantes et arbustes</div></div>
-  <p class="v214-lead">Des arbustes de 1 à 2 m dans le parc donnent de l'ombre l'été, coupent le vent et offrent des cachettes contre les rapaces. Pour chaque plante, nous indiquons si elle <b>donne de l’ombre ☀️</b>, si elle <b>fait une cachette 🛡️</b>, ou si elle est <b>à éviter parce qu’elle est toxique ☠️</b>.</p>
-  <div class="v214-seg" role="tablist"><button type="button" data-t="good" class="on">🌿 À planter</button><button type="button" data-t="bad" class="bad">☠️ À éviter</button></div>
-  <div id="v214Good">${GOOD.map(x=>card(x,false)).join('')}
-    <h3 class="v214-h">🌳 Et pour un peu plus d'ombre : 2 arbres qui poussent vite</h3>
-    ${TREES.map(x=>card(x,false)).join('')}
-    <div class="v214-box v214-how"><b>🪴 Pour que vos plantations tiennent</b><ul>
-      <li>Les poules grattent au pied des jeunes plants : protégez la base avec un grillage ou de grosses pierres la première année.</li>
-      <li>Plantez de préférence à l'automne, quand la terre est encore chaude et humide.</li>
-      <li>Répartissez plusieurs abris dans le parc, pas un seul : chaque poule pourra trouver sa place.</li></ul></div>
+  <div class="v214-seg" role="tablist"><button type="button" data-t="good" class="on">🌿 À planter</button><button type="button" data-t="bad" class="bad">🚫 À éviter</button></div>
+  <div id="v214Good">
+    <p class="v214-lead">Cette sélection concerne les poules : elle ne vaut pas automatiquement pour toutes les volailles. Les trois premières apportent un couvert ; les deux suivantes complètent le jardin.</p>
+    ${GOOD.map(good).join('')}
+    <div class="v214-box v214-how"><b>Pourquoi ces cinq-là ?</b>Le camélia du Japon, l’hibiscus de Syrie et la mélisse sont répertoriés dans une liste de plantes non toxiques pour les volailles. Pour le mûrier blanc et le romarin, des travaux ont étudié l’incorporation des feuilles dans l’alimentation des poules. Ces éléments soutiennent leur sélection pour une plantation accessible et un picorage occasionnel, sans garantir une consommation illimitée de toutes les parties.<br><br>Les besoins de culture restent essentiels, notamment le sol frais du camélia et de la mélisse, et le drainage du romarin.</div>
   </div>
   <div id="v214Bad" hidden>
-    <div class="v214-box v214-vet"><b>Liste indicative, pas complète</b>Une poule qui a de quoi manger évite souvent les plantes toxiques, mais ne prenez pas de risque : ne les gardez pas dans le parc ni à portée de bec à travers le grillage. Vérifiez aussi les haies des voisins qui débordent.</div>
-    ${BAD.map(x=>card(x,true)).join('')}
-  </div>
-  <div class="v214-box v214-tip"><b>🔍 Le regard d'Élodie</b>Une zone du parc où les poules ne vont jamais est souvent une zone trop découverte : elles s'y sentent exposées au ciel. Un arbuste ou un abri au milieu suffit parfois pour qu'elles se mettent à l'explorer. Observez où elles se posent l'après-midi : c'est là qu'elles se sentent bien.</div>
-  <div class="v214-box v214-vet"><b>🩺 Une poule a mangé une plante suspecte ?</b>Appelez votre vétérinaire dès qu'une poule montre un comportement inhabituel. Une poule immobile, en boule ou debout sans bouger : vétérinaire tout de suite. Si possible, gardez un morceau de la plante pour la montrer.</div>
-  <p class="v214-note">En cas de doute sur une plante, mieux vaut l'éviter et demander conseil à une jardinerie ou à votre vétérinaire.</p>`;
-  window.V214_BAD=BAD; window.V214_CARD=card;
+    <p class="v214-lead">Ces plantes ne doivent pas se trouver dans le parc accessible aux poules. Leurs risques sont documentés par des références vétérinaires, dont des sources de médecine aviaire et un centre antipoison animal.</p>
+    ${BAD.map(bad).join('')}
+    <div class="v214-box v214-vet"><b>🩺 Liste non exhaustive</b>En cas d’ingestion suspectée d’une plante toxique, contactez rapidement un vétérinaire, sans attendre l’apparition de signes. Gardez une photo et le nom de la plante.</div>
+  </div>`;
   tour.after(sec);
   sec.querySelector('.v214-seg').addEventListener('click',e=>{ const b=e.target.closest('[data-t]'); if(!b) return;
     sec.querySelectorAll('.v214-seg button').forEach(x=>x.classList.toggle('on',x===b));
