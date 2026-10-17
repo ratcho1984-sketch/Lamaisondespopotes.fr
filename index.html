@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=307;
+  var APP_V=308;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15290,11 +15290,18 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     ['conti','🌡️','Chaud l’été, froid l’hiver','Centre et Est : étés chauds, hivers froids avec des gelées.'],
     ['froid','🏔️','Froid et montagne','Altitude : hivers longs et enneigés, fortes gelées.']
   ];
+  const LISTS={
+    chaud:[
+      ['🍓','Arbousier','Arbutus unedo',"Persistant, adapté à la sécheresse une fois installé. Choisissez une forme de grand développement et ménagez des passages sous les branches. Compatibilité documentée chez les oiseaux, mais les données spécifiques aux poules sont limitées.",['Persistant','Résiste à la sécheresse'],'o'],
+      ['🫒','Olivier','Olea europaea',"Persistant, adapté au soleil et aux sols drainés. Choisissez une couronne assez large pour offrir un véritable ombrage. Avec réserve : ramassez les olives tombées, la sécurité des noyaux est insuffisamment documentée chez les poules.",['Persistant','Soleil','Sol drainé'],'o']
+    ]
+  };
+  const list=k=>LISTS[k]&&LISTS[k].length?LISTS[k].map(x=>window.V214_CARD(x,false)).join(''):'<div class="v307-soon">🌱 La liste des plantations adaptées à ce climat arrive bientôt.</div>';
   const sec=document.createElement('section'); sec.className='screen'; sec.id='plantesclimat';
   sec.innerHTML=`<div class="top"><button class="back" onclick="go('plantes')">‹</button><div class="title">Selon votre climat</div></div>
   <p class="v307-lead">Une plante qui pousse bien chez nous ne poussera pas forcément chez vous. Choisissez le climat qui ressemble le plus au vôtre, et tenez compte de votre sol : sec, humide, calcaire ou acide.</p>
   <div class="v307-tabs" role="tablist">${CL.map((c,i)=>`<button type="button" class="v307-tab${i?'':' on'}" data-k="${c[0]}"><span class="e">${c[1]}</span>${c[2]}</button>`).join('')}</div>
-  ${CL.map((c,i)=>`<div class="v307-panel" data-k="${c[0]}"${i?' hidden':''}><h3>${c[1]} ${c[2]}</h3><p class="where">${c[3]}</p><div class="v307-soon">🌱 La liste des plantations adaptées à ce climat arrive bientôt.</div></div>`).join('')}
+  ${CL.map((c,i)=>`<div class="v307-panel" data-k="${c[0]}"${i?' hidden':''}><h3>${c[1]} ${c[2]}</h3><p class="where">${c[3]}</p>${list(c[0])}</div>`).join('')}
   <h3 class="v307-h">☠️ À éviter, quel que soit votre climat</h3>
   <p class="v307-sub">Ces plantes sont toxiques : ne les gardez pas dans le parc ni à portée de bec à travers le grillage. Liste indicative, pas complète.</p>
   ${window.V214_BAD.map(x=>window.V214_CARD(x,true)).join('')}
