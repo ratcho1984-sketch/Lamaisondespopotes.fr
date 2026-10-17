@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=315;
+  var APP_V=316;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15327,6 +15327,14 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     d.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Aller plus loin pour votre parc</b><small>Solutions contre tous les prédateurs, arbres et arbustes à planter, aménagement selon la surface</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
     el.before(d);
   }
+  /* v316 : même encart violet sous « Enregistrer mes parcs » (#parks) */
+  var sv=document.querySelector('#parks button.primary[onclick^="saveParksAndBack"]');
+  if(sv&&!document.getElementById('v316Enc')){
+    var d2=document.createElement('div'); d2.id='v316Enc'; d2.className='v316-enc';
+    d2.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Aller plus loin pour votre parc</b><small>En l’aménageant selon votre surface et le nombre de poules</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
+    sv.after(d2);
+  }
 })();
 </script>
+<style id="v316-parks-enc-css">#parks .v316-enc{margin:16px 0 4px}</style>
 </body></html>
