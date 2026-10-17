@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=314;
+  var APP_V=315;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13753,7 +13753,7 @@ window.VetSource = {
   sec.innerHTML=`<div class="top"><button class="back" onclick="go('parkplus')">‹</button><div class="title">Plantes et arbustes</div></div>
   <div class="v214-seg" role="tablist"><button type="button" data-t="good" class="on">🌿 À planter</button><button type="button" data-t="bad" class="bad">🚫 À éviter</button></div>
   <div id="v214Good">
-    <p class="v214-lead">Cette sélection concerne les poules : elle ne vaut pas automatiquement pour toutes les volailles. Les trois premières apportent un couvert ; les deux suivantes complètent le jardin.</p>
+    <p class="v214-lead">Cette sélection concerne les poules. Choisissez selon le climat de chez vous et selon ce dont vous avez besoin : un végétal qui apporte de la fraîcheur en été, ou un végétal qui offre des cachettes à vos poules, même en hiver. À vous de faire votre choix, en vérifiant bien que la plante est adaptée à l’endroit où vous habitez.</p>
     ${GOOD.map(good).join('')}
     <div class="v214-box v214-how"><b>Pourquoi ces cinq-là ?</b>Le camélia du Japon, l’hibiscus de Syrie et la mélisse sont répertoriés dans une liste de plantes non toxiques pour les volailles. Pour le mûrier blanc et le romarin, des travaux ont étudié l’incorporation des feuilles dans l’alimentation des poules. Ces éléments soutiennent leur sélection pour une plantation accessible et un picorage occasionnel, sans garantir une consommation illimitée de toutes les parties.<br><br>Les besoins de culture restent essentiels, notamment le sol frais du camélia et de la mélisse, et le drainage du romarin.</div>
   </div>
