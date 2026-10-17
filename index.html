@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=317;
+  var APP_V=318;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15335,6 +15335,55 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     d2.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Aller plus loin pour votre parc</b><small>En l’aménageant selon votre surface et le nombre de poules</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
     sv.after(d2);
   }
+})();
+</script>
+<style id="v318-env-css">
+#envsecurity > .choice-section,#envsecurity .install-watch,#envsecurity .security-score-preview{display:none!important}
+#envsecurity .v318-wrap{display:grid;gap:14px;margin:4px 0 16px}
+#envsecurity .park-card{border-radius:22px;background:#fff;border:1px solid #f0e2c4;box-shadow:0 4px 14px rgba(80,60,30,.07);padding:16px}
+#envsecurity .park-card .park-card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+#envsecurity .park-card .park-card-head strong{font-family:Georgia,"Times New Roman",serif!important;font-size:20px!important;color:#2f5d43!important}
+#envsecurity .park-num{background:#fff3d6;color:#7a5418;border-radius:50%;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+#envsecurity .park-fields{display:grid;gap:14px}
+#envsecurity .park-popotes-title b{font-family:Georgia,"Times New Roman",serif;font-size:17px;color:#2f5d43}
+#envsecurity .park-popote-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+#envsecurity .park-popote-chip{font-size:14.5px}
+#envsecurity .park-popote-chip.on{background:#e7f1e9;border-color:#9cc3a8;color:#2f5d43}
+#envsecurity .field-help{font-size:13.5px;line-height:1.45;color:#6b5a45;margin-top:6px}
+#envsecurity .v318-q + .v318-q{border-top:1px solid #f3ead8;padding-top:12px}
+</style>
+<script id="v318-env-js">
+(function(){
+  var sec=document.getElementById('envsecurity'); if(!sec) return;
+  var save=sec.querySelector('.v267-save')||sec.querySelector('button.primary'); if(!save) return;
+  var ENV=[['envShade','Ombragé'],['envSun','Ensoleillé'],['envWindy','Venté'],['envShelteredWind','À l’abri du vent'],['envTrees','Arbres ou arbustes'],['envShelter','Abris ou refuges']];
+  var SEC=[['secMesh','Y a-t-il un grillage autour du parc ?','Un grillage à poules, idéalement de plus de 1,50 m.'],
+    ['secBuried','Le grillage est-il enterré ?','Enterré sur 20 à 30 cm, il empêche les prédateurs de creuser dessous.'],
+    ['secRoofNet','Y a-t-il un filet au-dessus du parc ?','Il protège des rapaces.'],
+    ['secNight','Le poulailler est-il bien fermé et sécurisé la nuit ?','Porte fermée, sans ouverture par où un prédateur pourrait passer.'],
+    ['secAnchored','Le poulailler est-il bien ancré au sol et assez solide ?','Fixé au sol, il ne peut pas être renversé ni soulevé.']];
+  var $=function(id){return document.getElementById(id);};
+  var w=document.createElement('div'); w.className='v318-wrap'; w.id='v318Wrap'; save.before(w);
+  function chip(attr,id,v,t,on){ return '<button type="button" class="park-popote-chip'+(on?' on':'')+'" '+attr+'="'+id+'" data-v="'+v+'">'+t+(on?' ✓':'')+'</button>'; }
+  function render(){
+    w.innerHTML='<div class="park-card"><div class="park-card-head"><span class="park-num">🌿</span><strong>Environnement</strong></div><div class="park-fields">'+
+      '<div class="park-popotes"><div class="park-popotes-title"><b>Comment est votre parc ?</b></div><div class="park-popote-list">'+
+      ENV.map(function(e){ var c=$(e[0]); return chip('data-env',e[0],'1',e[1],c&&c.checked); }).join('')+
+      '</div><div class="field-help">Touchez tout ce qui correspond. Plusieurs réponses possibles.</div></div></div></div>'+
+      '<div class="park-card"><div class="park-card-head"><span class="park-num">🛡️</span><strong>Sécurité et prédateurs</strong></div><div class="park-fields">'+
+      SEC.map(function(q){ var c=$(q[0]), on=!!(c&&c.checked);
+        return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+q[1]+'</b></div><div class="park-popote-list">'+
+          chip('data-sec',q[0],'1','Oui',on)+chip('data-sec',q[0],'0','Non',!on)+'</div><div class="field-help">'+q[2]+'</div></div>'; }).join('')+
+      '</div></div>';
+  }
+  w.addEventListener('click',function(e){
+    var b=e.target.closest('[data-env],[data-sec]'); if(!b) return;
+    var id=b.getAttribute('data-env')||b.getAttribute('data-sec'), c=$(id); if(!c) return;
+    c.checked=b.hasAttribute('data-env')?!c.checked:b.getAttribute('data-v')==='1';
+    c.dispatchEvent(new Event('change',{bubbles:true})); render();
+  });
+  render();
+  var g=window.go; if(typeof g==='function') window.go=function(id){ var r=g.apply(this,arguments); if(id==='envsecurity'){ try{ render(); }catch(e){} } return r; };
 })();
 </script>
 <style id="v316-parks-enc-css">#parks .v316-enc{margin:16px 0 4px}</style>
