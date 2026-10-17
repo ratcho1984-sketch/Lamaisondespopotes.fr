@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=316;
+  var APP_V=317;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14860,7 +14860,8 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
       '<div class="park-stepper"><button type="button" onclick="v279Step(-1)" aria-label="Retirer un poulailler">−</button><strong id="v279Count">'+L.length+'</strong><button type="button" onclick="v279Step(1)" aria-label="Ajouter un poulailler">+</button></div></div>'+
       L.map(card).join('')+
       (L.length?'<div class="live-summary" id="v279Live"></div><button class="primary" type="button" onclick="v272Save()">Enregistrer mes poulaillers</button>':'')+
-      '<button type="button" class="v272-none" onclick="go(\'coopgallery\')"><i>🔨</i><span><b>Je n’ai pas encore mon poulailler</b><small>Construire mon poulailler : modèles, achats et étapes pas à pas</small></span><span class="chev">›</span></button>';
+      '<button type="button" class="v272-none" onclick="go(\'coopgallery\')"><i>🔨</i><span><b>Je n’ai pas encore mon poulailler</b><small>Construire mon poulailler : modèles, achats et étapes pas à pas</small></span><span class="chev">›</span></button>'+
+'<div class="v317-enc"><button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🔒</span><span class="v81-enc-t"><b>Plus de sécurité pour mon poulailler</b><small>Clôtures, prédateurs au sol et venus du ciel, caméras</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button></div>';
     summary();
   }
   window.v279Step=function(d){
@@ -15337,4 +15338,5 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
 })();
 </script>
 <style id="v316-parks-enc-css">#parks .v316-enc{margin:16px 0 4px}</style>
+<style id="v317-coop-enc-css">.v317-enc{margin:16px 0 4px}</style>
 </body></html>
