@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=310;
+  var APP_V=311;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15307,6 +15307,10 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
       ['🎋','Bambou non traçant','Fargesia robusta',"En emplacement abrité, avec une variété adaptée aux gelées locales et un arrosage pendant les périodes sèches.",['Persistant','Abrité','Arrosage l’été'],'oc'],
       ['🌸','Camélia du Japon','Camellia japonica',"Variété rustique, à mi-ombre et à l'abri des vents froids. Sol acide à neutre, frais et drainé.",['Persistant','Mi-ombre','Sol acide à neutre'],'oc'],
       ['🌳','Magnolia persistant','Magnolia grandiflora',"Variété rustique adaptée à la région, pour grand terrain, en sol profond restant suffisamment frais.",['Persistant','Grand terrain','Sol profond'],'o']
+    ],
+    froid:[
+      ['🎋','Bambou non traçant','Fargesia murielae',"Choisissez une variété adaptée aux températures minimales de chez vous, en sol frais et drainé, à l'abri des vents desséchants. Le feuillage arqué doit laisser un espace accessible dessous.",['Persistant','Résiste au froid','Abri du vent'],'oc'],
+      ['🌲','Épicéa commun','Picea abies',"Très résistant au froid. Uniquement pour les très grands terrains, car il devient un grand arbre. Conservez un couvert bas tout en ménageant des passages pour les poules.",['Persistant','Très résistant au froid','Très grand terrain'],'oc']
     ]
   };
   const list=k=>LISTS[k]&&LISTS[k].length?LISTS[k].map(x=>window.V214_CARD(x,false)).join(''):'<div class="v307-soon">🌱 La liste des plantations adaptées à ce climat arrive bientôt.</div>';
