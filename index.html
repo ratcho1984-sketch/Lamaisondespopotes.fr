@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=311;
+  var APP_V=312;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13727,7 +13727,14 @@ window.VetSource = {
     ['🌺','Hibiscus de Syrie','Hibiscus syriacus',"Arbuste rustique, ombre légère l'été et fleurs comestibles appréciées des poules.",['1,5 à 2 m','Fleurs comestibles'],'o'],
     ['🌾','Graminées hautes','Miscanthus',"Atteint sa hauteur en une saison. Les poules aiment se poser dans ces touffes à l'ombre. On coupe au printemps.",['1,5 à 2 m','En 1 saison','Ombre légère'],'oc'],
     ['🌻','Topinambour, tournesol','Helianthus',"Le plus rapide de tous : un abri d'été en quelques semaines. Les graines de tournesol sont une friandise.",['Abri d’été','En quelques semaines'],'o'],
-    ['🌿','Romarin, lavande, thym, menthe, mélisse','Aromatiques',"Petites touffes qui parfument le parc et attirent les insectes. En bordure ou dans un coin protégé.",['Bas','Bordure','Insectes']]
+    ['🌿','Romarin, lavande, thym, menthe, mélisse','Aromatiques',"Petites touffes qui parfument le parc et attirent les insectes. En bordure ou dans un coin protégé.",['Bas','Bordure','Insectes']],
+    ['🌸','Camélia du Japon','Camellia japonica',"Persistant, répertorié non toxique pour les volailles. Choisissez une grande variété rustique, à mi-ombre et à l'abri des vents froids, en sol acide à neutre, frais et drainé, avec des passages sous les branches.",['Persistant','Mi-ombre','Sol acide à neutre'],'oc'],
+    ['🎋','Bambou non traçant','Fargesia murielae',"Persistant. Choisissez une variété adaptée aux températures minimales de chez vous, à mi-ombre, en sol frais et drainé, à l'abri des vents desséchants. Préférez un port arqué qui laisse un espace accessible sous les cannes.",['Persistant','Résiste au froid','Sol frais et drainé'],'oc'],
+    ['🎋','Bambou non traçant','Fargesia robusta',"Persistant, en sol frais et drainé, dans un emplacement abrité, avec une variété adaptée aux gelées de chez vous. Arrosez pendant les périodes sèches. Attention : une touffe trop compacte ne constitue pas un refuge accessible.",['Persistant','Abrité','Arrosage l’été'],'oc'],
+    ['🍓','Arbousier','Arbutus unedo',"Persistant, adapté à la sécheresse une fois installé, mais il craint l'eau stagnante : sol bien drainé. Choisissez une forme de grand développement et ménagez des passages sous les branches. Compatibilité documentée chez les oiseaux, mais les données spécifiques aux poules sont limitées.",['Persistant','Résiste à la sécheresse','Sol bien drainé'],'o'],
+    ['🫒','Olivier','Olea europaea',"Persistant, adapté au soleil et aux sols drainés. Choisissez une couronne assez large pour offrir un véritable ombrage. Avec réserve : ramassez les olives tombées, la sécurité des noyaux est insuffisamment documentée chez les poules.",['Persistant','Soleil','Sol drainé'],'o'],
+    ['🌳','Magnolia persistant','Magnolia grandiflora',"Pour les grands terrains. Choisissez une variété rustique adaptée à votre région, en sol profond restant suffisamment frais, avec une couronne large et accessible dessous.",['Persistant','Grand terrain','Sol profond'],'o'],
+    ['🌲','Épicéa commun','Picea abies',"Très résistant au froid. Uniquement pour les très grands terrains, car il devient un grand arbre. Conservez un couvert bas tout en ménageant des passages pour les poules.",['Persistant','Très résistant au froid','Très grand terrain'],'oc']
   ];
   const TREES=[
     ['🌳','Saule','Salix alba, Salix caprea',"Un des arbres qui poussent le plus vite (jusqu'à 1 m par an). Il aime les sols frais et fait vite une ombre légère. Taillé en têtard, il reste à hauteur raisonnable.",['Arbre','Jusqu’à 1 m par an','Sol frais'],'o'],
@@ -13759,7 +13766,6 @@ window.VetSource = {
   const sec=document.createElement('section'); sec.className='screen'; sec.id='plantes';
   sec.innerHTML=`<div class="top"><button class="back" onclick="go('parkplus')">‹</button><div class="title">Plantes et arbustes</div></div>
   <p class="v214-lead">Des arbustes de 1 à 2 m dans le parc donnent de l'ombre l'été, coupent le vent et offrent des cachettes contre les rapaces. Pour chaque plante, nous indiquons si elle <b>donne de l’ombre ☀️</b>, si elle <b>fait une cachette 🛡️</b>, ou si elle est <b>à éviter parce qu’elle est toxique ☠️</b>.</p>
-  <button type="button" class="v307-clim-btn" onclick="go('plantesclimat')"><span class="ic">🌦️</span><span><b>En fonction de votre climat et de votre sol</b><small>Chaud et sec, doux et humide, continental, montagne</small></span><i>›</i></button>
   <div class="v214-seg" role="tablist"><button type="button" data-t="good" class="on">🌿 À planter</button><button type="button" data-t="bad" class="bad">☠️ À éviter</button></div>
   <div id="v214Good">${GOOD.map(x=>card(x,false)).join('')}
     <h3 class="v214-h">🌳 Et pour un peu plus d'ombre : 2 arbres qui poussent vite</h3>
@@ -15281,54 +15287,7 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
 #plantesclimat .v307-h{margin:18px 2px 6px;font:800 17px/1.3 Georgia,serif;color:#8c2f26}
 #plantesclimat .v307-sub{font-size:13.5px;color:#6b6252;margin:0 2px 10px;line-height:1.45}
 </style>
-<script id="v307-climat-js">
-(function(){
-  const pl=document.getElementById('plantes'); if(!pl||document.getElementById('plantesclimat')||!window.V214_BAD) return;
-  const CL=[
-    ['chaud','☀️','Chaud et sec','Pourtour méditerranéen, Sud-Est : étés longs, chauds et secs, peu de pluie.'],
-    ['doux','🌧️','Doux et humide','Façade atlantique, Bretagne, Normandie : hivers doux, pluie fréquente.'],
-    ['conti','🌡️','Chaud l’été, froid l’hiver','Centre et Est : étés chauds, hivers froids avec des gelées.'],
-    ['froid','🏔️','Froid et montagne','Altitude : hivers longs et enneigés, fortes gelées.']
-  ];
-  const LISTS={
-    chaud:[
-      ['🍓','Arbousier','Arbutus unedo',"Persistant, adapté à la sécheresse une fois installé. Choisissez une forme de grand développement et ménagez des passages sous les branches. Compatibilité documentée chez les oiseaux, mais les données spécifiques aux poules sont limitées.",['Persistant','Résiste à la sécheresse'],'o'],
-      ['🫒','Olivier','Olea europaea',"Persistant, adapté au soleil et aux sols drainés. Choisissez une couronne assez large pour offrir un véritable ombrage. Avec réserve : ramassez les olives tombées, la sécurité des noyaux est insuffisamment documentée chez les poules.",['Persistant','Soleil','Sol drainé'],'o']
-    ],
-    doux:[
-      ['🌸','Camélia du Japon','Camellia japonica',"Persistant, répertorié non toxique pour les volailles. Choisissez une grande variété, en sol acide à neutre, avec des passages sous les branches.",['Persistant','Sol acide à neutre'],'oc'],
-      ['🎋','Bambou non traçant','Fargesia murielae',"Persistant, adapté aux sols frais et drainés. Choisissez un port arqué et dégagez l'accès sous le feuillage.",['Persistant','Sol frais et drainé'],'oc'],
-      ['🎋','Bambou non traçant','Fargesia robusta',"Mêmes conditions. Attention : une touffe trop compacte ne constitue pas un refuge accessible.",['Persistant','Sol frais et drainé'],'oc'],
-      ['🌳','Magnolia persistant','Magnolia grandiflora',"Pour les grands terrains, avec une couronne suffisamment large et accessible dessous.",['Persistant','Grand terrain'],'o'],
-      ['🍓','Arbousier','Arbutus unedo',"Possible si le sol est bien drainé, sans eau stagnante.",['Persistant','Sol bien drainé'],'o']
-    ],
-    conti:[
-      ['🎋','Bambou non traçant','Fargesia murielae',"Variété résistante au froid local, à mi-ombre, avec un sol restant frais en été. Prévoyez un accès sous les cannes arquées.",['Persistant','Mi-ombre','Sol frais en été'],'oc'],
-      ['🎋','Bambou non traçant','Fargesia robusta',"En emplacement abrité, avec une variété adaptée aux gelées locales et un arrosage pendant les périodes sèches.",['Persistant','Abrité','Arrosage l’été'],'oc'],
-      ['🌸','Camélia du Japon','Camellia japonica',"Variété rustique, à mi-ombre et à l'abri des vents froids. Sol acide à neutre, frais et drainé.",['Persistant','Mi-ombre','Sol acide à neutre'],'oc'],
-      ['🌳','Magnolia persistant','Magnolia grandiflora',"Variété rustique adaptée à la région, pour grand terrain, en sol profond restant suffisamment frais.",['Persistant','Grand terrain','Sol profond'],'o']
-    ],
-    froid:[
-      ['🎋','Bambou non traçant','Fargesia murielae',"Choisissez une variété adaptée aux températures minimales de chez vous, en sol frais et drainé, à l'abri des vents desséchants. Le feuillage arqué doit laisser un espace accessible dessous.",['Persistant','Résiste au froid','Abri du vent'],'oc'],
-      ['🌲','Épicéa commun','Picea abies',"Très résistant au froid. Uniquement pour les très grands terrains, car il devient un grand arbre. Conservez un couvert bas tout en ménageant des passages pour les poules.",['Persistant','Très résistant au froid','Très grand terrain'],'oc']
-    ]
-  };
-  const list=k=>LISTS[k]&&LISTS[k].length?LISTS[k].map(x=>window.V214_CARD(x,false)).join(''):'<div class="v307-soon">🌱 La liste des plantations adaptées à ce climat arrive bientôt.</div>';
-  const sec=document.createElement('section'); sec.className='screen'; sec.id='plantesclimat';
-  sec.innerHTML=`<div class="top"><button class="back" onclick="go('plantes')">‹</button><div class="title">Selon votre climat</div></div>
-  <p class="v307-lead">Une plante qui pousse bien chez nous ne poussera pas forcément chez vous. Choisissez le climat qui ressemble le plus au vôtre, et tenez compte de votre sol : sec, humide, calcaire ou acide.</p>
-  <div class="v307-tabs" role="tablist">${CL.map((c,i)=>`<button type="button" class="v307-tab${i?'':' on'}" data-k="${c[0]}"><span class="e">${c[1]}</span>${c[2]}</button>`).join('')}</div>
-  ${CL.map((c,i)=>`<div class="v307-panel" data-k="${c[0]}"${i?' hidden':''}><h3>${c[1]} ${c[2]}</h3><p class="where">${c[3]}</p>${list(c[0])}</div>`).join('')}
-  <h3 class="v307-h">☠️ À éviter, quel que soit votre climat</h3>
-  <p class="v307-sub">Ces plantes sont toxiques : ne les gardez pas dans le parc ni à portée de bec à travers le grillage. Liste indicative, pas complète.</p>
-  ${window.V214_BAD.map(x=>window.V214_CARD(x,true)).join('')}
-  <div class="v214-box v214-vet"><b>🩺 Une poule a mangé une plante suspecte ?</b>Appelez votre vétérinaire dès qu'une poule montre un comportement inhabituel. Une poule immobile, en boule ou debout sans bouger : vétérinaire tout de suite. Si possible, gardez un morceau de la plante pour la montrer.</div>`;
-  pl.after(sec);
-  sec.querySelector('.v307-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-k]'); if(!b) return;
-    sec.querySelectorAll('.v307-tab').forEach(x=>x.classList.toggle('on',x===b));
-    sec.querySelectorAll('.v307-panel').forEach(p=>p.hidden=p.dataset.k!==b.dataset.k);});
-})();
-</script>
+
 <script id="v304-parkplus-js">
 /* v304 : « Aller plus loin pour votre parc » (Premium) — encart violet en fin de résultat + page #parkplus */
 (function(){
