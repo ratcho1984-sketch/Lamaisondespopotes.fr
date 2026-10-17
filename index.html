@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=309;
+  var APP_V=310;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15301,6 +15301,12 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
       ['🎋','Bambou non traçant','Fargesia robusta',"Mêmes conditions. Attention : une touffe trop compacte ne constitue pas un refuge accessible.",['Persistant','Sol frais et drainé'],'oc'],
       ['🌳','Magnolia persistant','Magnolia grandiflora',"Pour les grands terrains, avec une couronne suffisamment large et accessible dessous.",['Persistant','Grand terrain'],'o'],
       ['🍓','Arbousier','Arbutus unedo',"Possible si le sol est bien drainé, sans eau stagnante.",['Persistant','Sol bien drainé'],'o']
+    ],
+    conti:[
+      ['🎋','Bambou non traçant','Fargesia murielae',"Variété résistante au froid local, à mi-ombre, avec un sol restant frais en été. Prévoyez un accès sous les cannes arquées.",['Persistant','Mi-ombre','Sol frais en été'],'oc'],
+      ['🎋','Bambou non traçant','Fargesia robusta',"En emplacement abrité, avec une variété adaptée aux gelées locales et un arrosage pendant les périodes sèches.",['Persistant','Abrité','Arrosage l’été'],'oc'],
+      ['🌸','Camélia du Japon','Camellia japonica',"Variété rustique, à mi-ombre et à l'abri des vents froids. Sol acide à neutre, frais et drainé.",['Persistant','Mi-ombre','Sol acide à neutre'],'oc'],
+      ['🌳','Magnolia persistant','Magnolia grandiflora',"Variété rustique adaptée à la région, pour grand terrain, en sol profond restant suffisamment frais.",['Persistant','Grand terrain','Sol profond'],'o']
     ]
   };
   const list=k=>LISTS[k]&&LISTS[k].length?LISTS[k].map(x=>window.V214_CARD(x,false)).join(''):'<div class="v307-soon">🌱 La liste des plantations adaptées à ce climat arrive bientôt.</div>';
