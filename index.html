@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=300;
+  var APP_V=301;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -8923,12 +8923,12 @@ const parkTourQuestions=[
   {key:'shelter', title:"Abri dehors", question:"Ont-elles un abri dehors contre la pluie et le vent\u00A0?"},
   {key:'hiding', title:"Buissons et cachettes", question:"Y a-t-il des buissons, des haies ou des cachettes dans le parc\u00A0?"},
   {key:'dust', title:"Bain de poussière", question:"Ont-elles un coin sec, avec de la terre meuble, pour leurs bains de poussière\u00A0?"},
+  {key:'mud', title:"Sol sec", question:"Le sol reste-t-il sec, sans zones boueuses permanentes\u00A0?"},
   {key:'scratch', title:"Zone pour gratter", question:"Ont-elles une zone pour gratter et chercher (feuilles, paille, terre, herbe)\u00A0?"},
   {key:'height', title:"Points en hauteur", question:"Ont-elles des points en hauteur dehors (souche, branche, perchoir)\u00A0?"},
   {key:'water', title:"Eau propre et fraîche", question:"L'eau est-elle toujours propre, fraîche et à l'ombre\u00A0?"},
-  {key:'multiple', title:"Plusieurs points d'eau et de nourriture", question:"Si vous avez plus de 4 poules\u00A0: y a-t-il plusieurs points d'eau et de nourriture\u00A0?", smallFlock:true},
   {key:'fence', title:"Clôture et prédateurs", question:"La clôture protège-t-elle bien des prédateurs (renard, fouine), y compris par le dessous\u00A0?"},
-  {key:'mud', title:"Sol sec", question:"Le sol reste-t-il sec, sans zones boueuses permanentes\u00A0?"}
+  {key:'net', title:"Filet contre les rapaces", question:"Avez-vous un filet pour protéger vos poules des prédateurs aériens (rapaces)\u00A0?"}
 ];
 
 const parkTourObservation={
@@ -8982,6 +8982,11 @@ const parkTourAdvice={
     why:"un renard ou une fouine peut causer de lourdes pertes en une seule visite, y compris en plein jour.",
     idea:"vérifiez le grillage sur tout le tour. Enterrez-le ou ajoutez un grillage replié au sol vers l'extérieur pour empêcher les prédateurs de creuser. Fermez le poulailler chaque soir."
   },
+  net:{
+    title:"Filet contre les rapaces",
+    why:"buses, éperviers ou autours peuvent attaquer depuis le ciel, surtout les jeunes poules et les petites races, dans un parc très dégagé.",
+    idea:"tendez un filet de volière au-dessus du parc, ou au moins d'une partie. À défaut, multipliez les cachettes (buissons, abris bas) où elles peuvent se réfugier vite."
+  },
   mud:{
     title:"Sol boueux",
     why:"un sol toujours humide et boueux salit les poules et peut favoriser les parasites et les problèmes de pattes.",
@@ -8989,13 +8994,13 @@ const parkTourAdvice={
   }
 };
 
-const parkTourPriority=['fence','shade','water','shelter','hiding','dust','scratch','height','multiple','mud'];
+const parkTourPriority=['fence','net','shade','water','shelter','hiding','dust','scratch','height','mud'];
 
 let parkTourStep=0;
 let parkTourAnswers=loadParkTourAnswers();
 
 function loadParkTourAnswers(){
-  const empty={shade:null,shelter:null,hiding:null,dust:null,scratch:null,height:null,water:null,multiple:null,fence:null,mud:null,unused:null};
+  const empty={shade:null,shelter:null,hiding:null,dust:null,scratch:null,height:null,water:null,fence:null,net:null,mud:null,unused:null};
   try{
     const saved=JSON.parse(localStorage.getItem(PARK_TOUR_STORAGE_KEY)||'null');
     if(saved && typeof saved==='object') return {...empty,...saved};
@@ -9189,7 +9194,7 @@ function showParkTourResult(){
 }
 
 function restartParkTour(){
-  parkTourAnswers={shade:null,shelter:null,hiding:null,dust:null,scratch:null,height:null,water:null,multiple:null,fence:null,mud:null,unused:null};
+  parkTourAnswers={shade:null,shelter:null,hiding:null,dust:null,scratch:null,height:null,water:null,fence:null,net:null,mud:null,unused:null};
   persistParkTourAnswers();
   parkTourStep=0;
   document.getElementById('parkTourResultView').style.display='none';
@@ -11579,7 +11584,7 @@ renderStarterStep = function(){
 
   /* ---------- 8. Tour du parc : bilan détaillé (le regard d'Élodie) ---------- */
   const DIMS=[
-    {k:'secu',e:'🛡️',t:'Sécurité et confort',keys:['fence','shelter','mud'],read:'Un parc sûr et sec, c’est la base : une poule qui se sent menacée ou qui a les pattes dans la boue passe plus de temps sur ses gardes.',watch:['Le soir, rentrent-elles d’elles-mêmes, calmement ?','Évitent-elles certaines zones après la pluie ?']},
+    {k:'secu',e:'🛡️',t:'Sécurité et confort',keys:['fence','net','shelter','mud'],read:'Un parc sûr et sec, c’est la base : une poule qui se sent menacée ou qui a les pattes dans la boue passe plus de temps sur ses gardes.',watch:['Le soir, rentrent-elles d’elles-mêmes, calmement ?','Évitent-elles certaines zones après la pluie ?']},
     {k:'res',e:'💧',t:'Accès aux ressources',keys:['water','multiple'],read:'Quand l’eau ou la nourriture est concentrée en un seul point, la hiérarchie s’y joue. Les plus timides peuvent manger et boire moins.',watch:['Qui mange en premier ? Qui attend ?','Une poule est-elle souvent chassée de la mangeoire ?']},
     {k:'nat',e:'🐾',t:'Comportements naturels',keys:['dust','scratch','height'],read:'Gratter, fouiller, prendre des bains de poussière et se percher occupent naturellement une grande partie de leur journée. Quand ces possibilités manquent, l’ennui peut favoriser les tensions et le picage.',watch:['Combien de temps passent-elles à gratter ?','Prennent-elles des bains de poussière, et où ?']},
     {k:'abri',e:'🌳',t:'Se sentir à l’abri',keys:['shade','hiding'],read:'Les poules descendent d’oiseaux de sous-bois. Sans ombre ni cachettes, elles se sentent exposées et explorent moins le parc.',watch:['Où se reposent-elles aux heures chaudes ?','Traversent-elles les zones dégagées en courant ?']}
