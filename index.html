@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=321;
+  var APP_V=322;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13726,42 +13726,58 @@ window.VetSource = {
 #plantes .v313-dl dt{font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;color:#7a7060;margin-top:6px}
 #plantes .v214-card.bad .v313-dl dt{color:#9b5a50}
 #plantes .v313-dl dd{margin:1px 0 0}
+#plantes .v322-src{font-size:12.5px;line-height:1.45;color:#7a7060;font-style:italic;margin:6px 4px 14px}
+#plantes .v322-prot{background:#f3f6fa;border:1px solid #d6e0ec;color:#2d4a63}
 </style>
 <script id="v214-plantes-js">
 (function(){
   const tour=document.getElementById('parktour'); if(!tour||document.getElementById('plantes')) return;
-  const GOOD=[
-    ['🌸','Camélia du Japon','Camellia japonica',['Cachette','Ombre','Persistant','Exposition : mi-ombre'],"Cachette et ombre, une fois développé.","Mi-ombre ; sol acide à neutre, frais et drainé ; emplacement abrité.","Choisissez une variété de grand développement et conservez des passages sous les branches."],
-    ['🌺','Hibiscus de Syrie','Hibiscus syriacus',['Cachette','Ombre d’été','Caduc','Exposition : soleil'],"Cachette et ombre légère en été.","Soleil ; sol drainé, avec de l’eau pendant les sécheresses.","Choisissez un port large, plutôt qu’une variété étroite ou naine. Le couvert disparaît en hiver."],
-    ['🌳','Mûrier blanc','Morus alba',['Ombre d’été','Caduc','Exposition : soleil'],"Ombre d’été ; cachette surtout si les branches restent assez basses.","Soleil ; terrain suffisamment grand, sol drainé.","Arbre de grand développement : vérifiez la place disponible à maturité."],
-    ['🌿','Romarin','Salvia rosmarinus',['Persistant','Exposition : soleil'],"Floraison pour les pollinisateurs, plantation complémentaire.","Soleil ; sol très drainé ; protection contre les froids importants selon la variété.","Ce n’est pas une cachette garantie, ni un antiparasitaire."],
-    ['🍃','Mélisse','Melissa officinalis',['Saisonnier','Exposition : soleil ou mi-ombre'],"Floraison pour les pollinisateurs, diversité végétale.","Soleil ou mi-ombre ; sol plutôt frais.","Ne forme pas de refuge dessous. Peut s’étendre et se ressemer."]
+  const SECTIONS=[
+    ['Pour un couvert persistant',[
+      ['🌸','Camélia du Japon','Camellia japonica',"Un arbuste au feuillage dense qui peut former une cachette accessible toute l’année, une fois développé.",['Persistant','Cachette','Exposition : mi-ombre'],"Sol acide à neutre, frais et drainé. Emplacement abrité. Choisir une grande variété et ménager des passages dessous."],
+      ['🤍','Jasmin étoilé','Trachelospermum jasminoides',"Une grimpante à conduire sur une structure solide pour former un toit végétal sous lequel les poules peuvent se glisser.",['Persistant','Couvert sur support','Soleil ou mi-ombre'],"Sol drainé, acide, neutre ou calcaire. Régions douces et situations abritées ; inadapté aux grands froids prolongés. Un écran vertical seul ne suffit pas."],
+      ['🌲','Épicéa commun','Picea abies',"Un conifère qui peut offrir une cachette persistante sous ses branches basses, particulièrement utile en région froide.",['Persistant','Cachette','Climat froid','Grand terrain'],"Soleil, sol frais et drainé. Devient un très grand arbre. Conserver le couvert bas avec des passages accessibles. Mauvais choix en région chaude et sèche."]
+    ],"Le camélia et le jasmin étoilé figurent dans la liste PoultryDVM. Pour l’épicéa, la référence vétérinaire VCA répertorie le genre Picea parmi les arbres sûrs pour les oiseaux : la référence est aviaire générale, sans être spécifique aux poules. Le choix du jasmin étoilé reste limité par le froid ; l’épicéa exige surtout de l’espace et un climat adapté."],
+    ['Pour l’ombre et les cachettes d’été',[
+      ['🌳','Mûrier blanc','Morus alba',"Sa couronne étalée apporte de l’ombre en été. C’est surtout un arbre d’ombrage, plutôt qu’une cachette basse.",['Ombre d’été','Caduc','Exposition : soleil','Grand terrain'],"Adapté à de nombreux sols drainés, notamment calcaires. Convient aux étés chauds ; vérifier la variété et le froid local. Prévoir sa largeur adulte."],
+      ['🌺','Hibiscus de Syrie','Hibiscus syriacus',"Un arbuste ramifié qui peut offrir une cachette et une ombre légère pendant la belle saison.",['Cachette d’été','Caduc','Exposition : soleil'],"Sol drainé, restant suffisamment frais. Choisir une forme large, avec des accès dessous. Arroser pendant les sécheresses."],
+      ['🌼','Aubépine commune','Crataegus monogyna',"En haie libre ou en petit arbre, elle forme un couvert saisonnier et permet de créer plusieurs refuges dans le parc.",['Haie ou petit arbre','Cachette d’été','Caduc','Résiste au froid'],"Soleil ou mi-ombre. Accepte de nombreux sols, dont calcaires. Adaptée à beaucoup de régions et de secteurs montagneux. Épineuse : laisser des passages dégagés."],
+      ['🍃','Viorne lentago','Viburnum lentago',"Un grand arbuste ou petit arbre au feuillage fourni, intéressant pour créer un couvert d’été dans les régions froides.",['Cachette d’été','Caduc','Résiste au froid'],"Soleil ou mi-ombre, sol de préférence frais et drainé. Prévoir son développement en largeur ; l’accès dépend de sa conduite."],
+      ['🌳','Tilleul d’Amérique','Tilia americana',"Un grand arbre qui apporte une ombre étendue à maturité, notamment dans les régions aux hivers froids.",['Ombre d’été','Caduc','Résiste au froid','Très grand terrain'],"Soleil ou mi-ombre, sol profond et suffisamment frais. À réserver aux terrains pouvant accueillir un très grand arbre."]
+    ],"L’hibiscus, l’aubépine, la viorne lentago et le tilleul d’Amérique figurent dans PoultryDVM. Pour le mûrier blanc, les références comprennent des études alimentaires chez les poules et une liste vétérinaire aviaire pour le genre Morus. La rusticité de l’aubépine, de la viorne et du tilleul permet d’élargir la sélection aux régions froides, sous réserve des conditions locales."],
+    ['Pour compléter les plantations',[
+      ['🌿','Romarin','Salvia rosmarinus',"Une plantation aromatique dont la floraison nourrit les pollinisateurs. Elle complète l’aménagement, sans remplacer une cachette.",['Persistant','Pollinisateurs','Exposition : soleil'],"Sol très drainé, même calcaire. Particulièrement adapté aux régions chaudes et sèches ; rusticité variable selon les variétés."],
+      ['🍃','Mélisse','Melissa officinalis',"Une plante aromatique qui diversifie le jardin et attire les pollinisateurs lorsqu’elle fleurit.",['Plantation complémentaire','Feuillage saisonnier','Soleil ou mi-ombre'],"Sol plutôt frais. Peut se ressemer et s’étendre. Ne constitue pas un refuge dessous."]
+    ],"La mélisse figure dans PoultryDVM ; le romarin bénéficie de références sur son utilisation alimentaire chez les poules. Aucun effet antiparasitaire ou calmant n’est promis sur ces fiches."]
   ];
   const BAD=[
-    ['☠️','Laurier-rose','Nerium oleander',"Contient des substances toxiques pour le cœur.","Toute la plante, fraîche ou sèche, y compris les déchets de taille."],
-    ['☠️','If','Taxus spp.',"Toxicité pouvant provoquer des troubles cardiaques graves.","Feuilles, rameaux, écorce et graines. La chair rouge autour de la graine ne rend pas le fruit entier sûr."],
-    ['☠️','Rhododendrons et azalées','Rhododendron spp.',"Contiennent des grayanotoxines.","Feuilles, fleurs et autres parties ; le nectar également."],
-    ['☠️','Ricin','Ricinus communis',"Contient de la ricine, une toxine très puissante.","Graines particulièrement dangereuses ; plante à maintenir hors d’accès."],
-    ['☠️','Laurier-cerise ou laurier-palme','Prunus laurocerasus',"Contient des composés pouvant libérer du cyanure.","Notamment les feuilles et les graines. Ne déposez jamais les tailles dans le parc."],
-    ['☠️','Avocatier','Persea americana',"Contient de la persine ; les oiseaux y sont particulièrement sensibles.","Feuilles, tiges, fruits et graines."]
+    ['☠️','Laurier-rose','Nerium oleander',"Toute la plante est toxique, fraîche ou sèche. Elle contient des substances dangereuses pour le cœur."],
+    ['☠️','If','Taxus spp.',"Feuillage, rameaux et graines toxiques. La chair rouge autour de la graine ne rend pas le fruit entier sûr."],
+    ['☠️','Rhododendrons et azalées','Rhododendron spp.',"Plantes toxiques à maintenir hors d’accès, notamment leur feuillage et leurs fleurs."],
+    ['☠️','Laurier-cerise ou laurier-palme','Prunus laurocerasus',"Contient des composés pouvant libérer du cyanure. Attention notamment aux feuilles, aux graines et aux tailles."],
+    ['☠️','Ricin','Ricinus communis',"Graines particulièrement dangereuses en raison de la ricine. Ne pas planter dans un espace accessible aux poules."],
+    ['☠️','Avocatier','Persea americana',"Contient de la persine, toxique pour les oiseaux. Feuilles, fruits, graines et tiges sont concernés."]
   ];
   const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const pill=t=>{const c=t==='Cachette'?'c':/^Ombre/.test(t)?'o':/^Exposition/.test(t)?'x':'f';return `<span class="${c}">${esc(t)}</span>`;};
+  const pill=t=>{const c=/^Cachette/.test(t)?'c':/^Ombre/.test(t)?'o':/^(Exposition|Soleil)/.test(t)?'x':'f';return `<span class="${c}">${esc(t)}</span>`;};
   const head=x=>`<span class="e">${x[0]}</span><div><h4>${esc(x[1])} <span class="lat">${esc(x[2])}</span></h4>`;
-  const good=x=>`<div class="v214-card">${head(x)}<div class="v313-pills">${x[3].map(pill).join('')}</div><dl class="v313-dl"><dt>Intérêt</dt><dd>${esc(x[4])}</dd><dt>Conditions</dt><dd>${esc(x[5])}</dd><dt>Conseil</dt><dd>${esc(x[6])}</dd></dl></div></div>`;
-  const bad=x=>`<div class="v214-card bad">${head(x)}<div class="v313-pills"><span class="t">☠️ Toxique</span></div><dl class="v313-dl"><dt>Pourquoi l’éviter</dt><dd>${esc(x[3])}</dd><dt>Parties concernées</dt><dd>${esc(x[4])}</dd></dl></div></div>`;
+  const good=x=>`<div class="v214-card">${head(x)}<div class="v313-pills">${x[4].map(pill).join('')}</div><p>${esc(x[3])}</p><dl class="v313-dl"><dt>Conditions et limites</dt><dd>${esc(x[5])}</dd></dl></div></div>`;
+  const bad=x=>`<div class="v214-card bad">${head(x)}<div class="v313-pills"><span class="t">☠️ Toxique</span></div><p>${esc(x[3])}</p></div></div>`;
   const sec=document.createElement('section'); sec.className='screen'; sec.id='plantes';
   sec.innerHTML=`<div class="top"><button class="back" onclick="go('parkplus')">‹</button><div class="title">Plantes et arbustes</div></div>
   <div class="v214-seg" role="tablist"><button type="button" data-t="good" class="on">🌿 À planter</button><button type="button" data-t="bad" class="bad">🚫 À éviter</button></div>
   <div id="v214Good">
-    <p class="v214-lead">Cette sélection concerne les poules. Choisissez selon le climat de chez vous et selon ce dont vous avez besoin : un végétal qui apporte de la fraîcheur en été, ou un végétal qui offre des cachettes à vos poules, même en hiver. À vous de faire votre choix, en vérifiant bien que la plante est adaptée à l’endroit où vous habitez.</p>
-    ${GOOD.map(good).join('')}
-    <div class="v214-box v214-how"><b>Pourquoi ces cinq-là ?</b>Le camélia du Japon, l’hibiscus de Syrie et la mélisse sont répertoriés dans une liste de plantes non toxiques pour les volailles. Pour le mûrier blanc et le romarin, des travaux ont étudié l’incorporation des feuilles dans l’alimentation des poules. Ces éléments soutiennent leur sélection pour une plantation accessible et un picorage occasionnel, sans garantir une consommation illimitée de toutes les parties.<br><br>Les besoins de culture restent essentiels, notamment le sol frais du camélia et de la mélisse, et le drainage du romarin.</div>
+    <p class="v214-lead">Des plantations pour créer de l’ombre, des cachettes et diversifier le parc. Choisissez selon votre terrain, votre climat et la place disponible à maturité.</p>
+    ${SECTIONS.map(s=>`<h3 class="v214-h">${esc(s[0])}</h3>${s[1].map(good).join('')}<p class="v322-src">${esc(s[2])}</p>`).join('')}
+    <div class="v214-box v214-how"><b>🪴 Aménagement</b>Protégez les jeunes plantations du grattage. Répartissez plusieurs refuges, avec des entrées et sorties dégagées. Le couvert utile dépend de la taille et de la forme de la plante.</div>
+    <div class="v214-box v322-prot"><b>🦅 Protection</b>Les végétaux offrent de l’ombre et des possibilités de dissimulation. Ils ne garantissent pas une protection contre les rapaces.</div>
+    <p class="v214-note">Sélection fondée sur PoultryDVM et d’autres références vétérinaires aviaires. Les plantes proposées sont destinées à l’aménagement du parc, pas à une distribution alimentaire à volonté.</p>
   </div>
   <div id="v214Bad" hidden>
-    <p class="v214-lead">Ces plantes ne doivent pas se trouver dans le parc accessible aux poules. Leurs risques sont documentés par des références vétérinaires, dont des sources de médecine aviaire et un centre antipoison animal.</p>
+    <p class="v214-lead">Ces plantes présentent un risque d’intoxication si elles sont consommées. Gardez-les hors d’accès et ne déposez pas leurs déchets de taille dans le parc.</p>
     ${BAD.map(bad).join('')}
-    <div class="v214-box v214-vet"><b>🩺 Liste non exhaustive</b>En cas d’ingestion suspectée d’une plante toxique, contactez rapidement un vétérinaire, sans attendre l’apparition de signes. Gardez une photo et le nom de la plante.</div>
+    <p class="v322-src">Ces exclusions reposent sur des références vétérinaires et antipoison.</p>
+    <div class="v214-box v214-vet"><b>🩺 Liste non exhaustive</b>En cas d’ingestion suspectée d’une plante toxique, contactez rapidement un vétérinaire sans attendre les symptômes.</div>
     <button type="button" class="v208-vetbtn" onclick="go('vets')">${window.V208_ICON?`<img class="ic" src="${window.V208_ICON}" alt="">`:''}<span><b>Trouver un vétérinaire pour mes poules</b><small>Près de chez moi, qui soigne les poules</small></span><i>›</i></button>
   </div>`;
   // v314 : depuis « À éviter », le retour de #vets revient sur Plantes et arbustes
