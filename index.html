@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=308;
+  var APP_V=309;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15294,6 +15294,13 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     chaud:[
       ['🍓','Arbousier','Arbutus unedo',"Persistant, adapté à la sécheresse une fois installé. Choisissez une forme de grand développement et ménagez des passages sous les branches. Compatibilité documentée chez les oiseaux, mais les données spécifiques aux poules sont limitées.",['Persistant','Résiste à la sécheresse'],'o'],
       ['🫒','Olivier','Olea europaea',"Persistant, adapté au soleil et aux sols drainés. Choisissez une couronne assez large pour offrir un véritable ombrage. Avec réserve : ramassez les olives tombées, la sécurité des noyaux est insuffisamment documentée chez les poules.",['Persistant','Soleil','Sol drainé'],'o']
+    ],
+    doux:[
+      ['🌸','Camélia du Japon','Camellia japonica',"Persistant, répertorié non toxique pour les volailles. Choisissez une grande variété, en sol acide à neutre, avec des passages sous les branches.",['Persistant','Sol acide à neutre'],'oc'],
+      ['🎋','Bambou non traçant','Fargesia murielae',"Persistant, adapté aux sols frais et drainés. Choisissez un port arqué et dégagez l'accès sous le feuillage.",['Persistant','Sol frais et drainé'],'oc'],
+      ['🎋','Bambou non traçant','Fargesia robusta',"Mêmes conditions. Attention : une touffe trop compacte ne constitue pas un refuge accessible.",['Persistant','Sol frais et drainé'],'oc'],
+      ['🌳','Magnolia persistant','Magnolia grandiflora',"Pour les grands terrains, avec une couronne suffisamment large et accessible dessous.",['Persistant','Grand terrain'],'o'],
+      ['🍓','Arbousier','Arbutus unedo',"Possible si le sol est bien drainé, sans eau stagnante.",['Persistant','Sol bien drainé'],'o']
     ]
   };
   const list=k=>LISTS[k]&&LISTS[k].length?LISTS[k].map(x=>window.V214_CARD(x,false)).join(''):'<div class="v307-soon">🌱 La liste des plantations adaptées à ce climat arrive bientôt.</div>';
