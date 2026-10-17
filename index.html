@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=318;
+  var APP_V=319;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15351,6 +15351,10 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
 #envsecurity .park-popote-chip.on{background:#e7f1e9;border-color:#9cc3a8;color:#2f5d43}
 #envsecurity .field-help{font-size:13.5px;line-height:1.45;color:#6b5a45;margin-top:6px}
 #envsecurity .v318-q + .v318-q{border-top:1px solid #f3ead8;padding-top:12px}
+#envsecurity .v319-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px}
+#envsecurity .v319-need{font-size:13px;font-weight:800;color:#8a5d12;background:#fff6e0;border:1px solid #f0d9a0;border-radius:999px;padding:4px 10px}
+#envsecurity .v319-need.ok{color:#2f5d43;background:#e7f1e9;border-color:#9cc3a8}
+#envsecurity .v319-enc{margin:16px 0 4px}
 </style>
 <script id="v318-env-js">
 (function(){
@@ -15369,20 +15373,37 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     w.innerHTML='<div class="park-card"><div class="park-card-head"><span class="park-num">🌿</span><strong>Environnement</strong></div><div class="park-fields">'+
       '<div class="park-popotes"><div class="park-popotes-title"><b>Comment est votre parc ?</b></div><div class="park-popote-list">'+
       ENV.map(function(e){ var c=$(e[0]); return chip('data-env',e[0],'1',e[1],c&&c.checked); }).join('')+
-      '</div><div class="field-help">Touchez tout ce qui correspond. Plusieurs réponses possibles.</div></div></div></div>'+
+      '</div><div class="field-help">Touchez tout ce qui correspond. Plusieurs réponses possibles.</div></div>'+waterHTML()+'</div></div>'+
       '<div class="park-card"><div class="park-card-head"><span class="park-num">🛡️</span><strong>Sécurité et prédateurs</strong></div><div class="park-fields">'+
       SEC.map(function(q){ var c=$(q[0]), on=!!(c&&c.checked);
         return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+q[1]+'</b></div><div class="park-popote-list">'+
           chip('data-sec',q[0],'1','Oui',on)+chip('data-sec',q[0],'0','Non',!on)+'</div><div class="field-help">'+q[2]+'</div></div>'; }).join('')+
       '</div></div>';
   }
+  function hensN(){ try{ return (typeof popotes!=='undefined'&&popotes||[]).filter(function(h){return h&&h.sex!=='coq';}).length; }catch(e){ return 0; } }
+  function need(){ var n=hensN(); return n?Math.ceil(n/2):0; }
+  function stepper(id,lbl,help){ var c=$(id), v=c?(parseInt(c.value,10)||0):0, nd=need();
+    return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="v319-row"><div class="park-stepper"><button type="button" data-step="'+id+'" data-d="-1" aria-label="Moins">−</button><strong>'+v+'</strong><button type="button" data-step="'+id+'" data-d="1" aria-label="Plus">+</button></div>'+
+      (nd?'<span class="v319-need'+(v>=nd?' ok':'')+'">'+(v>=nd?'✓ ':'')+'Conseillé : '+nd+' pour '+hensN()+' poule'+(hensN()>1?'s':'')+'</span>':'')+'</div><div class="field-help">'+help+'</div></div>'; }
+  function waterHTML(){ var ws=$('waterShade'), sh=ws?ws.value:'yes';
+    return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>Avez-vous de l’eau à l’ombre ?</b></div><div class="park-popote-list">'+
+      chip('data-shade','waterShade','yes','Oui',sh==='yes')+chip('data-shade','waterShade','sometimes','En partie',sh==='sometimes')+chip('data-shade','waterShade','no','Non',sh==='no')+
+      '</div><div class="field-help">Une eau à l’ombre reste fraîche et propre plus longtemps.</div></div>'+
+      stepper('waterPoints','Combien de gamelles d’eau ou d’abreuvoirs ?','Comptez environ une gamelle pour deux poules : 1 pour 2 poules, 2 pour 4 poules, 3 pour 6 poules. Plusieurs points évitent qu’une poule en empêche une autre de boire.')+
+      stepper('feederPoints','Combien de mangeoires ?','Même repère : environ une mangeoire pour deux poules, à des endroits différents, pour que chacune mange tranquillement.'); }
   w.addEventListener('click',function(e){
+    var st=e.target.closest('[data-step]'); if(st){ var ci=$(st.getAttribute('data-step')); if(ci){ ci.value=Math.max(0,Math.min(20,(parseInt(ci.value,10)||0)+(+st.getAttribute('data-d')))); ci.dispatchEvent(new Event('input',{bubbles:true})); render(); } return; }
+    var sd=e.target.closest('[data-shade]'); if(sd){ var ws=$('waterShade'); if(ws){ ws.value=sd.getAttribute('data-v'); ws.dispatchEvent(new Event('change',{bubbles:true})); render(); } return; }
     var b=e.target.closest('[data-env],[data-sec]'); if(!b) return;
     var id=b.getAttribute('data-env')||b.getAttribute('data-sec'), c=$(id); if(!c) return;
     c.checked=b.hasAttribute('data-env')?!c.checked:b.getAttribute('data-v')==='1';
     c.dispatchEvent(new Event('change',{bubbles:true})); render();
   });
   render();
+  /* v319 : encart violet Premium sous « Enregistrer mon environnement » */
+  var enc=document.createElement('div'); enc.className='v319-enc'; enc.id='v319Enc';
+  enc.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Plus de sécurité pour vos installations</b><small>Protéger vos poules des prédateurs au sol comme de ceux venus du ciel</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
+  save.after(enc);
   var g=window.go; if(typeof g==='function') window.go=function(id){ var r=g.apply(this,arguments); if(id==='envsecurity'){ try{ render(); }catch(e){} } return r; };
 })();
 </script>
