@@ -7000,7 +7000,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=313;
+  var APP_V=314;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13761,7 +13761,13 @@ window.VetSource = {
     <p class="v214-lead">Ces plantes ne doivent pas se trouver dans le parc accessible aux poules. Leurs risques sont documentés par des références vétérinaires, dont des sources de médecine aviaire et un centre antipoison animal.</p>
     ${BAD.map(bad).join('')}
     <div class="v214-box v214-vet"><b>🩺 Liste non exhaustive</b>En cas d’ingestion suspectée d’une plante toxique, contactez rapidement un vétérinaire, sans attendre l’apparition de signes. Gardez une photo et le nom de la plante.</div>
+    <button type="button" class="v208-vetbtn" onclick="go('vets')">${window.V208_ICON?`<img class="ic" src="${window.V208_ICON}" alt="">`:''}<span><b>Trouver un vétérinaire pour mes poules</b><small>Près de chez moi, qui soigne les poules</small></span><i>›</i></button>
   </div>`;
+  // v314 : depuis « À éviter », le retour de #vets revient sur Plantes et arbustes
+  (function(){ let fromPl=false; const g0=window.go;
+    if(typeof g0==='function') window.go=function(id){ if(id==='vets'){ const a=document.querySelector('.screen.active'); fromPl=!!(a&&a.id==='plantes'); } return g0.apply(this,arguments); };
+    document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('#vets .back'); if(b&&fromPl){ e.preventDefault(); e.stopPropagation(); fromPl=false; go('plantes'); } },true);
+  })();
   tour.after(sec);
   sec.querySelector('.v214-seg').addEventListener('click',e=>{ const b=e.target.closest('[data-t]'); if(!b) return;
     sec.querySelectorAll('.v214-seg button').forEach(x=>x.classList.toggle('on',x===b));
