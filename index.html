@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=359;
+  var APP_V=360;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13210,7 +13210,7 @@ body.v199-coqprof #profile .status-row:has(#stateLayingToggle),body.v199-coqprof
   const refreshHome=b=>{ try{ if(window.v58RefreshHome) window.v58RefreshHome(b); }catch(e){} };
   const COQ_SVG='data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6ecd5"/><stop offset="1" stop-color="#e6efdc"/></linearGradient></defs><rect width="400" height="500" fill="url(#g)"/><text x="200" y="300" font-size="210" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🐓</text></svg>');
   const baseAv=window.avatarSrcForHen;
-  window.avatarSrcForHen=function(h){ if(h&&h.sex==='coq'&&!h.photoDataUrl) return COQ_SVG; return baseAv.apply(this,arguments); };
+  window.avatarSrcForHen=function(h){ if(h&&h.sex==='coq'&&!h.photoDataUrl&&h.breed) return COQ_SVG; return baseAv.apply(this,arguments); };
   // Ajouter : choix poule / coq
   const sec=document.getElementById('addpopote');
   const prev=sec&&sec.querySelector('.v58-add-preview');
