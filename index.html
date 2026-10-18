@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=354;
+  var APP_V=355;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15404,31 +15404,68 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     return nd?'<span class="v319-need'+(v>=nd?' ok':'')+'">'+(v>=nd?'✓ ':'')+'Conseillé : '+nd+' pour '+n+' poule'+(n>1?'s':'')+'</span>':''; }
   function numQ(id,lbl,help){ var c=$(id), v=c?(parseInt(c.value,10)||0):0;
     return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="v319-row"><input class="v324-num" type="number" inputmode="numeric" min="0" max="50" data-num="'+id+'" value="'+v+'"><span data-need="'+id+'">'+needHTML(id)+'</span></div><div class="field-help">'+help+'</div></div>'; }
+  /* v355 : environnement et sécurité PAR PARC (nombre de parcs, poules de chaque parc, ressources, sécurité) */
+  var EK='maisonPopotesV355Env';
+  var RES=[['water','Combien d’abreuvoirs ?'],['feeder','Combien de mangeoires ?'],['perch','Combien de perchoirs extérieurs ?'],['dust','Combien de bains de poussière disponibles ?'],['shelter','Combien de coins à l’abri du vent et de la pluie ?'],['shade','Combien de zones d’ombre pour la chaleur ?']];
+  function pk(){ try{ return (typeof parkState!=='undefined'&&parkState&&parkState.length)?parkState:[{name:'Parc 1'}]; }catch(e){ return [{name:'Parc 1'}]; } }
+  function ld(){ var d=null; try{ d=JSON.parse(localStorage.getItem(EK)||'null'); }catch(e){}
+    if(!d||!Array.isArray(d.parks)){ d={parks:[]}; var wp=$('waterPoints'), fp=$('feederPoints'), m=$('secMesh'), bu=$('secBuried');
+      d.parks[0]={water:wp?(parseInt(wp.value,10)||0):0,feeder:fp?(parseInt(fp.value,10)||0):0,mesh:m&&m.checked?'oui':'',buried:bu&&bu.checked?'oui':''}; }
+    return d; }
+  var D=ld();
+  function P(i){ return D.parks[i]||(D.parks[i]={}); }
+  function sv(){ try{ localStorage.setItem(EK,JSON.stringify(D)); }catch(e){} sync(); }
+  function setC(id,on){ var c=$(id); if(c&&c.checked!==on){ c.checked=on; c.dispatchEvent(new Event('change',{bubbles:true})); } }
+  function setN(id,v){ var c=$(id); if(c&&String(c.value)!==String(v)){ c.value=v; c.dispatchEvent(new Event('input',{bubbles:true})); } }
+  function sync(){ var ps=pk(), sum=function(k){ return ps.reduce(function(a,p,i){ return a+(parseInt(P(i)[k],10)||0); },0); }, every=function(f){ return ps.every(function(p,i){ return f(P(i)); }); };
+    setN('waterPoints',Math.min(20,sum('water'))); setN('feederPoints',Math.min(20,sum('feeder')));
+    setC('envShade',every(function(p){ return (parseInt(p.shade,10)||0)>0; }));
+    setC('envShelteredWind',every(function(p){ return (parseInt(p.shelter,10)||0)>0; }));
+    setC('envShelter',every(function(p){ return (parseInt(p.shelter,10)||0)>0; }));
+    setC('secMesh',every(function(p){ return p.mesh==='oui'; }));
+    setC('secBuried',every(function(p){ return p.mesh==='oui'&&p.buried==='oui'; }));
+    try{ if(typeof updateInstallScore==='function') updateInstallScore(); }catch(e){} }
+  function ch(i,k,v,t){ var on=P(i)[k]===v; return '<button type="button" class="park-popote-chip'+(on?' on':'')+'" data-p="'+i+'" data-k="'+k+'" data-v="'+v+'">'+t+(on?' ✓':'')+'</button>'; }
+  function yn(i,k,lbl,help){ return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="park-popote-list">'+ch(i,k,'oui','Oui')+ch(i,k,'non','Non')+'</div>'+(help?'<div class="field-help">'+help+'</div>':'')+'</div>'; }
+  function q(i,k,lbl,opts){ return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="park-popote-list">'+opts.map(function(o){ return ch(i,k,o[0],o[1]); }).join('')+'</div></div>'; }
+  function num(i,k,lbl){ return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="v319-row"><input class="v324-num" type="number" inputmode="numeric" min="0" max="50" data-p="'+i+'" data-n="'+k+'" value="'+(parseInt(P(i)[k],10)||0)+'"></div></div>'; }
+  function nm(i){ var p=pk()[i]; return (p&&p.name)||('Parc '+(i+1)); }
+  function esc2(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function inPark(i,coq){ var multi=pk().length>1; return all().filter(function(h){ return h&&(h.sex==='coq')===coq&&(!multi||h.parkIndex===i); }).length; }
+  function cnt(n,k){ return '<b>'+n+'</b> poule'+(n>1?'s':'')+(k?' <span>+ '+k+' coq'+(k>1?'s':'')+'</span>':''); }
   function render(){
-    var n=hensN(), k=coqN(), l=lib(), mesh=$('secMesh'), on=!!(mesh&&mesh.checked);
-    w.innerHTML='<div class="park-card"><div class="park-card-head"><span class="park-num">🌿</span><strong>Environnement</strong></div><div class="park-fields">'+
-      '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>Tes poules</b></div><div class="v324-total"><b>'+n+'</b> poule'+(n>1?'s':'')+' au total'+(k?' <span>+ '+k+' coq'+(k>1?'s':'')+'</span>':'')+'</div>'+
+    var ps=pk(), n=hensN(), k=coqN(), multi=ps.length>1, h='';
+    h+='<div class="park-card"><div class="park-card-head"><span class="park-num">🌿</span><strong>Environnement</strong></div><div class="park-fields">'+
+      '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>Tes poules</b></div><div class="v324-total">'+cnt(n,k).replace('</b> poule','</b> poule').replace(/(poules?)/,'$1 au total')+'</div>'+
         '<div class="field-help">'+(n||k?'Compté automatiquement à partir de « Mes Popotes ».':'Ajoute tes poules dans « Mes Popotes » : elles seront comptées ici.')+'</div></div>'+
-      numQ('waterPoints','Combien de gamelles d’eau ou d’abreuvoirs ?','Compte environ une gamelle pour deux poules : 1 pour 2 poules, 2 pour 4 poules, 3 pour 6 poules.')+
-      numQ('feederPoints','Combien de mangeoires ?','Même repère : environ une mangeoire pour deux poules.')+
-      '</div></div>'+
-      '<div class="park-card"><div class="park-card-head"><span class="park-num">🛡️</span><strong>Sécurité et prédateurs</strong></div><div class="park-fields">'+
-      '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>Tes poules vivent-elles en liberté ?</b></div><div class="park-popote-list">'+
-        chip('data-lib','lib','oui','Oui',l==='oui')+chip('data-lib','lib','non','Non',l==='non')+'</div></div>'+
-      '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>Y a-t-il un grillage autour du parc ?</b></div><div class="park-popote-list">'+
-        chip('data-sec','secMesh','1','Oui',on)+chip('data-sec','secMesh','0','Non',!on)+'</div><div class="field-help">Un grillage à poules, idéalement de plus de 1,50 m.</div></div>'+
-      '</div></div>';
+      '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>Combien de parcs ?</b></div><div class="v355-step"><button type="button" data-step="-1" aria-label="Retirer un parc">−</button><b>'+ps.length+'</b><button type="button" data-step="1" aria-label="Ajouter un parc">+</button></div>'+
+        '<div class="field-help">Le même nombre que dans « Mon parc ».</div></div></div></div>';
+    ps.forEach(function(p,i){
+      h+='<div class="park-card v355-park"><div class="park-card-head"><span class="park-num">'+(i+1)+'</span><strong>'+esc2(nm(i))+'</strong></div><div class="park-fields">'+
+        '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+(multi?'Tes poules dans ce parc':'Tes poules dans ton parc')+'</b></div><div class="v324-total">'+cnt(inPark(i,false),inPark(i,true))+'</div>'+
+        (multi?'<div class="field-help">Pour changer une poule de parc, va dans « Mon parc ».</div>':'')+'</div>'+
+        RES.map(function(r){ return num(i,r[0],r[1]); }).join('')+'</div></div>';
+    });
+    h+='<div class="park-card"><div class="park-card-head"><span class="park-num">🛡️</span><strong>Sécurité et prédateurs</strong></div><div class="park-fields">';
+    ps.forEach(function(p,i){ var x=P(i);
+      if(multi) h+='<div class="v355-sub">'+esc2(nm(i))+'</div>';
+      h+=yn(i,'secure','Tes poules vivent-elles dans un parc sécurisé ?')+yn(i,'garden','Tes poules ont-elles accès à ton jardin ?')+yn(i,'mesh','Ton parc est-il grillagé ?');
+      if(x.mesh==='oui') h+=q(i,'meshType','Grillage souple ou rigide ?',[['souple','Souple'],['rigide','Rigide']])+
+        q(i,'meshBase','Le grillage est-il posé à même le sol ou sur un muret ?',[['sol','À même le sol'],['muret','Sur un muret']])+
+        yn(i,'buried','Le grillage est-il enterré ?');
+    });
+    h+='</div></div>';
+    w.innerHTML=h;
   }
   w.addEventListener('input',function(e){
-    var t=e.target.closest('[data-num]'); if(!t) return; var c=$(t.getAttribute('data-num')); if(!c) return;
-    c.value=Math.max(0,Math.min(50,parseInt(t.value,10)||0)); c.dispatchEvent(new Event('input',{bubbles:true}));
-    var sp=w.querySelector('[data-need="'+t.getAttribute('data-num')+'"]'); if(sp) sp.innerHTML=needHTML(t.getAttribute('data-num'));
+    var t=e.target.closest('[data-n]'); if(!t) return;
+    P(+t.getAttribute('data-p'))[t.getAttribute('data-n')]=Math.max(0,Math.min(50,parseInt(t.value,10)||0)); sv();
   });
   w.addEventListener('click',function(e){
-    var lb=e.target.closest('[data-lib]'); if(lb){ try{ localStorage.setItem(LK,lb.getAttribute('data-v')); }catch(er){} render(); return; }
-    var b=e.target.closest('[data-sec]'); if(!b) return;
-    var c=$(b.getAttribute('data-sec')); if(!c) return;
-    c.checked=b.getAttribute('data-v')==='1'; c.dispatchEvent(new Event('change',{bubbles:true})); render();
+    var s=e.target.closest('[data-step]'); if(s){ try{ stepParkCount(+s.getAttribute('data-step')); }catch(er){} sync(); render(); return; }
+    var b=e.target.closest('[data-k]'); if(!b) return;
+    var x=P(+b.getAttribute('data-p')), k2=b.getAttribute('data-k'), v=b.getAttribute('data-v');
+    x[k2]=(x[k2]===v)?'':v; sv(); render();
   });
   render();
   /* v319 : encart violet Premium sous « Enregistrer mon environnement » */
@@ -15463,4 +15500,10 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     window.go('hens');
   },true);
 })();</script><style id="v351-env-intro-css">#envsecurity .setup-intro p+p{margin-top:10px}</style>
+<style id="v355-env-css">
+#envsecurity .v355-step{display:inline-flex;align-items:center;gap:14px;margin-top:8px;background:#fffaf0;border:1px solid #e5dac8;border-radius:999px;padding:4px}
+#envsecurity .v355-step button{width:42px;height:42px;border-radius:50%;border:0;background:#e7f1e9;color:#2f5d43;font-size:24px;font-weight:800;line-height:1;cursor:pointer}
+#envsecurity .v355-step b{font:800 24px/1 Georgia,serif;color:#2f5d43;min-width:24px;text-align:center}
+#envsecurity .v355-sub{font:800 17px Georgia,serif;color:#7a5418;background:#fff3d6;border-radius:12px;padding:6px 12px;margin-top:4px}
+</style>
 </body></html>
