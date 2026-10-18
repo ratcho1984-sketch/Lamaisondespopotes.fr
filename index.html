@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=355;
+  var APP_V=356;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15406,7 +15406,7 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="v319-row"><input class="v324-num" type="number" inputmode="numeric" min="0" max="50" data-num="'+id+'" value="'+v+'"><span data-need="'+id+'">'+needHTML(id)+'</span></div><div class="field-help">'+help+'</div></div>'; }
   /* v355 : environnement et sécurité PAR PARC (nombre de parcs, poules de chaque parc, ressources, sécurité) */
   var EK='maisonPopotesV355Env';
-  var RES=[['water','Combien d’abreuvoirs ?'],['feeder','Combien de mangeoires ?'],['perch','Combien de perchoirs extérieurs ?'],['dust','Combien de bains de poussière disponibles ?'],['shelter','Combien de coins à l’abri du vent et de la pluie ?'],['shade','Combien de zones d’ombre pour la chaleur ?']];
+  var RES=[['Combien d’abreuvoirs et de mangeoires ?',[['water','Abreuvoirs'],['feeder','Mangeoires']]],['Combien de perchoirs en extérieur ?',[['perch','Perchoirs']]],['Combien de bains de poussière et de zones de grattage disponibles ?',[['dust','Bains de poussière'],['scratch','Zones de grattage']]],['Combien de coins à l’abri du vent et de la pluie, et de zones d’ombre pour la chaleur ?',[['shelter','À l’abri'],['shade','À l’ombre']]]];
   function pk(){ try{ return (typeof parkState!=='undefined'&&parkState&&parkState.length)?parkState:[{name:'Parc 1'}]; }catch(e){ return [{name:'Parc 1'}]; } }
   function ld(){ var d=null; try{ d=JSON.parse(localStorage.getItem(EK)||'null'); }catch(e){}
     if(!d||!Array.isArray(d.parks)){ d={parks:[]}; var wp=$('waterPoints'), fp=$('feederPoints'), m=$('secMesh'), bu=$('secBuried');
@@ -15428,7 +15428,7 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
   function ch(i,k,v,t){ var on=P(i)[k]===v; return '<button type="button" class="park-popote-chip'+(on?' on':'')+'" data-p="'+i+'" data-k="'+k+'" data-v="'+v+'">'+t+(on?' ✓':'')+'</button>'; }
   function yn(i,k,lbl,help){ return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="park-popote-list">'+ch(i,k,'oui','Oui')+ch(i,k,'non','Non')+'</div>'+(help?'<div class="field-help">'+help+'</div>':'')+'</div>'; }
   function q(i,k,lbl,opts){ return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="park-popote-list">'+opts.map(function(o){ return ch(i,k,o[0],o[1]); }).join('')+'</div></div>'; }
-  function num(i,k,lbl){ return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="v319-row"><input class="v324-num" type="number" inputmode="numeric" min="0" max="50" data-p="'+i+'" data-n="'+k+'" value="'+(parseInt(P(i)[k],10)||0)+'"></div></div>'; }
+  function num(i,lbl,fs){ return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="v319-row v356-row">'+fs.map(function(f){ return '<label class="v356-f">'+(fs.length>1?'<span>'+f[1]+'</span>':'')+'<input class="v324-num" type="number" inputmode="numeric" min="0" max="50" data-p="'+i+'" data-n="'+f[0]+'" value="'+(parseInt(P(i)[f[0]],10)||0)+'"></label>'; }).join('')+'</div></div>'; }
   function nm(i){ var p=pk()[i]; return (p&&p.name)||('Parc '+(i+1)); }
   function esc2(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function inPark(i,coq){ var multi=pk().length>1; return all().filter(function(h){ return h&&(h.sex==='coq')===coq&&(!multi||h.parkIndex===i); }).length; }
@@ -15436,22 +15436,19 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
   function render(){
     var ps=pk(), n=hensN(), k=coqN(), multi=ps.length>1, h='';
     h+='<div class="park-card"><div class="park-card-head"><span class="park-num">🌿</span><strong>Environnement</strong></div><div class="park-fields">'+
-      '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>Tes poules</b></div><div class="v324-total">'+cnt(n,k).replace('</b> poule','</b> poule').replace(/(poules?)/,'$1 au total')+'</div>'+
-        '<div class="field-help">'+(n||k?'Compté automatiquement à partir de « Mes Popotes ».':'Ajoute tes poules dans « Mes Popotes » : elles seront comptées ici.')+'</div></div>'+
+      '<div class="park-popotes v318-q v356-pop">Tes Popotes : <b>'+n+'</b> poule'+(n>1?'s':'')+' et <b>'+k+'</b> coq'+(k>1?'s':'')+'</div>'+
       '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>Combien de parcs ?</b></div><div class="v355-step"><button type="button" data-step="-1" aria-label="Retirer un parc">−</button><b>'+ps.length+'</b><button type="button" data-step="1" aria-label="Ajouter un parc">+</button></div>'+
-        '<div class="field-help">Le même nombre que dans « Mon parc ».</div></div></div></div>';
+        '</div></div></div>';
     ps.forEach(function(p,i){
       h+='<div class="park-card v355-park"><div class="park-card-head"><span class="park-num">'+(i+1)+'</span><strong>'+esc2(nm(i))+'</strong></div><div class="park-fields">'+
-        '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+(multi?'Tes poules dans ce parc':'Tes poules dans ton parc')+'</b></div><div class="v324-total">'+cnt(inPark(i,false),inPark(i,true))+'</div>'+
-        (multi?'<div class="field-help">Pour changer une poule de parc, va dans « Mon parc ».</div>':'')+'</div>'+
+        '<div class="park-popotes v318-q v356-pop">'+(function(t){ return 'Dans ce parc : <b>'+t+'</b> individu'+(t>1?'s':''); })(inPark(i,false)+inPark(i,true))+'</div>'+
         RES.map(function(r){ return num(i,r[0],r[1]); }).join('')+'</div></div>';
     });
     h+='<div class="park-card"><div class="park-card-head"><span class="park-num">🛡️</span><strong>Sécurité et prédateurs</strong></div><div class="park-fields">';
     ps.forEach(function(p,i){ var x=P(i);
       if(multi) h+='<div class="v355-sub">'+esc2(nm(i))+'</div>';
-      h+=yn(i,'secure','Tes poules vivent-elles dans un parc sécurisé ?')+yn(i,'garden','Tes poules ont-elles accès à ton jardin ?')+yn(i,'mesh','Ton parc est-il grillagé ?');
+      h+=yn(i,'secure','Tes poules vivent-elles dans un parc sécurisé ?')+yn(i,'mesh','Ton parc est-il grillagé ?');
       if(x.mesh==='oui') h+=q(i,'meshType','Grillage souple ou rigide ?',[['souple','Souple'],['rigide','Rigide']])+
-        q(i,'meshBase','Le grillage est-il posé à même le sol ou sur un muret ?',[['sol','À même le sol'],['muret','Sur un muret']])+
         yn(i,'buried','Le grillage est-il enterré ?');
     });
     h+='</div></div>';
@@ -15505,5 +15502,11 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
 #envsecurity .v355-step button{width:42px;height:42px;border-radius:50%;border:0;background:#e7f1e9;color:#2f5d43;font-size:24px;font-weight:800;line-height:1;cursor:pointer}
 #envsecurity .v355-step b{font:800 24px/1 Georgia,serif;color:#2f5d43;min-width:24px;text-align:center}
 #envsecurity .v355-sub{font:800 17px Georgia,serif;color:#7a5418;background:#fff3d6;border-radius:12px;padding:6px 12px;margin-top:4px}
+</style>
+<style id="v356-env-css">
+#envsecurity .v356-pop{font-size:15px;color:#3d4a40}
+#envsecurity .v356-pop b{font:800 18px Georgia,serif;color:#2f5d43}
+#envsecurity .v356-row{gap:14px}
+#envsecurity .v356-f{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700;color:#6b5a45}
 </style>
 </body></html>
