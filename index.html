@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=356;
+  var APP_V=357;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15422,8 +15422,6 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     setC('envShade',every(function(p){ return (parseInt(p.shade,10)||0)>0; }));
     setC('envShelteredWind',every(function(p){ return (parseInt(p.shelter,10)||0)>0; }));
     setC('envShelter',every(function(p){ return (parseInt(p.shelter,10)||0)>0; }));
-    setC('secMesh',every(function(p){ return p.mesh==='oui'; }));
-    setC('secBuried',every(function(p){ return p.mesh==='oui'&&p.buried==='oui'; }));
     try{ if(typeof updateInstallScore==='function') updateInstallScore(); }catch(e){} }
   function ch(i,k,v,t){ var on=P(i)[k]===v; return '<button type="button" class="park-popote-chip'+(on?' on':'')+'" data-p="'+i+'" data-k="'+k+'" data-v="'+v+'">'+t+(on?' ✓':'')+'</button>'; }
   function yn(i,k,lbl,help){ return '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="park-popote-list">'+ch(i,k,'oui','Oui')+ch(i,k,'non','Non')+'</div>'+(help?'<div class="field-help">'+help+'</div>':'')+'</div>'; }
@@ -15435,23 +15433,18 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
   function cnt(n,k){ return '<b>'+n+'</b> poule'+(n>1?'s':'')+(k?' <span>+ '+k+' coq'+(k>1?'s':'')+'</span>':''); }
   function render(){
     var ps=pk(), n=hensN(), k=coqN(), multi=ps.length>1, h='';
-    h+='<div class="park-card"><div class="park-card-head"><span class="park-num">🌿</span><strong>Environnement</strong></div><div class="park-fields">'+
-      '<div class="park-popotes v318-q v356-pop">Tes Popotes : <b>'+n+'</b> poule'+(n>1?'s':'')+' et <b>'+k+'</b> coq'+(k>1?'s':'')+'</div>'+
-      '<div class="park-popotes v318-q"><div class="park-popotes-title"><b>Combien de parcs ?</b></div><div class="v355-step"><button type="button" data-step="-1" aria-label="Retirer un parc">−</button><b>'+ps.length+'</b><button type="button" data-step="1" aria-label="Ajouter un parc">+</button></div>'+
-        '</div></div></div>';
+    h+='<div class="park-card"><div class="park-card-head"><span class="park-num">🌿</span><strong>Ton environnement :</strong></div><div class="park-fields">'+
+      '<div class="park-popotes v318-q v356-pop">Tes Popotes : <b>'+n+'</b> poule'+(n>1?'s':'')+' et <b>'+k+'</b> coq'+(k>1?'s':'')+', dans <b>'+ps.length+'</b> parc'+(ps.length>1?'s':'')+'.</div>'+
+      '<button type="button" class="v334-link v357-link" onclick="go(\'parks\')">Modifier mes parcs&nbsp;›</button>'+
+        '</div></div>';
     ps.forEach(function(p,i){
       h+='<div class="park-card v355-park"><div class="park-card-head"><span class="park-num">'+(i+1)+'</span><strong>'+esc2(nm(i))+'</strong></div><div class="park-fields">'+
         '<div class="park-popotes v318-q v356-pop">'+(function(t){ return 'Dans ce parc : <b>'+t+'</b> individu'+(t>1?'s':''); })(inPark(i,false)+inPark(i,true))+'</div>'+
         RES.map(function(r){ return num(i,r[0],r[1]); }).join('')+'</div></div>';
     });
-    h+='<div class="park-card"><div class="park-card-head"><span class="park-num">🛡️</span><strong>Sécurité et prédateurs</strong></div><div class="park-fields">';
-    ps.forEach(function(p,i){ var x=P(i);
-      if(multi) h+='<div class="v355-sub">'+esc2(nm(i))+'</div>';
-      h+=yn(i,'secure','Tes poules vivent-elles dans un parc sécurisé ?')+yn(i,'mesh','Ton parc est-il grillagé ?');
-      if(x.mesh==='oui') h+=q(i,'meshType','Grillage souple ou rigide ?',[['souple','Souple'],['rigide','Rigide']])+
-        yn(i,'buried','Le grillage est-il enterré ?');
-    });
-    h+='</div></div>';
+    h+='<div class="park-card v357-sec"><div class="park-card-head"><span class="park-num">🛡️</span><strong>Sécurité et prédateurs</strong></div>'+
+      '<p>Pour la sécurité de ton parc et la protection contre les prédateurs, fais le tour de ton parc avec nous : quelques questions simples, puis des conseils adaptés.</p>'+
+      '<button type="button" class="v357-go" onclick="go(\'parktour\');try{var a=document.getElementById(\'parkTourIntroView\');if(a){a.style.display=\'\';document.getElementById(\'parkTourQuestionView\').style.display=\'none\';document.getElementById(\'parkTourResultView\').style.display=\'none\';}}catch(e){}">Faisons le tour de ton parc&nbsp;›</button></div>';
     w.innerHTML=h;
   }
   w.addEventListener('input',function(e){
@@ -15508,5 +15501,10 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
 #envsecurity .v356-pop b{font:800 18px Georgia,serif;color:#2f5d43}
 #envsecurity .v356-row{gap:14px}
 #envsecurity .v356-f{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700;color:#6b5a45}
+</style>
+<style id="v357-env-css">
+#envsecurity .v357-link{justify-self:start;margin-top:-4px;display:inline-flex;align-items:center;padding:3px 12px;border:1px solid #d9b98f;border-radius:999px;background:#fbf3e6;color:#7a4b22;font:inherit;font-size:14px;font-weight:700;line-height:1.5;cursor:pointer;white-space:nowrap}
+#envsecurity .v357-sec p{margin:0 0 12px;font-size:15px;line-height:1.5;color:#3d4a40}
+#envsecurity .v357-go{width:100%;min-height:52px;border:0;border-radius:18px;background:linear-gradient(135deg,#3f7a55,#2f5d43);color:#fff;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 6px 16px rgba(47,93,67,.25)}
 </style>
 </body></html>
