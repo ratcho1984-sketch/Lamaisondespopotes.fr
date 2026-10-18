@@ -7002,7 +7002,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=339;
+  var APP_V=340;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14892,7 +14892,7 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
     if($('coops')) return;
     var sc=document.createElement('section'); sc.className='screen'; sc.id='coops';
     sc.innerHTML='<div class="top"><button class="back" onclick="v272Save(true)">‹</button><div class="title">Mon poulailler</div></div>'+
-      '<div class="v273-hero"><img src="'+(window.V273_COOP||'')+'" alt="Poules dans leur poulailler"><div class="v273-hero-txt"><h2>Faisons l’état des lieux</h2><p>Raconte-nous en quelques mots comment est ton poulailler, ou tes poulaillers. Queen s’en sert pour adapter ses conseils à ton installation.</p></div></div>'+
+      '<div class="v273-hero"><img src="'+(window.V273_COOP||'')+'" alt="Poules dans leur poulailler"><div class="v273-hero-txt"><h2>Faisons l’état des lieux</h2><p>Raconte-nous en quelques mots comment est ton poulailler, ou tes poulaillers. On s’en sert pour adapter nos conseils à ton installation.</p></div></div>'+
       '<div class="v272-wrap" id="v272Body"></div>';
     var ref=$('parks'); (ref&&ref.parentNode?ref.parentNode:document.body).insertBefore(sc,ref?ref.nextSibling:null);
     sc.addEventListener('input',function(e){ var f=e.target.getAttribute('data-f'); if(!f) return; var cd=e.target.closest('[data-i]'); if(!cd) return; var i=+cd.getAttribute('data-i'), c=L[i]; if(!c) return;
