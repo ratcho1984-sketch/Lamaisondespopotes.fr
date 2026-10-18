@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=357;
+  var APP_V=358;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15442,10 +15442,12 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
         '<div class="park-popotes v318-q v356-pop">'+(function(t){ return 'Dans ce parc : <b>'+t+'</b> individu'+(t>1?'s':''); })(inPark(i,false)+inPark(i,true))+'</div>'+
         RES.map(function(r){ return num(i,r[0],r[1]); }).join('')+'</div></div>';
     });
+    w.innerHTML=h; h='';
+    var w2=document.getElementById('v358Sec'); if(!w2){ w2=document.createElement('div'); w2.id='v358Sec'; w2.className='v318-wrap v358-sec'; save.after(w2); }
     h+='<div class="park-card v357-sec"><div class="park-card-head"><span class="park-num">🛡️</span><strong>Sécurité et prédateurs</strong></div>'+
       '<p>Pour la sécurité de ton parc et la protection contre les prédateurs, fais le tour de ton parc avec nous : quelques questions simples, puis des conseils adaptés.</p>'+
       '<button type="button" class="v357-go" onclick="go(\'parktour\');try{var a=document.getElementById(\'parkTourIntroView\');if(a){a.style.display=\'\';document.getElementById(\'parkTourQuestionView\').style.display=\'none\';document.getElementById(\'parkTourResultView\').style.display=\'none\';}}catch(e){}">Faisons le tour de ton parc&nbsp;›</button></div>';
-    w.innerHTML=h;
+    w2.innerHTML=h;
   }
   w.addEventListener('input',function(e){
     var t=e.target.closest('[data-n]'); if(!t) return;
@@ -15460,8 +15462,8 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
   render();
   /* v319 : encart violet Premium sous « Enregistrer mon environnement » */
   var enc=document.createElement('div'); enc.className='v319-enc'; enc.id='v319Enc';
-  enc.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Plus de sécurité pour tes installations</b><small>Protéger tes poules des prédateurs au sol comme de ceux venus du ciel</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
-  save.after(enc);
+  enc.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Va plus loin avec ton parc :</b><small>Passe en Premium pour découvrir comment l’améliorer et l’adapter à tes Popotes</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
+  save.after(enc); var s358=document.getElementById('v358Sec'); if(s358) save.after(s358);
   var g=window.go; if(typeof g==='function') window.go=function(id){ var r=g.apply(this,arguments); if(id==='envsecurity'){ try{ render(); }catch(e){} } return r; };
 })();
 </script>
@@ -15507,4 +15509,5 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
 #envsecurity .v357-sec p{margin:0 0 12px;font-size:15px;line-height:1.5;color:#3d4a40}
 #envsecurity .v357-go{width:100%;min-height:52px;border:0;border-radius:18px;background:linear-gradient(135deg,#3f7a55,#2f5d43);color:#fff;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 6px 16px rgba(47,93,67,.25)}
 </style>
+<style id="v358-env-css">#envsecurity .v358-sec{margin:16px 0 0}</style>
 </body></html>
