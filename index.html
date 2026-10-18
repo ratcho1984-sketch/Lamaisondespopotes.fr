@@ -7002,7 +7002,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=349;
+  var APP_V=350;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15332,7 +15332,7 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     var tier=!per?-1:per<5?0:per<10?1:2;
     var T=[['Moins de 5 m² par poule','En élevage biologique, le repère réglementaire pour un parcours extérieur est de 4&nbsp;m² par poule.<br><br>Dans un petit espace, l’enrichissement fait toute la différence : multiplie les perchoirs à différentes hauteurs, ajoute des cachettes, garde au moins un coin à gratter renouvelé souvent (feuilles, paille, broyat) et, si possible, sors tes Popotes sous surveillance dans le jardin.<br><br>Si ton poulailler est posé à même le sol, ces 4&nbsp;m² par poule se comptent sans la place qu’il occupe. Préfère un poulailler sur pieds : tes poules profitent aussi du dessous pour s’abriter.'],
            ['De 5 à 10 m² par poule','Elles ont déjà un peu plus de place&nbsp;! Tu vas pouvoir organiser des zones bien distinctes : des coins bain de poussière, des coins pour gratter, des zones d’ombre grâce à des végétaux et des abris. Mets du broyat dans les passages pour éviter la boue.<br><br>N’hésite pas à leur proposer des souches de bois ou de quoi se percher. Et tu peux d’ores et déjà multiplier les mangeoires et les abreuvoirs.'],
-           ['10 m² par poule ou plus','La surface souvent conseillée pour un parc enherbé. Si tu peux, divise le parc en deux pour laisser l’herbe repousser à tour de rôle, et plante des arbustes pour l’ombre et les cachettes.<br><br>Comme elles ont plus de place, tout ce qui est conseillé plus haut est à mettre en place, et tu vas pouvoir multiplier les espaces déjà existants : plusieurs coins bain de poussière, plusieurs coins pour gratter, plusieurs zones d’ombre et d’abris.']];
+           ['10 m² par poule ou plus','La surface souvent conseillée pour un parc enherbé. Si tu peux, divise le parc en deux pour laisser l’herbe repousser à tour de rôle, et plante des arbustes pour l’ombre et les cachettes.<br><br>Comme elles ont plus de place, tout ce qui est conseillé plus haut est à suivre. Tu vas pouvoir ainsi multiplier les espaces déjà existants.']];
     box.innerHTML='<h3>📐 Aménager mon parc selon la surface</h3>'+
       (per?'<div class="v304-surf"><div><b>'+area+' m²</b><small>de parc</small></div><div><b>'+hens+'</b><small>poule'+(hens>1?'s':'')+'</small></div><div><b>'+String(per).replace('.',',')+' m²</b><small>par poule</small></div></div>'
           :'<p>Renseigne la surface de ton parc dans « Mon parc » et tes poules dans « Mes Popotes » pour voir où tu en es.</p>')+
