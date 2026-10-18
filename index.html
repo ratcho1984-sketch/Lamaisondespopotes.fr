@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=358;
+  var APP_V=359;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -7019,6 +7019,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 <script id="v199-coq-early">
 var V199_CHARS=['Calme','Vigilant','Protecteur','Encore jeune','Je ne sais pas'];
 var V199_TIP='<div class="v199-tip"><b>🔍 Le regard d’Élodie</b><br>Un coq veille sur son groupe. Prends le temps d’observer : une poule qui s’isole, qui fuit souvent ou qui perd les plumes du dos peut avoir besoin d’un peu plus de calme ou d’espace.</div>';
+function v359NL(h){ return !!h&&(h.sex==='coq'||h.sex==='poussin'); }
 function v199Label(){ const c=popotes.filter(h=>h.sex==='coq').length, p=popotes.length-c;
   if(!c) return p+' Popote'+(p>1?'s':'');
   return (p?p+' Popote'+(p>1?'s':'')+' et ':'')+c+' coq'+(c>1?'s':''); }
@@ -10746,25 +10747,26 @@ renderStarterStep = function(){
     if(h.brooding) pills.push('<span class="v58-pill brood">Couve</span>');
     if(h.molting) pills.push('<span class="v58-pill molt">En mue</span>');
     if(h.sex==='coq'){ pills.length=0; if(h.molting) pills.push('<span class="v58-pill molt">En mue</span>'); pills.unshift('<span class="v58-pill v199-coq">🐓 Coq</span>'); }
+    else if(h.sex==='poussin'){ pills.length=0; pills.push('<span class="v58-pill v199-coq">🐣 Poussin</span>'); }
     else pills.push(h.laying?'<span class="v58-pill lay">Pond</span>':'<span class="v58-pill rest">Au repos</span>');
     const isCoq=h.sex==='coq';
-    const hensInPark=isCoq?popotes.filter(x=>x.sex!=='coq'&&x.id!==h.id&&x.parkIndex===h.parkIndex).length:0;
+    const hensInPark=isCoq?popotes.filter(x=>!v359NL(x)&&x.id!==h.id&&x.parkIndex===h.parkIndex).length:0;
     const tag=big?'div':'button';
     const click=big?'':` type="button" onclick="openHenProfile('${h.id}')" aria-label="Ouvrir la fiche de ${escapeHtml(h.name)}"`;
     return `<${tag} class="v58-id${big?' big':''}${h.cardTheme&&window.v81IsPremium&&v81IsPremium()?' v81-th-'+h.cardTheme:''}"${click}>
       <div class="v58-id-head">
         <span class="v58-id-logo" aria-hidden="true"></span>
-        <span class="v58-id-titles"><b>La Maison des Popotes</b><small>${h.cardTheme==='memoire'&&window.v81IsPremium&&v81IsPremium()?'En mémoire · toujours dans nos cœurs':(h.sex==='coq'?'Carte d’identité de coq':'Carte d’identité de Popote')}</small></span>
+        <span class="v58-id-titles"><b>La Maison des Popotes</b><small>${h.cardTheme==='memoire'&&window.v81IsPremium&&v81IsPremium()?'En mémoire · toujours dans nos cœurs':(h.sex==='coq'?'Carte d’identité de coq':h.sex==='poussin'?'Carte d’identité de poussin':'Carte d’identité de Popote')}</small></span>
         <span class="v58-id-no">N° ${no}</span>
       </div>
       <div class="v58-id-body">
         <div class="v58-id-photo"><img src="${avatarSrcForHen(h)}" alt="${escapeHtml(h.name)}"></div>
         <dl class="v58-id-fields">
-          <div class="wide"><dt>${(h.autoName||h.sex==='coq')?'Nom':'Prénom'}</dt><dd class="v58-id-name">${escapeHtml(h.name)}</dd></div>
+          <div class="wide"><dt>${(h.autoName||v359NL(h))?'Nom':'Prénom'}</dt><dd class="v58-id-name">${escapeHtml(h.name)}</dd></div>
           <div><dt>Race</dt><dd>${escapeHtml(h.breed||'Non renseignée')}</dd></div>
           <div><dt>Parc</dt><dd>${escapeHtml(parkNameForIndex(h.parkIndex))}</dd></div>
           <div><dt>Statut</dt><dd class="v58-pills">${pills.join('')}</dd></div>
-          ${isCoq?`<div><dt>Ses poules</dt><dd class="v199-hens">${hensInPark?hensInPark+' dans son parc':'—'}</dd></div>`:`<div><dt>Œufs · 30 j</dt><dd class="v58-id-eggs">${eggs30}</dd></div>`}${big?'':(isCoq?`<div class="wide"><dt>Caractère</dt><dd>${escapeHtml([h.character,h.trait].filter(Boolean).join(' · ')||'—')}</dd></div>`:`<div class="wide"><dt>Signe particulier</dt><dd>${escapeHtml(h.trait||'—')}</dd></div>`)}${big?`
+          ${isCoq?`<div><dt>Ses poules</dt><dd class="v199-hens">${hensInPark?hensInPark+' dans son parc':'—'}</dd></div>`:(h.sex==='poussin'?`<div><dt>Sexe</dt><dd>Pas encore connu</dd></div>`:`<div><dt>Œufs · 30 j</dt><dd class="v58-id-eggs">${eggs30}</dd></div>`)}${big?'':(isCoq?`<div class="wide"><dt>Caractère</dt><dd>${escapeHtml([h.character,h.trait].filter(Boolean).join(' · ')||'—')}</dd></div>`:`<div class="wide"><dt>Signe particulier</dt><dd>${escapeHtml(h.trait||'—')}</dd></div>`)}${big?`
           <div><dt>Âge</dt><dd>${henAgeShort(h)}</dd></div>
           <div><dt>Arrivée</dt><dd>${h.arrival?h.arrival.split('-').reverse().join('/'):'—'}</dd></div>
           ${isCoq?`<div class="wide"><dt>Caractère</dt><dd>${escapeHtml([h.character,h.trait].filter(Boolean).join(' · ')||'—')}</dd></div>`:`<div class="wide"><dt>Signe particulier</dt><dd>${escapeHtml(h.trait||'—')}</dd></div>`}`:''}
@@ -10823,9 +10825,9 @@ renderStarterStep = function(){
         <label for="v58Name">${hen.sex==='coq'?'Nom':'Prénom'}</label>
         <input id="v58Name" type="text" maxlength="30" value="${escapeHtml(hen.name)}" placeholder="${hen.sex==='coq'?'Ex. Gaston':'Ex. Joséphine'}" autocomplete="off">
         <label>Race</label><div id="v244BreedSlot"></div>
-        ${hen.sex==='coq'?'':'<label>Couleur de ses œufs</label><div id="v280EggColor"></div><div class="v280-free-note">Disponible avec Premium : touche pour découvrir.</div>'}
+        ${v359NL(hen)?'':'<label>Couleur de ses œufs</label><div id="v280EggColor"></div><div class="v280-free-note">Disponible avec Premium : touche pour découvrir.</div>'}
         ${hen.sex==='coq'?`<label>Son caractère <small style="font-weight:600;color:#8a7d66">(facultatif)</small></label><div class="v199-chips" data-target="profile">${V199_CHARS.map(c=>`<button type="button" class="${hen.character===c?'on':''}" onclick="v199SetChar(this,'${c}')">${c}</button>`).join('')}</div>`:''}
-        <label for="v58Birth">${hen.sex==='coq'?'Né vers':'Née vers'} <small style="font-weight:600;color:#8a7d66">(mois et année, approximatifs)</small></label>
+        <label for="v58Birth">${hen.sex==='coq'?'Né vers':hen.sex==='poussin'?'Né(e) vers':'Née vers'} <small style="font-weight:600;color:#8a7d66">(mois et année, approximatifs)</small></label>
         <input id="v58Birth" type="month" value="${escapeHtml((hen.birth||'').slice(0,7))}">
         <label for="v58Arrival">Arrivée à la maison</label>
         <input id="v58Arrival" type="date" value="${escapeHtml(hen.arrival||'')}">
@@ -10882,7 +10884,7 @@ renderStarterStep = function(){
     ensureNumbers();
     const val=id=>(document.getElementById(id)||{}).value||'';
     const pi=Number(val('newHenPark'));
-    const temp={id:'__preview',name:val('newHenName').trim()||(window.v199Sex==='coq'?(val('newHenBreed')?'Coq '+val('newHenBreed'):'Son nom'):(val('newHenBreed')||'Son prénom')),autoName:!val('newHenName').trim()&&!!val('newHenBreed'),breed:val('newHenBreed'),sex:window.v199Sex==='coq'?'coq':undefined,character:window.v199NewChar||'',
+    const temp={id:'__preview',name:val('newHenName').trim()||(window.v199Sex==='poussin'?(val('newHenBreed')?'Poussin '+val('newHenBreed'):'Son nom'):window.v199Sex==='coq'?(val('newHenBreed')?'Coq '+val('newHenBreed'):'Son nom'):(val('newHenBreed')||'Son prénom')),autoName:!val('newHenName').trim()&&!!val('newHenBreed'),breed:val('newHenBreed'),sex:(window.v199Sex==='coq'||window.v199Sex==='poussin')?window.v199Sex:undefined,character:window.v199NewChar||'',
       laying:val('newHenStatus')!=='notlaying',parkIndex:(pi>=0&&parkState[pi])?pi:null,
       photoDataUrl:newHenPhotoDataUrl,arrival:val('newHenArrival'),birth:val('newHenBirth'),trait:val('newHenTrait').trim(),num:popotes.reduce((m,h)=>Math.max(m,Number(h.num)||0),0)+1};
     addPreview.innerHTML=idCard(temp,true)+
@@ -10942,7 +10944,7 @@ renderStarterStep = function(){
     x.fillStyle=hg; x.fillRect(0,0,W,150); x.fillStyle=line; x.fillRect(0,150,W,3); if(ART_TH&&window.v91Draw){ try{ await v91Draw(x,ART_TH,'under',W,H); }catch(e){} }
     if(homeMask) x.drawImage(tint(homeMask,green,84,84),52,33,84,84);
     x.fillStyle=green; x.font='800 54px Georgia,serif'; x.fillText('LA MAISON DES POPOTES',160,82);
-    x.fillStyle=muted; x.font='700 26px system-ui,Arial,sans-serif'; x.fillText(HD&&hen.cardTheme==='memoire'?'EN MÉMOIRE  ·  TOUJOURS DANS NOS CŒURS':(hen.sex==='coq'?'CARTE D’IDENTITÉ DE COQ  ·  MEMBRE DE LA FAMILLE':'CARTE D’IDENTITÉ DE POPOTE  ·  MEMBRE DE LA FAMILLE'),162,122);
+    x.fillStyle=muted; x.font='700 26px system-ui,Arial,sans-serif'; x.fillText(HD&&hen.cardTheme==='memoire'?'EN MÉMOIRE  ·  TOUJOURS DANS NOS CŒURS':(hen.sex==='poussin'?'CARTE D’IDENTITÉ DE POUSSIN  ·  MEMBRE DE LA FAMILLE':hen.sex==='coq'?'CARTE D’IDENTITÉ DE COQ  ·  MEMBRE DE LA FAMILLE':'CARTE D’IDENTITÉ DE POPOTE  ·  MEMBRE DE LA FAMILLE'),162,122);
     const no='N° '+String(hen.num||0).padStart(3,'0');
     x.font='700 34px ui-monospace,Menlo,Consolas,monospace'; const nw=x.measureText(no).width+44;
     rr(x,W-nw-52,46,nw,62,16); x.fillStyle='#fff3dc'; x.fill(); x.strokeStyle='#efd9ad'; x.lineWidth=2; x.stroke();
@@ -10962,7 +10964,7 @@ renderStarterStep = function(){
     label('Race',fx,470); value(hen.breed||'Non renseignée',fx,512,maxW1);
     label('Arrivée à la maison',col2,470); value(frDate(hen.arrival),col2,512,maxW2);
     label('Parc',fx,572); value(parkNameForIndex(hen.parkIndex),fx,614,maxW1);
-    const st=hen.sex==='coq'?['Coq',hen.molting?'En mue':''].filter(Boolean).join(' · '):[hen.laying?'Pond':'Au repos',hen.brooding?'Couve':'',hen.molting?'En mue':''].filter(Boolean).join(' · ');
+    const st=hen.sex==='poussin'?'Poussin · sexe pas encore connu':hen.sex==='coq'?['Coq',hen.molting?'En mue':''].filter(Boolean).join(' · '):[hen.laying?'Pond':'Au repos',hen.brooding?'Couve':'',hen.molting?'En mue':''].filter(Boolean).join(' · ');
     label('Statut',col2,572); value(st,col2,614,maxW2);
     if(hen.sex==='coq'){ label('Caractère',fx,674); value([hen.character,hen.trait].filter(Boolean).join(' · ')||'—',fx,716,maxW1,38); } else { label('Signe particulier',fx,674); value(hen.trait||'—',fx,716,maxW1,38); }
     label('Âge',col2,674); value(henAgeShort(hen).replace('≈ ',''),col2,716,maxW2,38);
@@ -11113,7 +11115,7 @@ renderStarterStep = function(){
   function demoRecs(){
     if(demoCache) return demoCache;
     const out=[]; let seed=11; const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
-    const hens=popotes.some(h=>h.sex!=='coq')?popotes.filter(h=>h.sex!=='coq'):[{id:'demo',name:'Popote',laying:true}];
+    const hens=popotes.some(h=>!v359NL(h))?popotes.filter(h=>!v359NL(h)):[{id:'demo',name:'Popote',laying:true}];
     const now=new Date(), d=new Date(now.getFullYear()-1,now.getMonth(),1);
     const sf=[.25,.35,.6,.8,.85,.8,.65,.6,.55,.4,.3,.22];
     for(;d<=now;d.setDate(d.getDate()+1)){
@@ -11276,10 +11278,10 @@ renderStarterStep = function(){
       for(let i=pRange-1;i>=0;i--){ const y=now.getFullYear(), m=now.getMonth()-i, d=new Date(y,m,1); items.push({l:MSHORT[d.getMonth()].replace('.',''),s:SEASON_EMO(d.getMonth()),full:MONTHS[d.getMonth()]+' '+d.getFullYear(),v:sum(list,monthStart(y,m),monthStart(y,m+1),pHen)}); }
       const total=items.reduce((s,i)=>s+i.v,0), bestM=items.reduce((p,q)=>q.v>p.v?q:p,items[0]);
       const a=monthStart(now.getFullYear(),now.getMonth()-pRange+1);
-      const per=popotes.filter(h=>h.sex!=='coq').map(h=>({l:h.name,v:sum(list,a,Date.now()+1,h.id)})).sort((p,q)=>q.v-p.v);
+      const per=popotes.filter(h=>!v359NL(h)).map(h=>({l:h.name,v:sum(list,a,Date.now()+1,h.id)})).sort((p,q)=>q.v-p.v);
       body.innerHTML=`${demoBar()}
         <div class="v81-seg2">${[3,6,12].map(r=>`<button type="button" class="${pRange===r?'on':''}" onclick="v81Ponte(${r})">${r} mois</button>`).join('')}</div>
-        <div class="v81-chips"><button type="button" class="${pHen==null?'on':''}" onclick="v81PonteHen(null)">Toutes</button>${popotes.filter(h=>h.sex!=='coq').map(h=>`<button type="button" class="${pHen===h.id?'on':''}" onclick="v81PonteHen('${h.id}')">${esc(h.name)}</button>`).join('')}</div>
+        <div class="v81-chips"><button type="button" class="${pHen==null?'on':''}" onclick="v81PonteHen(null)">Toutes</button>${popotes.filter(h=>!v359NL(h)).map(h=>`<button type="button" class="${pHen===h.id?'on':''}" onclick="v81PonteHen('${h.id}')">${esc(h.name)}</button>`).join('')}</div>
         <h3 class="v81-h">${pHen?esc(henName(pHen)):'Toutes les Popotes'} · œufs par mois</h3>
         ${bars(items,'œufs')}
         <p class="v81-legend">❄️ hiver · 🌱 printemps · ☀️ été · 🍂 automne</p>
@@ -11342,7 +11344,7 @@ renderStarterStep = function(){
   function jForm(henId){
     const h=popotes.find(x=>x.id===henId); const nm=h?h.name:'elle';
     return `<div class="v81-jform" data-hen="${henId}">
-      <div class="v81-jtypes">${JTYPES.filter(t=>t[0]!=='trait'&&!(h&&h.sex==='coq'&&/couv/i.test(t[2]))).map(t=>`<button type="button" data-k="${t[0]}" class="${jDraft.type===t[0]?'on':''}" onclick="v81JType(this)">${t[1]} ${t[2]}</button>`).join('')}</div>
+      <div class="v81-jtypes">${JTYPES.filter(t=>t[0]!=='trait'&&!(h&&v359NL(h)&&/couv/i.test(t[2]))).map(t=>`<button type="button" data-k="${t[0]}" class="${jDraft.type===t[0]?'on':''}" onclick="v81JType(this)">${t[1]} ${t[2]}</button>`).join('')}</div>
       <div class="v81-jrow"><label>Date</label><input class="v81-jdate" type="date" value="${todayISO()}" max="${todayISO()}"></div>
       <textarea class="v81-jtext" maxlength="500" placeholder="Ex. ${esc(nm)} passe beaucoup de temps seule près de l’abreuvoir depuis deux jours…"></textarea>
       <div class="v81-jprev" style="display:${jDraft.photo?'flex':'none'}">${jDraft.photo?jPrevHTML():''}</div>
@@ -11779,7 +11781,7 @@ renderStarterStep = function(){
     let detail='';
     if(calDay&&st.by[calDay]){ const x=st.by[calDay]; const d0=x.recs[0].createdAt;
       detail=`<div class="v81-cdet"><b>${frDate(d0)}</b>${x.recs.map(r=>`<div class="${r._p?'p':r.aspect==='unusual'?'u':''}"><span>${r._p?'❔ Possible'+(r.aspect==='unusual'?' · inhabituel':''):r.aspect==='unusual'?'⚠️ Inhabituel':r.aspect==='unknown'?'🥚 Aspect non renseigné':'🥚 Normal'}${r.count>1?' × '+r.count:''}</span>${r._p?`<small>Pondeuse incertaine${otherSus(r,hen.id).length?' : '+esc(ouList([hen.name].concat(otherSus(r,hen.id)))):''}</small>`:''}${DETAIL(r)?`<small>${esc(DETAIL(r))}</small>`:''}${r.note?`<small>« ${esc(r.note)} »</small>`:''}</div>`).join('')}</div>`;
-    }else if(calDay){ detail=`<div class="v81-cdet"><small>Aucune ponte enregistrée ce jour-là.</small>${hen.sex!=='coq'&&!calDemo&&window.v288AddPast?`<button type="button" class="v288-add" onclick="v288AddPast('${calDay}')">🥚 Ajouter une ponte</button>`:''}</div>`; }
+    }else if(calDay){ detail=`<div class="v81-cdet"><small>Aucune ponte enregistrée ce jour-là.</small>${!v359NL(hen)&&!calDemo&&window.v288AddPast?`<button type="button" class="v288-add" onclick="v288AddPast('${calDay}')">🥚 Ajouter une ponte</button>`:''}</div>`; }
     calBox.innerHTML=`<div class="v81-block v81-calb">
       <h3>📅 Le calendrier ${/^[aeiouyàâäéèêëîïôöûüù]/i.test(hen.name||'')?'d’':'de '}${esc(hen.name)}</h3>
       ${calDemo?`<div class="v81-demo on">🧪 Exemple : ces pontes sont inventées pour montrer le rendu. <button type="button" onclick="v81CalDemo(false)">Revenir à ses données</button></div>`:''}
@@ -11981,14 +11983,14 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
     named=named.filter(id=>popotes.some(h=>h.id===id));
     if(named.length>n) setN(named.length);
     const U=unk();
-    let html=popotes.filter(h=>h.sex!=='coq').map(h=>{ const on=named.includes(h.id);
+    let html=popotes.filter(h=>!v359NL(h)).map(h=>{ const on=named.includes(h.id);
       return `<button type="button" class="egg-hen-choice ${on?'on':''}" onclick="selectEggHen('${h.id}')" aria-pressed="${on}">
         ${avatarImgHTML(h,'avatar-choice')}<span><b>${escapeHtml(h.name)}</b><small>${on?'✓ 1 œuf':(h.laying?'Pond actuellement':'Pas de ponte')}</small></span>
         ${on?'<i class="v82-badge">✓</i>':''}</button>`; }).join('');
     html+=`<button type="button" class="egg-hen-choice v82-unk ${U>0?'on':''}" onclick="selectEggHen(null)" aria-label="Ajouter un œuf de pondeuse inconnue">
       <span class="egg-hen-avatar">❔</span><span><b>Pondeuse inconnue</b><small>${U>0?U+' œuf'+(U>1?'s':'')+' · touche pour +1':'Touche pour ajouter un œuf'}</small></span>
       ${U>0?`<i class="v82-badge">×${U}</i><span class="v82-minus" role="button" tabindex="0" aria-label="Retirer un œuf de pondeuse inconnue" onclick="event.stopPropagation();v82UnkMinus()">−</span>`:''}</button>`;
-    if(!popotes.some(h=>h.sex!=='coq')) html=`<div class="egg-empty">Aucune Popote n’a encore été créée. Ajoute d’abord tes poules dans « Mes Popotes ».</div>`+html;
+    if(!popotes.some(h=>!v359NL(h))) html=`<div class="egg-empty">Aucune Popote n’a encore été créée. Ajoute d’abord tes poules dans « Mes Popotes ».</div>`+html;
     box.innerHTML=html;
     let sum=document.getElementById('v82Sum');
     if(!sum){ sum=document.createElement('p'); sum.id='v82Sum'; sum.className='v82-sum'; box.before(sum); }
@@ -12020,8 +12022,8 @@ ${window.v227VetSection?window.v227VetSection(hen,from):''}
     const _d=new Date(), _t0=new Date(_d.getFullYear(),_d.getMonth(),_d.getDate()).getTime(), _t1=_t0+864e5;
     const laid=new Set((Array.isArray(eggRecords)?eggRecords:[]).filter(r=>r&&r.henId&&(r.count||0)>0&&r.createdAt>=_t0&&r.createdAt<_t1).map(r=>r.henId));
     Object.keys(sus).forEach(k=>{ sus[k]=sus[k].filter(id=>!laid.has(id)); });
-    const done=popotes.filter(h=>h.sex!=='coq'&&laid.has(h.id)&&!named.includes(h.id));
-    const cand=popotes.filter(h=>h.sex!=='coq'&&!named.includes(h.id)&&!laid.has(h.id));
+    const done=popotes.filter(h=>!v359NL(h)&&laid.has(h.id)&&!named.includes(h.id));
+    const cand=popotes.filter(h=>!v359NL(h)&&!named.includes(h.id)&&!laid.has(h.id));
     const doneNote=done.length?`<small class="v88-note">${done.map(h=>escapeHtml(h.name)).join(done.length>2?', ':' et ').replace(/, ([^,]*)$/,' et $1')} ${done.length>1?'ont':'a'} déjà pondu aujourd’hui.</small>`:'';
     if(U&&!cand.length&&done.length){ susBox.innerHTML=`<div class="v88-head">❔ Tu as une idée de qui a pondu ?</div>${doneNote}`; return; }
     if(!U||!cand.length){ susBox.innerHTML=''; return; }
@@ -13223,20 +13225,20 @@ body.v199-coqprof #profile .status-row:has(#stateLayingToggle),body.v199-coqprof
   const title=sec&&sec.querySelector('.top .title');
   const T0={btn:btn?btn.textContent:'',title:title?title.textContent:''};
   function apply(){
-    const coq=window.v199Sex==='coq';
-    document.body.classList.toggle('v199-coqmode',coq);
+    const coq=window.v199Sex==='coq', pz=window.v199Sex==='poussin';
+    document.body.classList.toggle('v199-coqmode',coq||pz); document.body.classList.toggle('v359-pzmode',pz);
     seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.s===window.v199Sex));
-    if(nameLab) nameLab.innerHTML=coq?'Nom <small style="font-weight:600;color:#8a7d66">(facultatif)</small>':T.poule.lab;
-    if(nameIn) nameIn.placeholder=coq?'Ex. Gaston':T.poule.ph;
-    if(nameHint) nameHint.textContent=coq?'Pas de nom ? Pas de souci : il portera le nom de sa race (ex. « Coq Marans »).':T.poule.hint;
-    const bl=document.querySelector('label[for="newHenBirth"]'); if(bl) bl.innerHTML=bl.innerHTML.replace(coq?'Née vers':'Né vers',coq?'Né vers':'Née vers');
-    if(btn) btn.textContent=coq?'Ajouter ce coq':T0.btn;
-    if(title) title.textContent=coq?'Ajouter un coq':T0.title;
+    if(nameLab) nameLab.innerHTML=(coq||pz)?'Nom <small style="font-weight:600;color:#8a7d66">(facultatif)</small>':T.poule.lab;
+    if(nameIn) nameIn.placeholder=pz?'Ex. Caramel':coq?'Ex. Gaston':T.poule.ph;
+    if(nameHint) nameHint.textContent=pz?'Pas de nom ? Pas de souci : il portera le nom de sa race (ex. « Poussin Marans »).':coq?'Pas de nom ? Pas de souci : il portera le nom de sa race (ex. « Coq Marans »).':T.poule.hint;
+    const bl=document.querySelector('label[for="newHenBirth"]'); if(bl) bl.innerHTML=bl.innerHTML.replace(/Né(e|\(e\))? vers/,pz?'Né(e) vers':coq?'Né vers':'Née vers');
+    if(btn) btn.textContent=pz?'Ajouter ce poussin':coq?'Ajouter ce coq':T0.btn;
+    if(title) title.textContent=pz?'Ajouter un poussin':coq?'Ajouter un coq':T0.title;
     sec.querySelectorAll('.v199-chips[data-target="new"] button').forEach(b=>b.classList.toggle('on',b.textContent===window.v199NewChar));
     if(window.v58UpdateAddPreview) v58UpdateAddPreview();
   }
   const seg=document.createElement('div'); seg.className='v199-seg';
-  seg.innerHTML='<button type="button" data-s="poule">🐔 Une poule</button><button type="button" data-s="coq">🐓 Un coq</button>';
+  seg.innerHTML='<button type="button" data-s="poule">🐔 Une poule</button><button type="button" data-s="coq">🐓 Un coq</button><button type="button" data-s="poussin">🐣 Un poussin</button>';
   seg.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; window.v199Sex=b.dataset.s; apply(); });
   if(prev) prev.parentNode.insertBefore(seg,prev);
   window.v199SetChar=function(el,c){
@@ -13257,13 +13259,13 @@ body.v199-coqprof #profile .status-row:has(#stateLayingToggle),body.v199-coqprof
   document.addEventListener('input',e=>{ if(e.target&&e.target.id==='reqRoosters') e.target.dataset.touched='1'; },true);
   const baseAdd=window.addNewPopote;
   window.addNewPopote=function(){
-    const coq=window.v199Sex==='coq';
+    const pz=window.v199Sex==='poussin', coq=window.v199Sex==='coq'||pz;
     if(!coq) return baseAdd.apply(this,arguments);
     const before=popotes.length;
     let auto=false;
     if(nameIn && !nameIn.value.trim()){
       auto=true; const br=((document.getElementById('newHenBreed')||{}).value||'').trim();
-      const base=br?'Coq '+br:'Coq'; const taken=n=>popotes.some(h=>(h.name||'').toLowerCase()===n.toLowerCase());
+      const P0=pz?'Poussin':'Coq'; const base=br?P0+' '+br:P0; const taken=n=>popotes.some(h=>(h.name||'').toLowerCase()===n.toLowerCase());
       let nm; if(br && !taken(base)) nm=base; else { let k=br?2:1; while(taken(base+' '+k)) k++; nm=base+' '+k; }
       nameIn.value=nm;
     }
@@ -13271,7 +13273,7 @@ body.v199-coqprof #profile .status-row:has(#stateLayingToggle),body.v199-coqprof
     const t0=window.toast; window.toast=function(m){ return t0.call(this,String(m).replace('a été ajoutée à Mes Popotes','a été ajouté à Mes Popotes')); };
     let r; try{ r=baseAdd.apply(this,arguments); } finally { window.toast=t0; }
     if(popotes.length>before){
-      const h=popotes[popotes.length-1]; h.sex='coq'; h.laying=false; h.emoji='🐓'; h.character=ch||''; if(auto) h.autoName=true;
+      const h=popotes[popotes.length-1]; h.sex=pz?'poussin':'coq'; h.laying=false; h.emoji=pz?'🐣':'🐓'; h.character=pz?'':(ch||''); if(auto) h.autoName=true;
       window.v199Sex='poule'; window.v199NewChar=''; apply();
       persist(); renderPopotes(); try{ renderEggHenChoices(); }catch(e){} try{ refreshHome(false); }catch(e){}
     } else if(auto && nameIn) nameIn.value='';
@@ -13279,7 +13281,7 @@ body.v199-coqprof #profile .status-row:has(#stateLayingToggle),body.v199-coqprof
   };
   const baseProf=window.renderHenProfile;
   window.renderHenProfile=function(){ const r=baseProf.apply(this,arguments);
-    try{ const h=currentProfileHen(), coq=!!(h&&h.sex==='coq'), P=document.getElementById('profile');
+    try{ const h=currentProfileHen(), coq=!!(h&&v359NL(h)), P=document.getElementById('profile');
       document.body.classList.toggle('v199-coqprof',coq);
       const t=P.querySelector('.top .title'); if(t) t.textContent=coq?'Fiche de mon coq':'Fiche de ma poule';
       P.querySelectorAll('.profile-detail-label span:last-child').forEach(e=>{ if(/^Nom d(e la poule|u coq)$/.test(e.textContent)) e.textContent=coq?'Nom du coq':'Nom de la poule'; });
@@ -14035,7 +14037,7 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
   function per(h){ h.v227=h.v227||{}; ['molt','brood'].forEach(function(k){ if(!Array.isArray(h.v227[k])) h.v227[k]=[]; }); return h.v227; }
   function open(list){ for(var i=list.length-1;i>=0;i--) if(!list[i].e) return list[i]; return null; }
   function sync(h){ /* poules déjà « en mue » ou « couve » avant cette version : la période commence aujourd'hui */
-    var P=per(h); Object.keys(T).forEach(function(k){ if(k==='brood'&&h.sex==='coq') return; var o=open(P[k]); if(h[T[k].flag]&&!o) P[k].push({s:iso()}); else if(!h[T[k].flag]&&o) o.e=iso(); }); }
+    var P=per(h); Object.keys(T).forEach(function(k){ if(k==='brood'&&v359NL(h)) return; var o=open(P[k]); if(h[T[k].flag]&&!o) P[k].push({s:iso()}); else if(!h[T[k].flag]&&o) o.e=iso(); }); }
   function flagsFromPeriods(h){ var P=per(h); Object.keys(T).forEach(function(k){ h[T[k].flag]=!!open(P[k]); }); }
   function save(){ try{ window.v58Persist&&window.v58Persist(); }catch(e){} }
   function cur(){ try{ return currentProfileHen(); }catch(e){ return null; } }
@@ -14068,17 +14070,17 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
       sync(h);
       grid.querySelectorAll('.v81-cd[onclick]').forEach(function(b){
         var m=/v81CalDay\('(\d+)-(\d+)-(\d+)'\)/.exec(b.getAttribute('onclick')); if(!m) return;
-        var s=m[1]+'-'+pad(+m[2]+1)+'-'+pad(+m[3]), mo=inP(h,'molt',s), br=h.sex!=='coq'&&inP(h,'brood',s);
+        var s=m[1]+'-'+pad(+m[2]+1)+'-'+pad(+m[3]), mo=inP(h,'molt',s), br=!v359NL(h)&&inP(h,'brood',s);
         b.classList.toggle('v227-molt',mo); b.classList.toggle('v227-brood',br);
         if(mo) b.insertAdjacentHTML('beforeend','<span class="v227-ic">🪶</span>');
         if(br) b.insertAdjacentHTML('beforeend','<span class="v227-ic'+(mo?' v227-ic2':'')+'">🪹</span>');
         if(b.classList.contains('sel')){ var det=box.querySelector('.v81-cdet'); if(det&&(mo||br)) det.insertAdjacentHTML('beforeend','<span class="v227-det">'+(mo?'🪶 En mue ce jour-là':'')+(mo&&br?' · ':'')+(br?'🪹 En couvaison ce jour-là':'')+'</span>'); }
       });
       var leg=box.querySelector('.v81-clegend');
-      if(leg&&!leg.querySelector('.v227-leg')){ var tail=leg.lastElementChild; tail.insertAdjacentHTML('beforebegin','<span class="v227-leg">🪶 en mue</span>'+(h.sex==='coq'?'':'<span class="v227-leg">🪹 couve</span>')); }
-      var P=per(h), ks=h.sex==='coq'?['molt']:['molt','brood'], rows='';
+      if(leg&&!leg.querySelector('.v227-leg')){ var tail=leg.lastElementChild; tail.insertAdjacentHTML('beforebegin','<span class="v227-leg">🪶 en mue</span>'+(v359NL(h)?'':'<span class="v227-leg">🪹 couve</span>')); }
+      var P=per(h), ks=v359NL(h)?['molt']:['molt','brood'], rows='';
       ks.forEach(function(k){ P[k].forEach(function(p,i){ rows+='<div class="v227-row"><b>'+T[k].ic+' '+T[k].name+'</b>du <input type="date" value="'+p.s+'" max="'+iso()+'" onchange="v227Edit(\''+k+'\','+i+',\'s\',this.value)"> au <input type="date" value="'+(p.e||'')+'" max="'+iso()+'" onchange="v227Edit(\''+k+'\','+i+',\'e\',this.value)"><small>'+(p.e?days(p.s,p.e)+' jour(s)':'en cours · '+days(p.s,iso())+' jour(s)')+'</small><button type="button" class="v227-del" aria-label="Supprimer" onclick="v227Del(\''+k+'\','+i+')">✕</button></div>'; }); });
-      var html='<div class="v227-box" id="v227Box"><h4>'+ks.map(function(k){ return T[k].ic; }).join(' ')+' '+(h.sex==='coq'?'Périodes de mue':'Mue et couvaison')+'</h4><p>Elles s’enregistrent quand tu actives « '+(h.sex==='coq'?'En mue':'Couve » ou « En mue')+' » sur sa fiche. Tu peux corriger les dates ou ajouter une période passée.</p>'+(rows||'<p style="margin:0;font-size:12px;color:#7a7064">Aucune période notée pour l’instant.</p>')+'<div class="v227-add">'+ks.map(function(k){ return '<button type="button" onclick="v227Add(\''+k+'\')">+ '+T[k].ic+' '+(k==='molt'?'Une mue':'Une couvaison')+' passée</button>'; }).join('')+'</div></div>';
+      var html='<div class="v227-box" id="v227Box"><h4>'+ks.map(function(k){ return T[k].ic; }).join(' ')+' '+(v359NL(h)?'Périodes de mue':'Mue et couvaison')+'</h4><p>Elles s’enregistrent quand tu actives « '+(h.sex==='coq'?'En mue':'Couve » ou « En mue')+' » sur sa fiche. Tu peux corriger les dates ou ajouter une période passée.</p>'+(rows||'<p style="margin:0;font-size:12px;color:#7a7064">Aucune période notée pour l’instant.</p>')+'<div class="v227-add">'+ks.map(function(k){ return '<button type="button" onclick="v227Add(\''+k+'\')">+ '+T[k].ic+' '+(k==='molt'?'Une mue':'Une couvaison')+' passée</button>'; }).join('')+'</div></div>';
       var old=box.querySelector('#v227Box'); if(old) old.remove();
       var vb=box.querySelector('.v81-vetbtn'); if(vb) vb.insertAdjacentHTML('beforebegin',html);
     }finally{ busy=false; }
@@ -14167,7 +14169,7 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
 (function(){
   function apply(){
     var p=document.getElementById('profile'); if(!p) return; var h=null; try{ h=currentProfileHen(); }catch(e){}
-    var coq=!!(h&&h.sex==='coq'); p.classList.toggle('v229-coq',coq);
+    var coq=!!(h&&v359NL(h)); p.classList.toggle('v229-coq',coq);
     var leg=p.querySelector('#v81Cal .v81-clegend');
     if(leg&&!leg.dataset.v229){ leg.dataset.v229='1'; [].slice.call(leg.children).forEach(function(s){ if(/œuf/.test(s.textContent)) s.classList.add('v229-egg'); }); }
   }
@@ -14185,8 +14187,8 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
 <script id="v230-fiche-js">
 /* v230 : fiche de la poule — poids sur la carte de membre, nom en double retiré, statut actuel en liste déroulante */
 (function(){
-  function opts(h){ return h&&h.sex==='coq'?[['ok','Rien de particulier'],['mue','🪶 En mue']]:[['pond','🥚 Pond'],['repos','Au repos (ne pond pas)'],['couve','🪹 Couve'],['mue','🪶 En mue']]; }
-  function curVal(h){ return h.molting?'mue':h.sex==='coq'?'ok':h.brooding?'couve':h.laying?'pond':'repos'; }
+  function opts(h){ return h&&v359NL(h)?[['ok','Rien de particulier'],['mue','🪶 En mue']]:[['pond','🥚 Pond'],['repos','Au repos (ne pond pas)'],['couve','🪹 Couve'],['mue','🪶 En mue']]; }
+  function curVal(h){ return h.molting?'mue':v359NL(h)?'ok':h.brooding?'couve':h.laying?'pond':'repos'; }
   function ensure(){
     var card=document.querySelector('#profile .profile-details-card'); if(!card) return null;
     var row=document.getElementById('v230Row');
@@ -14210,8 +14212,8 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
     var want={laying:v==='pond',brooding:v==='couve',molting:v==='mue'};
     var t0=window.toast; window.toast=function(){};
     try{
-      if(h.sex!=='coq'&&!!h.laying!==want.laying) setHenLaying(want.laying);
-      if(h.sex!=='coq'&&!!h.brooding!==want.brooding) setHenBrooding(want.brooding);
+      if(!v359NL(h)&&!!h.laying!==want.laying) setHenLaying(want.laying);
+      if(!v359NL(h)&&!!h.brooding!==want.brooding) setHenBrooding(want.brooding);
       if(!!h.molting!==want.molting) setHenMolting(want.molting);
     }finally{ window.toast=t0; }
     try{ window.v58Persist&&window.v58Persist(); }catch(e){}
@@ -15091,7 +15093,7 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
 <script id="v286-max-eggs-js">
 /* v286 : pas plus d'œufs par jour que de poules enregistrées (pondeuses inconnues comprises : ce sont des poules du cheptel) */
 (function(){
-  function hens(){ return (Array.isArray(popotes)?popotes:[]).filter(function(h){ return h&&h.sex!=='coq'; }).length; }
+  function hens(){ return (Array.isArray(popotes)?popotes:[]).filter(function(h){ return h&&!v359NL(h); }).length; }
   function doneToday(){ var d=new Date(), t0=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime(), t1=t0+864e5;
     return (Array.isArray(eggRecords)?eggRecords:[]).reduce(function(s,r){ return s+(r&&r.createdAt>=t0&&r.createdAt<t1?(r.count||0):0); },0); }
   function cur(){ var e=document.getElementById('eggnum'); return parseInt(e&&e.textContent,10)||0; }
@@ -15137,7 +15139,7 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
   window.v288AddPast=function(k){
     var h=hen(); if(!h) return; var d=parse(k), recs=dayEggs(d), label=d.getDate()+' '+MO[d.getMonth()];
     if(recs.some(function(r){ return r.henId===h.id; })){ msg('🥚 Un œuf par jour',h.name+' a déjà un œuf enregistré le '+label+'.'); return; }
-    var H=(popotes||[]).filter(function(x){ return x.sex!=='coq'; }).length, T=recs.reduce(function(s,r){ return s+(r.count||0); },0);
+    var H=(popotes||[]).filter(function(x){ return !v359NL(x); }).length, T=recs.reduce(function(s,r){ return s+(r.count||0); },0);
     if(T>=H){ msg('🥚 Pas plus d’œufs que de poules','Le '+label+', '+T+' œuf'+(T>1?'s sont':' est')+' déjà enregistré'+(T>1?'s':'')+' pour '+H+' poule'+(H>1?'s':'')+'. On ne peut pas en ajouter un de plus ce jour-là.'); return; }
     var bg=document.createElement('div'); bg.className='v238-bg v288-bg';
     bg.innerHTML='<div class="v238-sheet" role="dialog" aria-modal="true"><h4>🥚 Ajouter une ponte</h4><p class="v288-sub"></p><button type="button" data-a="normal"><span>✅</span>Œuf normal</button><button type="button" data-a="unusual"><span>⚠️</span>Œuf inhabituel</button><button type="button" class="v238-cancel">Annuler</button></div>';
@@ -15329,7 +15331,7 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
   function surf(){
     var box=document.getElementById('v304Surf'); if(!box) return;
     var t={area:0,hens:0}; try{ t=parkTotals(); }catch(e){}
-    var hens=t.hens||(popotes||[]).filter(function(h){ return h.sex!=='coq'; }).length, area=Number(t.area)||0, per=hens&&area?Math.round(area/hens*10)/10:0;
+    var hens=t.hens||(popotes||[]).filter(function(h){ return !v359NL(h); }).length, area=Number(t.area)||0, per=hens&&area?Math.round(area/hens*10)/10:0;
     var tier=!per?-1:per<5?0:per<10?1:2;
     var T=[['Moins de 5 m² par poule','En élevage biologique, le repère réglementaire pour un parcours extérieur est de 4&nbsp;m² par poule.<br><br>Dans un petit espace, l’enrichissement fait toute la différence : multiplie les perchoirs à différentes hauteurs, ajoute des cachettes, garde au moins un coin à gratter renouvelé souvent (feuilles, paille, broyat) et, si possible, sors tes Popotes sous surveillance dans le jardin.<br><br>Si ton poulailler est posé à même le sol, ces 4&nbsp;m² par poule se comptent sans la place qu’il occupe. Préfère un poulailler sur pieds : tes poules profitent aussi du dessous pour s’abriter.'],
            ['De 5 à 10 m² par poule','Elles ont déjà un peu plus de place&nbsp;! Tu vas pouvoir organiser des zones bien distinctes : des coins bain de poussière, des coins pour gratter, des zones d’ombre grâce à des végétaux et des abris. Mets du broyat dans les passages pour éviter la boue.<br><br>N’hésite pas à leur proposer des souches de bois ou de quoi se percher. Et tu peux d’ores et déjà multiplier les mangeoires et les abreuvoirs.'],
@@ -15397,7 +15399,7 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
   var LK='maisonPopotesV324Liberte';
   function lib(){ try{ return localStorage.getItem(LK)||''; }catch(e){ return ''; } }
   function all(){ try{ return (typeof popotes!=='undefined'&&popotes||[]); }catch(e){ return []; } }
-  function hensN(){ return all().filter(function(h){return h&&h.sex!=='coq';}).length; }
+  function hensN(){ return all().filter(function(h){return h&&!v359NL(h);}).length; }
   function coqN(){ return all().filter(function(h){return h&&h.sex==='coq';}).length; }
   function need(){ var n=hensN(); return n?Math.ceil(n/2):0; }
   function needHTML(id){ var c=$(id), v=c?(parseInt(c.value,10)||0):0, nd=need(), n=hensN();
@@ -15510,4 +15512,63 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
 #envsecurity .v357-go{width:100%;min-height:52px;border:0;border-radius:18px;background:linear-gradient(135deg,#3f7a55,#2f5d43);color:#fff;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 6px 16px rgba(47,93,67,.25)}
 </style>
 <style id="v358-env-css">#envsecurity .v358-sec{margin:16px 0 0}</style>
+<style id="v359-poussin-css">
+body.v359-pzmode #v199CoqBox{display:none!important}
+.v199-seg button{font-size:14px!important;padding:10px 4px!important}
+.v359-grown{margin:14px 0;padding:16px;border-radius:20px;background:#fff8df;border:2px solid #f0d58a}
+.v359-grown h4{margin:0 0 6px;font:800 18px Georgia,serif;color:#7a5418}
+.v359-grown p{margin:0 0 12px;font-size:14.5px;line-height:1.45;color:#5a4a33}
+.v359-grown .v359-b{display:flex;gap:8px;flex-wrap:wrap}
+.v359-grown button{flex:1;min-width:120px;min-height:46px;border-radius:14px;border:1px solid #d9c08a;background:#fff;font:800 15px system-ui;color:#2f5d43;cursor:pointer}
+.v359-grown button.later{flex:0 0 100%;min-height:36px;border:0;background:transparent;color:#8a7d66;font-weight:700;font-size:14px}
+#hens .v359-grown{margin:0 0 14px}
+</style>
+<script id="v359-poussin-js">
+(function(){
+  /* v359 : poussins (sexe pas encore connu). h.sex='poussin' ; pas de suivi de ponte ; « Il a grandi » sur la fiche ; rappel au bout de 5 mois. */
+  var CHICK='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#fff6dc"/><ellipse cx="100" cy="182" rx="62" ry="9" fill="#e9d9b0"/><ellipse cx="102" cy="132" rx="58" ry="50" fill="#ffd54a"/><circle cx="96" cy="74" r="38" fill="#ffd54a"/><path d="M70 120 q22 26 52 6" fill="none" stroke="#f2b632" stroke-width="7" stroke-linecap="round"/><circle cx="84" cy="68" r="6" fill="#3b2a1a"/><circle cx="86" cy="66" r="2" fill="#fff"/><path d="M56 78 l-18 6 l18 6 z" fill="#f08a24"/><path d="M96 38 q4 -14 14 -10 q-8 4 -6 12" fill="#ffd54a"/><path d="M88 180 v-12 M112 180 v-12" stroke="#f08a24" stroke-width="6" stroke-linecap="round"/></svg>');
+  var baseAv=window.avatarSrcForHen;
+  window.avatarSrcForHen=function(h){ if(h&&h.sex==='poussin'&&!h.photoDataUrl) return CHICK; return baseAv.apply(this,arguments); };
+  function save(){ try{ persist(); }catch(e){} try{ renderPopotes(); }catch(e){} try{ renderEggHenChoices(); }catch(e){} try{ refreshHome(false); }catch(e){} }
+  function months(h){ var d=null; if(h.birth&&/^\d{4}-\d{2}/.test(h.birth)){ var p=h.birth.split('-'); d=new Date(+p[0],+p[1]-1,15); }
+    else { var m=/^hen_(\d{12,})/.exec(h.id||''); if(m) d=new Date(+m[1]); }
+    if(!d) return 0; return Math.floor((Date.now()-d.getTime())/(30.44*864e5)); }
+  window.v359Grow=function(id,to){
+    var h=(popotes||[]).find(function(x){ return x.id===id; }); if(!h) return;
+    if(to==='later'){ h.v359Snooze=Date.now(); save(); try{ v359Hens(); }catch(e){} return; }
+    h.sex=to==='coq'?'coq':'poule'; h.emoji=to==='coq'?'🐓':'🐔'; h.laying=false; h.brooding=false; delete h.v359Snooze;
+    if(h.autoName&&/^Poussin\b/.test(h.name||'')){ var rest=(h.name||'').replace(/^Poussin\s*/,''); h.name=to==='coq'?('Coq'+(rest?' '+rest:'')):(!rest?'Poule':/^\d+$/.test(rest)?'Poule '+rest:rest); }
+    save(); try{ var o=(popotes||[]).find(function(x){ return x.id!==id; }); if(o){ selectedProfileHenId=o.id; renderHenProfile(); selectedProfileHenId=id; } renderHenProfile(); }catch(e){} try{ v359Hens(); }catch(e){}
+    try{ toast(h.name+(to==='coq'?' est maintenant un coq 🐓':' est maintenant une poule 🐔')); }catch(e){}
+  };
+  function box(h,where){ var m=months(h);
+    return '<div class="v359-grown" data-id="'+h.id+'"><h4>🐣 '+(where==='hens'?escapeHtml(h.name)+' a grandi ?':'Il a grandi ?')+'</h4><p>'+(where==='hens'?'Il a environ '+m+' mois : on commence souvent à voir si c’est une poule ou un coq. ':'')+'Quand tu sais si c’est une poule ou un coq, indique-le ici : il garde son nom, sa photo et son historique.</p><div class="v359-b"><button type="button" onclick="v359Grow(\''+h.id+'\',\'poule\')">🐔 C’est une poule</button><button type="button" onclick="v359Grow(\''+h.id+'\',\'coq\')">🐓 C’est un coq</button>'+(where==='hens'?'<button type="button" class="later" onclick="v359Grow(\''+h.id+'\',\'later\')">Pas encore, redemande-moi plus tard</button>':'')+'</div></div>'; }
+  function prof(){ try{
+    var h=currentProfileHen(), P=document.getElementById('profile'); if(!P) return;
+    var old=document.getElementById('v359Grown'); if(old) old.remove();
+    var ec=document.getElementById('v280EggColor'); if(ec){ var nl=!!(h&&v359NL(h)); [ec.previousElementSibling,ec,ec.nextElementSibling].forEach(function(e){ if(e&&(e===ec||e.tagName==='LABEL'||e.classList.contains('v280-free-note'))) e.style.display=nl?'none':''; }); }
+    if(!h||h.sex!=='poussin') return;
+    var t=P.querySelector('.top .title'); if(t) t.textContent='Fiche de mon poussin';
+    var hb=P.querySelector('button[onclick="go(\'health\')"]'); if(hb) hb.textContent='✚ Mon poussin ne va pas bien ?';
+    var db=P.querySelector('.delete-hen-btn'); if(db) db.textContent='🗑 Supprimer ce poussin';
+    var card=P.querySelector('.v58-profile-id'); if(!card) return;
+    var d=document.createElement('div'); d.id='v359Grown'; d.innerHTML=box(h,'profile'); card.after(d.firstChild); d.remove();
+    var g=P.querySelector('.v359-grown'); if(g) g.id='v359Grown';
+  }catch(e){} }
+  window.v359Hens=function(){ try{
+    var sc=document.getElementById('hens'); if(!sc) return; sc.querySelectorAll('.v359-grown').forEach(function(e){ e.remove(); });
+    var due=(popotes||[]).filter(function(h){ return h&&h.sex==='poussin'&&months(h)>=5&&!(h.v359Snooze&&Date.now()-h.v359Snooze<30*864e5); });
+    if(!due.length) return; var grid=document.getElementById('popotesGrid'); if(!grid) return;
+    var w=document.createElement('div'); w.innerHTML=box(due[0],'hens'); grid.before(w.firstChild);
+  }catch(e){} };
+  var bp=window.renderHenProfile; window.renderHenProfile=function(){ var r=bp.apply(this,arguments); prof(); return r; };
+  var g0=window.go; window.go=function(id){ var r=g0.apply(this,arguments); try{ if(id==='profile') prof(); if(id==='hens') v359Hens(); }catch(e){} return r; };
+  var rp=window.renderPopotes; if(typeof rp==='function') window.renderPopotes=function(){ var r=rp.apply(this,arguments); try{ v359Hens(); }catch(e){} return r; };
+  /* Ton environnement : compte aussi les poussins */
+  var ob=new MutationObserver(function(){ var e=document.querySelector('#envsecurity .v356-pop'); if(!e||e.dataset.v359) return;
+    var n=(popotes||[]).filter(function(h){ return h&&h.sex==='poussin'; }).length; if(!n) return;
+    e.dataset.v359='1'; e.innerHTML=e.innerHTML.replace(/ et (<b>\d+<\/b> coqs?)/,', $1').replace(/, dans/,' et <b>'+n+'</b> poussin'+(n>1?'s':'')+', dans'); });
+  var wr=document.getElementById('v318Wrap'); if(wr) ob.observe(wr,{childList:true});
+})();
+</script>
 </body></html>
