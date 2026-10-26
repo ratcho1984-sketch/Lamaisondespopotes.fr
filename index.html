@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=361;
+  var APP_V=362;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14574,6 +14574,91 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{display:block!import
   /* appli rouverte depuis l'arrière-plan (téléphone) : un nouveau rappel si un autre jour a commencé ou si rien n'a été noté */
   var lastShow=Date.now();
   document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible' && Date.now()-lastShow>30*60*1000){ lastShow=Date.now(); tryShow(0); } });
+})();
+</script>
+<style id="v362-mue-css">
+/* v362 : popup rappel mue / couvaison */
+.v362-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9100;display:flex;align-items:center;justify-content:center;padding:16px}
+.v362-box{background:#fff;border-radius:20px;padding:20px;max-width:340px;width:100%;font-family:inherit}
+.v362-hen{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.v362-hen img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #e8ddd0}
+.v362-hen b{display:block;font-size:16px;color:#3a2e25}
+.v362-hen span{font-size:13px;color:#7a6a58;margin-top:2px;display:block}
+.v362-box p{font-size:15px;color:#3a2e25;margin:0 0 14px;font-weight:500}
+.v362-btns{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.v362-btns button{width:100%;padding:12px 16px;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.v362-yes{background:#f0ebe3;color:#5a4a38}
+.v362-no{background:#e8f5e9;color:#2e7d32}
+.v362-skip{display:block;width:100%;background:none;border:none;color:#a09080;font-size:13px;cursor:pointer;padding:4px;font-family:inherit;text-align:center}
+</style>
+<script id="v362-rappel-js">
+/* v362 : rappel hebdomadaire mue / couvaison — popup à l'ouverture si 7 jours écoulés depuis le début ou le dernier rappel */
+(function(){
+  function iso(){ var d=new Date(); return d.getFullYear()+'-'+(d.getMonth()<9?'0':'')+(d.getMonth()+1)+'-'+(d.getDate()<10?'0':'')+d.getDate(); }
+  function addDays(s,n){ var d=new Date(s+'T12:00'); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+(d.getMonth()<9?'0':'')+(d.getMonth()+1)+'-'+(d.getDate()<10?'0':'')+d.getDate(); }
+  function elapsed(s){ return Math.round((new Date(iso()+'T12:00')-new Date(s+'T12:00'))/864e5); }
+  function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function save(){ try{ window.v58Persist&&window.v58Persist(); }catch(e){} }
+  function img(h){ try{ return avatarSrcForHen(h); }catch(e){ return ''; } }
+  function getDue(){
+    var today=iso(), list=[];
+    try{
+      (popotes||[]).forEach(function(h){
+        if(!h||!h.v227) return;
+        ['molt','brood'].forEach(function(k){
+          if(k==='brood'&&typeof v359NL==='function'&&v359NL(h)) return;
+          var periods=h.v227[k]||[];
+          periods.forEach(function(p,i){
+            if(p.e) return;
+            var nr=p.v362next||addDays(p.s,7);
+            if(nr<=today) list.push({h:h,k:k,p:p,i:i});
+          });
+        });
+      });
+    }catch(e){}
+    return list;
+  }
+  function applyYes(it){ it.p.v362next=addDays(iso(),7); save(); }
+  function applyNo(it){ it.p.e=iso(); it.h[it.k==='molt'?'molting':'brooding']=false; try{ renderHenProfile&&renderHenProfile(); renderPopotes&&renderPopotes(); }catch(e){} save(); }
+  window.v362Show=function(){
+    var list=getDue(); if(!list.length) return;
+    if(document.querySelector('.v362-bg')) return;
+    var bg=document.createElement('div'); bg.className='v362-bg';
+    var idx=0;
+    function draw(){
+      if(idx>=list.length){ bg.remove(); return; }
+      var it=list[idx],h=it.h,k=it.k,p=it.p;
+      var d=elapsed(p.s);
+      var coq=h.sex==='coq';
+      var name=esc(h.name||(h.breed?h.breed:(coq?'ton coq':'ta poule')));
+      var ic=k==='molt'?'🪶':'🪹';
+      var label=k==='molt'?'en mue':'en couvaison';
+      var labelFin=k==='molt'?(coq?'Il a terminé sa mue':'Elle a terminé sa mue'):(coq?'':'Elle a terminé sa couvaison');
+      var labelEnc=k==='molt'?(coq?'Il mue encore ':'Elle mue encore '):(coq?'':'Elle couve encore ')+'🔁';
+      bg.innerHTML='<div class="v362-box" role="dialog" aria-label="Rappel '+label+'">'+
+        '<div class="v362-hen"><img src="'+img(h)+'" alt=""><div><b>'+name+'</b><span>'+ic+' '+label+' depuis '+d+' jour'+(d>1?'s':'')+'</span></div></div>'+
+        '<p>C\'est toujours le cas ?</p>'+
+        '<div class="v362-btns">'+
+        '<button type="button" class="v362-yes">'+labelEnc+'</button>'+
+        '<button type="button" class="v362-no">'+labelFin+' ✓</button>'+
+        '</div>'+
+        (list.length>1?'<small style="color:#a09080;display:block;text-align:center;margin-top:4px">'+(idx+1)+' sur '+list.length+'</small>':'')+
+        '<button type="button" class="v362-skip">Me rappeler plus tard</button>'+
+        '</div>';
+      bg.querySelector('.v362-yes').onclick=function(){ applyYes(it); idx++; draw(); };
+      bg.querySelector('.v362-no').onclick=function(){ applyNo(it); idx++; draw(); };
+      bg.querySelector('.v362-skip').onclick=function(){ applyYes(it); idx++; draw(); };
+    }
+    draw();
+    document.body.appendChild(bg);
+  };
+  function tryShow(n){
+    if(document.querySelector('.v186-bg')||document.querySelector('.v249-bg')){ if(n<180) setTimeout(function(){ tryShow(n+1); },1000); return; }
+    v362Show();
+  }
+  function start(){ setTimeout(function(){ tryShow(0); },2400); }
+  if(document.readyState==='complete') start(); else window.addEventListener('load',start);
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') setTimeout(function(){ if(!document.querySelector('.v362-bg')) tryShow(0); },1800); });
 })();
 </script>
 <style id="v250-nav-fixe-css">
