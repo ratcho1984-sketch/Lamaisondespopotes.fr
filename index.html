@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=365;
+  var APP_V=366;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -10513,6 +10513,15 @@ renderStarterStep = function(){
     {name:'Gâtinaise',laying:2,familiarity:2,size:'grande',forage:3,heat:2,cold:3,flight:false,mud:false,brood:false,description:"Grande poule blanche française, paisible et rustique. Elle apprécie un parcours où gratter et fouiller."},
     {name:'Bresse gauloise',laying:3,familiarity:1,size:'moyenne',forage:3,heat:2,cold:2,flight:true,mud:false,brood:false,description:"Poule vive et active, bonne pondeuse d'œufs blancs. Elle aime l'espace et vole facilement : prévois une clôture haute."},
     {name:'Gauloise dorée',laying:2,familiarity:1,size:'moyenne',forage:3,heat:3,cold:2,flight:true,mud:false,brood:false,description:"L'une des plus anciennes races françaises. Très rustique et débrouillarde, mais vive : elle a besoin d'espace et vole bien."}
+  ].forEach(b=>{ if(!henBreedData.some(x=>x.name===b.name)){ b.small=b.size==='naine'; henBreedData.push(b); } });
+  // Races présentes dans le picker mais sans données de sensibilité chaleur/froid
+  [
+    {name:'Barnevelder',laying:2,familiarity:2,size:'grande',forage:2,heat:2,cold:3,flight:false,mud:false,brood:false,description:"Race néerlandaise robuste, connue pour ses œufs brun foncé. Calme et rustique, elle supporte bien les hivers froids et humides."},
+    {name:'Vorwerk',laying:2,familiarity:2,size:'moyenne',forage:2,heat:2,cold:3,flight:false,mud:false,brood:false,description:"Race allemande à double fin, au plumage marron et noir. Rustique et active, bonne résistance au froid."},
+    {name:'Bleue de France',laying:2,familiarity:2,size:'grande',forage:2,heat:2,cold:3,flight:false,mud:false,brood:false,description:"Race française au plumage bleu-ardoise. Rustique et paisible, elle supporte bien le froid et les conditions humides."},
+    {name:'Ayam Cemani',laying:2,familiarity:1,size:'moyenne',forage:2,heat:3,cold:1,flight:true,mud:false,brood:false,description:"Race indonésienne entièrement noire (plumes, peau, os). Elle supporte bien la chaleur mais est sensible au froid : un abri chaud et sec est indispensable en hiver."},
+    {name:'Bielefelder',laying:3,familiarity:2,size:'grande',forage:2,heat:2,cold:3,flight:false,mud:false,brood:false,description:"Grande race allemande autosexable, très bonne pondeuse d'œufs roux. Calme et robuste, elle s'adapte bien aux hivers rigoureux."},
+    {name:'Suédoise à fleurs',laying:2,familiarity:2,size:'moyenne',forage:3,heat:2,cold:3,flight:false,mud:false,brood:false,description:"Race nordique suédoise au plumage moucheté coloré. Très rustique, excellente résistance au froid, active et bonne fuisseuse."}
   ].forEach(b=>{ if(!henBreedData.some(x=>x.name===b.name)){ b.small=b.size==='naine'; henBreedData.push(b); } });
 
   function henScore(b,a){
