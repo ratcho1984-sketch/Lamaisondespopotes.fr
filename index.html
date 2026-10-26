@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=363;
+  var APP_V=364;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15021,12 +15021,12 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
       (P.length>1?chips('Dans quel parc ?','data-park',P.map(function(p,j){return {v:j,t:pname(j)};}),c.park,'Touche le parc où se trouve ce poulailler.'):'')+
       chips('En quelle matière ?','data-mat',MATS.map(function(m){return {v:m,t:m};}),c.mat||'','Touche la matière principale de ce poulailler.')+
       '<div class="soft-field"><label class="v173-lbl">Prévu pour combien de poules ? <i>(facultatif)</i></label><input data-f="cap" type="number" min="0" max="200" value="'+esc(c.cap)+'" placeholder="Ex. 4"></div>'+
-      '<div class="soft-field"><label class="v173-lbl">Une remarque ? <i>(facultatif)</i></label><input data-f="note" type="text" maxlength="140" value="'+esc(c.note)+'" placeholder="Ex. toit qui fuit, pondoir trop petit…"></div>'+
       '<div class="soft-field v363-disinfect-wrap"><label class="v173-lbl">🧴 Dernier traitement préventif (produit fort) <i>(facultatif)</i></label>'+
       '<div style="display:flex;gap:8px;align-items:center"><input data-f="lastDisinfect" type="date" value="'+esc(c.lastDisinfect||'')+'" style="flex:1;padding:9px 12px;border:1.5px solid #e0d5c8;border-radius:10px;font-size:14px;font-family:inherit;color:#3a2e25;background:#faf8f4">'+
       '<button type="button" onclick="(function(el){el.value=new Date().toISOString().slice(0,10);el.dispatchEvent(new Event(\'input\',{bubbles:true}))})(this.previousElementSibling)" style="padding:9px 14px;border:none;border-radius:10px;background:#e8f5e9;color:#2e7d32;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Aujourd\'hui</button></div>'+
       (c.lastDisinfect?'<span class="v363-ago" data-since="'+esc(c.lastDisinfect)+'"></span>':'')+
       '</div>'+
+      '<div class="soft-field"><label class="v173-lbl">Une remarque ? <i>(facultatif)</i></label><input data-f="note" type="text" maxlength="140" value="'+esc(c.note)+'" placeholder="Ex. toit qui fuit, pondoir trop petit…"></div>'+
     '</div></div>';
   }
   function summary(){
