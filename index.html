@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=362;
+  var APP_V=363;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14661,6 +14661,75 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{display:block!import
   document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') setTimeout(function(){ if(!document.querySelector('.v362-bg')) tryShow(0); },1800); });
 })();
 </script>
+<style id="v363-css">
+/* v363 : champ désinfection dans fiches poulailler + popup poux rouges */
+.v363-disinfect-wrap{margin-top:4px;border-top:1px dashed #e0d5c8;padding-top:12px}
+.v363-ago{display:block;font-size:12px;color:#8a7d66;margin-top:4px}
+.v363-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9200;display:flex;align-items:center;justify-content:center;padding:16px}
+.v363-box{background:#fff;border-radius:20px;padding:20px;max-width:340px;width:100%;font-family:inherit}
+.v363-icon{font-size:40px;text-align:center;margin-bottom:8px}
+.v363-box h3{margin:0 0 10px;font-size:17px;color:#3a2e25;text-align:center}
+.v363-box p{font-size:14px;color:#5a4a38;margin:0 0 16px;line-height:1.5;text-align:center}
+.v363-ok{display:block;width:100%;padding:13px 16px;border:none;border-radius:12px;background:#e8f5e9;color:#2e7d32;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px}
+.v363-skip{display:block;width:100%;background:none;border:none;color:#a09080;font-size:13px;cursor:pointer;padding:4px;font-family:inherit;text-align:center}
+</style>
+<script id="v363-rappel-js">
+/* v363 : rappel mensuel poux rouges + mise à jour âge dernier traitement préventif */
+(function(){
+  var SK='maisonPopotesV363RedMite';
+  function iso(){ var d=new Date(); return d.getFullYear()+'-'+(d.getMonth()<9?'0':'')+(d.getMonth()+1)+'-'+(d.getDate()<10?'0':'')+d.getDate(); }
+  function daysBetween(a,b){ return Math.round((new Date(b+'T12:00')-new Date(a+'T12:00'))/864e5); }
+  function agoText(s){
+    var n=daysBetween(s,iso());
+    if(n===0) return 'Traité aujourd\'hui';
+    if(n===1) return 'Traité hier';
+    if(n<7) return 'Il y a '+n+' jours';
+    if(n<31) return 'Il y a '+Math.round(n/7)+' semaine'+(Math.round(n/7)>1?'s':'');
+    return 'Il y a '+Math.round(n/30)+' mois';
+  }
+  // Mise à jour des labels "il y a X jours" dans les fiches poulailler
+  function refreshAgo(){
+    document.querySelectorAll('.v363-ago[data-since]').forEach(function(el){
+      el.textContent=agoText(el.dataset.since);
+    });
+  }
+  // Popup poux rouges
+  window.v363Show=function(){
+    if(document.querySelector('.v363-bg')) return;
+    var bg=document.createElement('div'); bg.className='v363-bg';
+    bg.innerHTML='<div class="v363-box" role="dialog" aria-label="Rappel poux rouges">'+
+      '<div class="v363-icon">🔴</div>'+
+      '<h3>Vérification poux rouges</h3>'+
+      '<p>Pense à inspecter les recoins de ton poulailler : jointures, recoins sombres, sous les pondoirs.<br><br>Les poux rouges se cachent le jour et attaquent tes poules la nuit 🌙</p>'+
+      '<button type="button" class="v363-ok">J\'ai vérifié ✓</button>'+
+      '<button type="button" class="v363-skip">Me rappeler dans un mois</button>'+
+      '</div>';
+    function dismiss(){ try{ localStorage.setItem(SK,JSON.stringify({lastCheck:iso()})); }catch(e){} bg.remove(); }
+    bg.querySelector('.v363-ok').onclick=dismiss;
+    bg.querySelector('.v363-skip').onclick=dismiss;
+    document.body.appendChild(bg);
+  };
+  function shouldShow(){
+    try{
+      var raw=localStorage.getItem(SK);
+      if(!raw) return true;
+      var d=JSON.parse(raw);
+      if(!d.lastCheck) return true;
+      return daysBetween(d.lastCheck,iso())>=30;
+    }catch(e){ return false; }
+  }
+  function tryShow(n){
+    if(document.querySelector('.v186-bg')||document.querySelector('.v249-bg')||document.querySelector('.v362-bg')){
+      if(n<180) setTimeout(function(){ tryShow(n+1); },1000); return;
+    }
+    if(shouldShow()) v363Show();
+    refreshAgo();
+  }
+  function start(){ setTimeout(function(){ tryShow(0); },3600); refreshAgo(); }
+  if(document.readyState==='complete') start(); else window.addEventListener('load',start);
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') setTimeout(refreshAgo,800); });
+})();
+</script>
 <style id="v250-nav-fixe-css">
 /* v250 : barre du bas toujours fixe (pas de rebond, pas de glissement latéral, pas de zoom accidentel) */
 html,body{overscroll-behavior:none}
@@ -14953,6 +15022,11 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
       chips('En quelle matière ?','data-mat',MATS.map(function(m){return {v:m,t:m};}),c.mat||'','Touche la matière principale de ce poulailler.')+
       '<div class="soft-field"><label class="v173-lbl">Prévu pour combien de poules ? <i>(facultatif)</i></label><input data-f="cap" type="number" min="0" max="200" value="'+esc(c.cap)+'" placeholder="Ex. 4"></div>'+
       '<div class="soft-field"><label class="v173-lbl">Une remarque ? <i>(facultatif)</i></label><input data-f="note" type="text" maxlength="140" value="'+esc(c.note)+'" placeholder="Ex. toit qui fuit, pondoir trop petit…"></div>'+
+      '<div class="soft-field v363-disinfect-wrap"><label class="v173-lbl">🧴 Dernier traitement préventif (produit fort) <i>(facultatif)</i></label>'+
+      '<div style="display:flex;gap:8px;align-items:center"><input data-f="lastDisinfect" type="date" value="'+esc(c.lastDisinfect||'')+'" style="flex:1;padding:9px 12px;border:1.5px solid #e0d5c8;border-radius:10px;font-size:14px;font-family:inherit;color:#3a2e25;background:#faf8f4">'+
+      '<button type="button" onclick="(function(el){el.value=new Date().toISOString().slice(0,10);el.dispatchEvent(new Event(\'input\',{bubbles:true}))})(this.previousElementSibling)" style="padding:9px 14px;border:none;border-radius:10px;background:#e8f5e9;color:#2e7d32;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Aujourd\'hui</button></div>'+
+      (c.lastDisinfect?'<span class="v363-ago" data-since="'+esc(c.lastDisinfect)+'"></span>':'')+
+      '</div>'+
     '</div></div>';
   }
   function summary(){
