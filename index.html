@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=366;
+  var APP_V=367;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14486,9 +14486,9 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{display:block!import
       '<label>Ordonnance du vétérinaire <small>(photo, facultatif)</small></label><div class="v245-ph" id="v245Ph"></div>'+
       '<input id="v245File" type="file" accept="image/*" style="display:none">'+
       '<label for="v245Note">Notes <small>(conseils du vétérinaire, observations)</small></label><textarea id="v245Note" maxlength="400" placeholder="Ex. surveiller l’appétit, la rappeler dans 5 jours">'+esc(t.note)+'</textarea>'+
-      ‘<div class="v245-vet">Suis exactement l’ordonnance et les doses données par ton vétérinaire. Au moindre doute, ou si son comportement change, appelle-le.</div>’+
-      ‘<div id="v245GroupWrap" style="display:none;margin-top:2px"><label style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:#e8f5e9;border-radius:14px;cursor:pointer;font-size:14px;color:#2e7d32;font-weight:600;line-height:1.35"><input type="checkbox" id="v245Group" style="width:18px;height:18px;accent-color:#2e7d32;flex-shrink:0"><span id="v245GroupLabel"></span></label></div>’+
-      ‘<button type="button" class="v245-b main" id="v245Save">✓ Enregistrer le traitement</button>’+
+      '<div class="v245-vet">Suis exactement l’ordonnance et les doses données par ton vétérinaire. Au moindre doute, ou si son comportement change, appelle-le.</div>'+
+      '<div id="v245GroupWrap" style="display:none;margin-top:2px"><label style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:#e8f5e9;border-radius:14px;cursor:pointer;font-size:14px;color:#2e7d32;font-weight:600;line-height:1.35"><input type="checkbox" id="v245Group" style="width:18px;height:18px;accent-color:#2e7d32;flex-shrink:0"><span id="v245GroupLabel"></span></label></div>'+
+      '<button type="button" class="v245-b main" id="v245Save">✓ Enregistrer le traitement</button>'+
       (isNew?'':'<button type="button" class="v245-b stop" id="v245Stop">Traitement terminé</button>')+
       '<button type="button" class="v245-b ghost" id="v245Close">Fermer</button></div>';
     document.body.appendChild(bg);
