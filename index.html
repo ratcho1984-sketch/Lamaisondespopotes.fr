@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=369;
+  var APP_V=370;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14571,6 +14571,7 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{display:block!import
 .v249-it.done{opacity:.6}.v249-it.done button{background:#cfe0cd;color:#224f37}
 .v249-vet{font-size:12.5px;color:#6b3d17;background:#fff4e8;border:1px solid #f1d3b0;border-radius:12px;padding:8px 10px;margin:4px 0 10px}
 .v249-close{width:100%;min-height:46px;border-radius:14px;border:1px solid #e5dac8;background:#fff;color:#5d4a33;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit}
+.v249-grp-ico{width:48px;height:48px;border-radius:12px;background:#e8f5e9;display:flex;align-items:center;justify-content:center;font-size:24px;flex:0 0 48px}
 </style>
 <script id="v249-rappel-js">
 /* v249 : rappel quotidien des traitements (Premium) — à chaque ouverture de l'appli, tant que le traitement du jour n'est pas noté comme donné */
@@ -14592,14 +14593,63 @@ body:not(.v81-prem) .v81-link[onclick="v81Export()"]::after{display:block!import
     if(document.querySelector('.v249-bg')) return;
     var bg=document.createElement('div'); bg.className='v249-bg';
     function draw(){
-      bg.innerHTML='<div class="v249-box" role="dialog" aria-label="Rappel de traitement"><h4>💊 Rappel de traitement</h4><p>Aujourd’hui, pense à donner :</p>'+
-        list.map(function(h,i){ var x=h.treatment, ok=(x.done||[]).indexOf(t)>=0;
-          return '<div class="v249-it'+(ok?' done':'')+'"><img src="'+img(h)+'" alt=""><div><b>'+esc(h.name)+'</b>'+esc(LAB[x.type]||'Traitement')+(x.name?' · '+esc(x.name):'')+
-            (x.dose?'<br>Dose : <b style="display:inline;font-size:14px">'+esc(x.dose)+'</b>':'')+(x.freq?'<br>'+esc(x.freq):'')+(x.end?'<br><small>Jusqu’au '+x.end.split('-').reverse().join('/')+'</small>':'')+
-            '<br><button type="button" data-i="'+i+'">'+(ok?'✓ Donné aujourd’hui':'C’est fait ✓')+'</button></div></div>'; }).join('')+
-        '<div class="v249-vet">Suis exactement l’ordonnance de ton vétérinaire. Si son comportement change, appelle-le.</div>'+
+      /* v370 : regrouper les poules d'un même parc ayant le même traitement */
+      var groups=[], assigned={};
+      list.forEach(function(h,i){
+        if(assigned[i]) return;
+        var pi=h.parkIndex, x=h.treatment;
+        if(pi!=null && pi!==''){
+          var peers=[];
+          list.forEach(function(h2,j){
+            if(j===i||assigned[j]) return;
+            var x2=h2.treatment;
+            if(h2.parkIndex===pi && x2.type===x.type && (x2.name||'')===(x.name||'') && (x2.dose||'')===(x.dose||''))
+              peers.push(j);
+          });
+          if(peers.length){ var gids=[i].concat(peers); gids.forEach(function(j){ assigned[j]=true; }); groups.push({hids:gids,parkIndex:pi,treatment:x}); return; }
+        }
+        assigned[i]=true; groups.push({hids:[i],parkIndex:null,treatment:x,hen:h});
+      });
+      var html='<div class="v249-box" role="dialog" aria-label="Rappel de traitement"><h4>💊 Rappel de traitement</h4><p>Aujourd’hui, pense à donner :</p>';
+      groups.forEach(function(g,gi){
+        var x=g.treatment, allHens=g.hids.map(function(i){ return list[i]; });
+        var allDone=allHens.every(function(h){ return (h.treatment.done||[]).indexOf(t)>=0; });
+        if(g.hids.length>1){
+          var pname=typeof parkNameForIndex==='function'?parkNameForIndex(g.parkIndex):'Parc '+g.parkIndex;
+          var nb=allHens.length;
+          html+='<div class="v249-it v249-grp'+(allDone?' done':'')+'"><div class="v249-grp-ico">🏡</div>'+
+            '<div><b>'+esc(pname)+' · '+nb+' poule'+(nb>1?'s':'')+'</b>'+
+            esc(LAB[x.type]||'Traitement')+(x.name?' · '+esc(x.name):'')+
+            (x.dose?'<br>Dose : <b style="display:inline;font-size:14px">'+esc(x.dose)+'</b>':'')+
+            (x.freq?'<br>'+esc(x.freq):'')+
+            (x.end?'<br><small>Jusqu’au '+x.end.split('-').reverse().join('/')+'</small>':'')+
+            '<br><button type="button" data-g="'+gi+'">'+(allDone?'✓ Donné aujourd’hui':'C’est fait ✓')+'</button></div></div>';
+        } else {
+          var h=allHens[0], ok=allDone;
+          html+='<div class="v249-it'+(ok?' done':'')+'"><img src="'+img(h)+'" alt=""><div><b>'+esc(h.name||'Poule')+'</b>'+
+            esc(LAB[x.type]||'Traitement')+(x.name?' · '+esc(x.name):'')+
+            (x.dose?'<br>Dose : <b style="display:inline;font-size:14px">'+esc(x.dose)+'</b>':'')+
+            (x.freq?'<br>'+esc(x.freq):'')+
+            (x.end?'<br><small>Jusqu’au '+x.end.split('-').reverse().join('/')+'</small>':'')+
+            '<br><button type="button" data-g="'+gi+'">'+(ok?'✓ Donné aujourd’hui':'C’est fait ✓')+'</button></div></div>';
+        }
+      });
+      html+='<div class="v249-vet">Suis exactement l’ordonnance de ton vétérinaire. Si son comportement change, appelle-le.</div>'+
         '<button type="button" class="v249-close">Fermer</button></div>';
-      bg.querySelectorAll('button[data-i]').forEach(function(b){ b.onclick=function(){ var h=list[+b.dataset.i], x=h.treatment; x.done=x.done||[]; var k=x.done.indexOf(t); if(k>=0) x.done.splice(k,1); else x.done.push(t); x.done=x.done.slice(-120); try{ v58Persist(); }catch(e){} draw(); if(list.every(function(h){ return (h.treatment.done||[]).indexOf(t)>=0; })) setTimeout(function(){ bg.remove(); try{ toast('Traitement du jour noté ✓'); }catch(e){} },500); }; });
+      bg.innerHTML=html;
+      bg.querySelectorAll('button[data-g]').forEach(function(b){
+        b.onclick=function(){
+          var g=groups[+b.dataset.g], allHens=g.hids.map(function(i){ return list[i]; });
+          var allDone=allHens.every(function(h){ return (h.treatment.done||[]).indexOf(t)>=0; });
+          allHens.forEach(function(h){ var x=h.treatment; x.done=x.done||[]; var k=x.done.indexOf(t);
+            if(allDone){ if(k>=0) x.done.splice(k,1); } else { if(k<0) x.done.push(t); }
+            x.done=x.done.slice(-120);
+          });
+          try{ v58Persist(); }catch(e){} draw();
+          if(list.every(function(h){ return (h.treatment.done||[]).indexOf(t)>=0; }))
+            setTimeout(function(){ bg.remove(); try{ toast('Traitement du jour noté ✓'); }catch(e){} },500);
+        };
+      });
       bg.querySelector('.v249-close').onclick=function(){ bg.remove(); };
     }
     draw(); document.body.appendChild(bg);
