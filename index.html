@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=368;
+  var APP_V=369;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -13772,20 +13772,23 @@ window.VetSource = {
     ['☠️','Ricin','Ricinus communis',"Graines particulièrement dangereuses en raison de la ricine. Ne pas planter dans un espace accessible aux poules."],
     ['☠️','Avocatier','Persea americana',"Contient de la persine, toxique pour les oiseaux. Feuilles, fruits, graines et tiges sont concernés."]
   ];
-  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const pill=t=>{const c=/^Cachette/.test(t)?'c':/^Ombre/.test(t)?'o':/^(Exposition|Soleil)/.test(t)?'x':'f';return `<span class="${c}">${esc(t)}</span>`;};
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({‘&’:’&amp;’,’<’:’&lt;’,’>’:’&gt;’,’"’:’&quot;’}[c]));
+  const pill=t=>{const c=/^Cachette/.test(t)?’c’:/^Ombre/.test(t)?’o’:/^(Exposition|Soleil)/.test(t)?’x’:’f’;return `<span class="${c}">${esc(t)}</span>`;};
   const head=x=>`<span class="e">${x[0]}</span><div><h4>${esc(x[1])} <span class="lat">${esc(x[2])}</span></h4>`;
-  const good=x=>`<div class="v214-card">${head(x)}<div class="v313-pills">${x[4].map(pill).join('')}</div><p>${esc(x[3])}</p><dl class="v313-dl"><dt>Conditions et limites</dt><dd>${esc(x[5])}</dd></dl></div></div>`;
+  const good=x=>`<div class="v214-card">${head(x)}<div class="v313-pills">${x[4].map(pill).join(‘’)}</div><p>${esc(x[3])}</p><dl class="v313-dl"><dt>Conditions et limites</dt><dd>${esc(x[5])}</dd></dl></div></div>`;
   const bad=x=>`<div class="v214-card bad">${head(x)}<div class="v313-pills"><span class="t">☠️ Toxique</span></div><p>${esc(x[3])}</p></div></div>`;
-  const sec=document.createElement('section'); sec.className='screen'; sec.id='plantes';
-  sec.innerHTML=`<div class="top"><button class="back" onclick="go('parkplus')">‹</button><div class="title">Plantes et arbustes</div></div>
+  const LINKS=[[‘PoultryDVM’,’https://www.poultrydvm.com’],[‘VCA’,’https://vcahospitals.com/know-your-pet’]];
+  const srcHtml=t=>{ let s=esc(t); LINKS.forEach(([k,u])=>{ s=s.replace(new RegExp(k,’g’),`<a href="${u}" target="_blank" rel="noopener" class="v369-src-link">${k}</a>`); }); return s; };
+  const sec=document.createElement(‘section’); sec.className=’screen’; sec.id=’plantes’;
+  sec.innerHTML=`<div class="top"><button class="back" onclick="go(‘parkplus’)">‹</button><div class="title">Plantes et arbustes</div></div>
   <div class="v214-seg" role="tablist"><button type="button" data-t="good" class="on">🌿 À planter</button><button type="button" data-t="bad" class="bad">🚫 À éviter</button></div>
   <div id="v214Good">
     <p class="v214-lead">Des plantations pour créer de l’ombre, des cachettes et diversifier le parc. Choisis selon ton terrain, ton climat et la place disponible à maturité.</p>
-    ${SECTIONS.map(s=>`<h3 class="v214-h">${esc(s[0])}</h3>${s[1].map(good).join('')}<p class="v322-src">${esc(s[2])}</p>`).join('')}
+    ${SECTIONS.map(s=>`<h3 class="v214-h">${esc(s[0])}</h3>${s[1].map(good).join(‘’)}<p class="v322-src">${srcHtml(s[2])}</p>`).join(‘’)}
     <div class="v214-box v214-how"><b>🪴 Aménagement</b>Protège les jeunes plantations du grattage. Répartis plusieurs refuges, avec des entrées et sorties dégagées. Le couvert utile dépend de la taille et de la forme de la plante.</div>
     <div class="v214-box v322-prot"><b>🦅 Protection</b>Les végétaux offrent de l’ombre et des possibilités de dissimulation. Ils ne garantissent pas une protection contre les rapaces.</div>
-    <p class="v214-note">Sélection fondée sur PoultryDVM et d’autres références vétérinaires aviaires. Les plantes proposées sont destinées à l’aménagement du parc, pas à une distribution alimentaire à volonté.</p>
+    <p class="v214-note">Sélection fondée sur <a href="https://www.poultrydvm.com" target="_blank" rel="noopener" class="v369-src-link">PoultryDVM</a> et d’autres références vétérinaires aviaires. Les plantes proposées sont destinées à l’aménagement du parc, pas à une distribution alimentaire à volonté.</p>
+    <div class="v214-box v369-other"><b>🌿 D’autres plantes peuvent-elles convenir ?</b>Notre sélection n’est pas exhaustive : d’autres arbres et arbustes peuvent trouver leur place autour de votre parc.<br><br>Chaque situation est différente. Pour évaluer une plantation, renseignez-vous sur l’espèce et sur les parties auxquelles vos poules peuvent réellement accéder : feuilles, fleurs, fruits, graines ou branches. Pensez aussi à ce qui peut tomber dans le parc ou y être apporté par le vent.<br><br>Un arbre situé à proximité du parc ne présente pas nécessairement la même exposition qu’une plante accessible directement aux poules. Observez votre installation et, en cas de doute sur une partie potentiellement dangereuse, empêchez son accès.</div>
   </div>
   <div id="v214Bad" hidden>
     <p class="v214-lead">Ces plantes présentent un risque d’intoxication si elles sont consommées. Garde-les hors d’accès et ne dépose pas leurs déchets de taille dans le parc.</p>
@@ -13808,6 +13811,12 @@ window.VetSource = {
 })();
 </script>
 
+<style id="v369-plantes-css">
+.v369-src-link{color:#5a7a3a;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px}
+.v369-src-link:active{opacity:.7}
+.v214-box.v369-other{background:linear-gradient(135deg,#f4f9ee,#eaf3e0);border:1.5px solid #b8d99a}
+.v214-box.v369-other b{color:#3a5a1a}
+</style>
 <style id="v217-adopt-css">#hens .v217-adopt{margin-top:12px}#hens .v221-vac{margin-top:12px}</style>
 <script id="v217-adopt-js">
 (function(){
