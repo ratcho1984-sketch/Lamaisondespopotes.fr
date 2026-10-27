@@ -4483,11 +4483,11 @@ nav.bottom .nav:nth-child(5) i{--ic:url(data:image/png;base64,iVBORw0KGgoAAAANSU
 .app{padding-bottom:calc(84px + env(safe-area-inset-bottom))!important}
 
 /* ---------- Transitions entre écrans ---------- */
-@keyframes v58in{from{opacity:0;transform:translate3d(22px,0,0)}to{opacity:1;transform:none}}
-@keyframes v58back{from{opacity:0;transform:translate3d(-22px,0,0)}to{opacity:1;transform:none}}
+@keyframes v58in{from{opacity:0}to{opacity:1}}
+@keyframes v58back{from{opacity:0}to{opacity:1}}
 @keyframes v58fade{from{opacity:0}to{opacity:1}}
-.screen.v58-in{animation:v58in .28s cubic-bezier(.2,.8,.2,1)}
-.screen.v58-back{animation:v58back .28s cubic-bezier(.2,.8,.2,1)}
+.screen.v58-in{animation:v58in .22s ease-out}
+.screen.v58-back{animation:v58back .22s ease-out}
 .screen.v58-tab{animation:v58fade .2s ease-out}
 @media (prefers-reduced-motion:reduce){.screen.v58-in,.screen.v58-back,.screen.v58-tab{animation:none}}
 
@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=371;
+  var APP_V=372;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -10231,6 +10231,7 @@ renderStarterStep = function(){
   window.addEventListener('popstate',e=>{
     popSeen++;
     const id=(e.state&&e.state.v58)||'home';
+    if(id===current) return; // already there (fallback already ran)
     closeMenu();
     window.go(id,null,true);
   });
