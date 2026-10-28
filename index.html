@@ -6540,6 +6540,10 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
   <div class="beh-advice-card"><h3>Ce qui peut être normal</h3><ul id="behaviorNormal"></ul></div>
   <div class="beh-advice-card"><h3>Ce qui mérite ton attention</h3><ul id="behaviorWatch"></ul></div>
   <div class="beh-advice-card"><h3>Ce que tu peux essayer</h3><ul id="behaviorActions"></ul></div>
+  <div id="behaviorGuideLink" hidden style="margin:12px 0 4px;background:#f0f7f2;border-radius:10px;padding:12px 14px">
+    <p style="margin:0 0 8px;font-size:13px;color:#3d6b4a;font-weight:600">📖 Tu veux tout préparer dans les règles ?</p>
+    <button type="button" onclick="v81Open('guide','integration')" style="background:#4a7c59;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;width:100%">Voir le guide complet › Intégrer une nouvelle poule</button>
+  </div>
   <div class="persist-box">
     <h3>La situation persiste ?</h3>
     <div class="elodie-slot"></div>
@@ -7003,7 +7007,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=384;
+  var APP_V=385;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -8125,6 +8129,7 @@ function openBehaviorAdvice(key){
   fillList('behaviorActions',d.actions);
   const bn=document.getElementById('behaviorBanner'),bs=(window.BEH_BANNERS||{})[key];bn.hidden=!bs;if(bs){bn.src=bs;bn.alt=d.title+'. '+d.intro;}document.querySelector('#behavioradvice .advice-summary').hidden=!!bs;
   const al=document.getElementById('behaviorAlert');al.innerHTML=d.alert||'';al.hidden=!d.alert;
+  const gl=document.getElementById('behaviorGuideLink');if(gl)gl.hidden=(key!=='integration');
   go('behavioradvice');
 }
 function behaviorHealthAnswer(isHealth){
