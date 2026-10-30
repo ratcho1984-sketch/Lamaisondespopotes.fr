@@ -6922,7 +6922,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=438;
+  var APP_V=439;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -8222,7 +8222,7 @@ function renderParks(){
         </div>
 
         <div class="park-popotes v434-q">
-          <div class="park-popotes-title"><b>Au-delà de 4 poules, as-tu plusieurs abreuvoirs et plusieurs gamelles ?</b></div>
+          <div class="park-popotes-title"><b>Au-delà de 3 poules, as-tu plusieurs abreuvoirs et gamelles ?</b></div>
           <div class="park-popote-list">
             ${ [['oui','Oui'],['non','Non']].map(([v,lab])=>{ const on=p.feeders===v; return '<button type="button" class="park-popote-chip v434-chip'+(on?' on':'')+('" data-park-idx="'+i+'" data-park-key="feeders" data-park-val="'+v+'">'+lab+(on?' ✓':'')+'</button>'); }).join('') }
           </div>
