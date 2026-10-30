@@ -5974,7 +5974,6 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 
   <div id="parksContainer"></div>
 
-  <div class="live-summary" id="parksLiveSummary">1 parc · 1 poulailler · 4 Popotes</div>
   <button class="primary" type="button" onclick="saveParksAndBack()">Enregistrer mes parcs</button>
 </section>
 
@@ -7003,7 +7002,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=414;
+  var APP_V=415;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -8211,6 +8210,10 @@ function syncParkStateFromDOM(){
     if(name) p.name=(name.value||('Parc '+(i+1))).trim().slice(0,50);
     if(area) p.area=clampNumber(area.value,0,100000,0);
     if(coops) p.coops=clampNumber(coops.value,0,20,0);
+    const rl=document.getElementById('parkReminderLabel'+i);
+    const rd=document.getElementById('parkReminderDate'+i);
+    if(rl) p.reminderLabel=rl.value;
+    if(rd) p.reminderDate=rd.value;
   });
   updateParkSummary();
   updateInstallScore();
@@ -8282,6 +8285,14 @@ function renderParks(){
               </button>`).join('')}
           </div>
           <div class="field-help">Touche une Popote pour l’installer dans ce parc. Touche-la à nouveau pour la renvoyer dans l’autre parc.</div>
+        </div>
+        <div class="park-reminder-block">
+          <div class="park-reminder-title">🔔 Vérification à ne pas oublier</div>
+          <input id="parkReminderLabel${i}" type="text" class="park-reminder-inp" placeholder="Ex. : clôture à contrôler…" value="${escapeAttr(p.reminderLabel||'')}" oninput="syncParkStateFromDOM()">
+          <div class="park-reminder-date-row">
+            <span class="v401-sub">Rappel pour le</span>
+            <input id="parkReminderDate${i}" type="date" class="v401-dt-inp park-reminder-date" value="${escapeAttr(p.reminderDate||'')}" oninput="syncParkStateFromDOM()">
+          </div>
         </div>
       </div>
     </div>`).join('');
@@ -12451,6 +12462,7 @@ const adv=document.querySelector('#advice .grid');
 <style>
 #foodguide .food-queen-title.food-elodie-title::before{display:none!important}
 #foodguide .food-elodie-photo{flex:0 0 60px;width:60px;height:60px;border-radius:50%;object-fit:cover;object-position:center 20%;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.park-reminder-block{margin-top:14px;padding:12px;background:#fffdf7;border:1.5px solid #e0d5c8;border-radius:12px}.park-reminder-title{font-size:13px;font-weight:700;color:#3a2e25;margin-bottom:8px}.park-reminder-inp{width:100%;box-sizing:border-box;padding:8px 10px;border:1.5px solid #e0d5c8;border-radius:10px;font-size:13px;font-family:inherit;color:#3a2e25;background:#fff;margin-bottom:8px}.park-reminder-date-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 </style>
 <script>
 (function(){ const t=document.querySelector('#foodguide .food-elodie-title'), im=document.querySelector('.elodie-photo-frame img');
