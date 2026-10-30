@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=406;
+  var APP_V=407;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15185,7 +15185,7 @@ return '<div class="park-card" data-i="'+i+'"><div class="park-card-head"><span 
     b.innerHTML='<div class="park-count-card"><div class="park-count-copy"><b>Combien de poulaillers ?</b><span>Une cabane en bois, un poulailler du commerce, un abri fait maison…</span></div>'+
       '<div class="park-stepper"><button type="button" onclick="v279Step(-1)" aria-label="Retirer un poulailler">−</button><strong id="v279Count">'+L.length+'</strong><button type="button" onclick="v279Step(1)" aria-label="Ajouter un poulailler">+</button></div></div>'+
       L.map(card).join('')+
-      (L.length?'<div class="live-summary" id="v279Live"></div><button class="primary" type="button" onclick="v272Save()">Enregistrer mes poulaillers</button>':'')+
+      (L.length?'<button class="primary" type="button" onclick="v272Save()">Enregistrer mes poulaillers</button>':'')+
       '<button type="button" class="v272-none" onclick="go(\'coopgallery\')"><i>🔨</i><span><b>Je n’ai pas encore mon poulailler</b><small>Construire mon poulailler : modèles, achats et étapes pas à pas</small></span><span class="chev">›</span></button>'+
 '<div class="v317-enc"><button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🔒</span><span class="v81-enc-t"><b>Plus de sécurité pour mon poulailler</b><small>Clôture, prédateurs, caméras…</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button></div>';
     summary();
