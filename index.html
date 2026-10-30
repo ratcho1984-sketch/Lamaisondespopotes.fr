@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=401;
+  var APP_V=402;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15170,7 +15170,7 @@ return '<div class="park-card" data-i="'+i+'"><div class="park-card-head"><span 
       (P.length>1?chips('Dans quel parc ?','data-park',P.map(function(p,j){return {v:j,t:pname(j)};}),c.park,'Touche le parc où se trouve ce poulailler.'):'')+
       chips('En quelle matière ?','data-mat',MATS.map(function(m){return {v:m,t:m};}),c.mat||'','Touche la matière principale de ce poulailler.')+
       '<div class="soft-field"><label class="v173-lbl">Prévu pour combien de poules ? <i>(facultatif)</i></label><input data-f="cap" type="number" min="0" max="200" value="'+esc(c.cap)+'" placeholder="Ex. 4"></div>'+
-      +entBlock(c)+
+      entBlock(c)+
     '</div></div>';
   }
   function summary(){
