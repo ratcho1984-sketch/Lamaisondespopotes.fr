@@ -7002,7 +7002,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=424;
+  var APP_V=425;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15233,7 +15233,7 @@ return '<div class="park-card" data-i="'+i+'"><div class="park-card-head"><span 
     var env=document.querySelector('#install .install-menu button[onclick="go(\'envsecurity\')"]'); if(!env||$('v272Row')) return;
     var build=document.querySelector('#install .install-menu button.signature'), img=build&&build.querySelector('img');
     var row=document.createElement('button'); row.className='install-row'; row.id='v272Row'; row.setAttribute('onclick','v272Open()');
-    row.innerHTML='<span class="install-icon premium-illustration install-photo">'+(img?'<img src="'+img.src+'" alt="" aria-hidden="true">':'🏡')+'</span><span><strong>Mon poulailler</strong><small>Entretien, rappels, marque…</small></span><span class="chev">›</span>';
+    row.innerHTML='<span class="install-icon premium-illustration install-photo">'+(img?'<img src="'+img.src+'" alt="" aria-hidden="true">':'🏡')+'</span><span><strong>Mon poulailler</strong><small>Entretien, marque, taille</small></span><span class="chev">›</span>';
     env.parentNode.insertBefore(row,env);
     if(build) build.style.display='none';
   }
