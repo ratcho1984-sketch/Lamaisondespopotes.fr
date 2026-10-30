@@ -5920,7 +5920,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 
   <div class="install-summary">
     <div><b id="sumParks">1</b><span>parc</span></div>
-    <div><b id="sumCoops">1</b><span>poulailler</span></div>
+    <div><b id="sumArea">0</b><span>m²</span></div>
     <div><b id="sumHens">4</b><span>Popotes</span></div>
   </div>
 
@@ -7002,7 +7002,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=417;
+  var APP_V=418;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -8319,9 +8319,9 @@ function updateParkSummary(){
   if(display) display.textContent=t.parks;
   const live=document.getElementById('parksLiveSummary');
   if(live) live.textContent=`${t.parks} parc${t.parks>1?'s':''} · ${t.coops} poulailler${t.coops>1?'s':''} · ${t.hens} Popote${t.hens>1?'s':''} · ${t.area} m² au total`;
-  const a=document.getElementById('sumParks'),b=document.getElementById('sumCoops'),c=document.getElementById('sumHens');
+  const a=document.getElementById('sumParks'),b=document.getElementById('sumArea'),c=document.getElementById('sumHens');
   if(a) a.textContent=t.parks;
-  if(b) b.textContent=t.coops;
+  if(b) b.textContent=t.area;
   if(c) c.textContent=t.hens;
 }
 
