@@ -6922,7 +6922,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=434;
+  var APP_V=435;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -8221,8 +8221,15 @@ function renderParks(){
           </div>
         </div>
 
+        <div class="park-popotes v434-q">
+          <div class="park-popotes-title"><b>Au-delà de 4 poules, as-tu plusieurs abreuvoirs et plusieurs gamelles ?</b></div>
+          <div class="park-popote-list">
+            ${['oui','non'].map(v=>{const on=p.feeders===v;return '<button type="button" class="park-popote-chip'+(on?' on':'')+(('" onclick="parkState['+i+'].feeders=\''+v+'\'; sv(); renderParks()">')+(v==='oui'?'Oui':'Non')+(on?' ✓':'')+'</button>');}).join('')}
+          </div>
+        </div>
+
         <div class="park-reminder-block">
-          <div class="park-reminder-title">🔔 Vérification à ne pas oublier</div>
+          <div class="park-reminder-title">🔔 Vérification à ne pas oublier pour ${p.name||('Parc '+(i+1))}</div>
           <input id="parkReminderLabel${i}" type="text" class="park-reminder-inp" placeholder="Ex. : clôture à contrôler…" value="${escapeAttr(p.reminderLabel||'')}" oninput="syncParkStateFromDOM()">
           <div class="park-reminder-date-row">
             <span class="v401-sub">Rappel pour le</span>
