@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=403;
+  var APP_V=404;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15181,7 +15181,7 @@ return '<div class="park-card" data-i="'+i+'"><div class="park-card-head"><span 
   }
   function render(){
     var b=$('v272Body'); if(!b) return;
-    b.innerHTML='<div class="park-count-card"><div class="park-count-copy"><b>Combien de poulaillers ?</b><span>Une cabane en bois, un poulailler du commerce, un abri fait maison… jusqu’à '+MAX+'.</span></div>'+
+    b.innerHTML='<div class="park-count-card"><div class="park-count-copy"><b>Combien de poulaillers ?</b></div>'+
       '<div class="park-stepper"><button type="button" onclick="v279Step(-1)" aria-label="Retirer un poulailler">−</button><strong id="v279Count">'+L.length+'</strong><button type="button" onclick="v279Step(1)" aria-label="Ajouter un poulailler">+</button></div></div>'+
       L.map(card).join('')+
       (L.length?'<div class="live-summary" id="v279Live"></div><button class="primary" type="button" onclick="v272Save()">Enregistrer mes poulaillers</button>':'')+
