@@ -6922,7 +6922,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=431;
+  var APP_V=432;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15539,7 +15539,7 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
   var tour=document.getElementById('parktour'); if(!tour) return;
   var sec=document.createElement('section'); sec.className='screen'; sec.id='parkplus';
   sec.innerHTML='<div class="top"><button class="back" onclick="go(\'parktour\')">‹</button><div class="title">Aller plus loin</div></div>'+
-  '<div class="v304-intro"><h2>Aller plus loin pour ton parc</h2><p>Des solutions supplémentaires contre les prédateurs, les plantes à installer, et des idées d’aménagement selon la surface de ton parc.</p></div>'+
+  '<p style="font-family:Georgia,serif;font-size:18px;font-weight:700;color:#2f5d43;margin:4px 0 14px">Solutions supplémentaires</p>'+
   '<div class="v304-card"><h3>🌳 Plantes et arbustes</h3><p>Ceux qui donnent de l’ombre et des cachettes, et ceux à éviter parce qu’ils sont toxiques.</p>'+
     '<button type="button" class="v214-btn" onclick="go(\'plantes\')"><span class="ic">🌳</span><span><b>Plantes et arbustes pour le parc</b><small>Ceux qui abritent, ceux à éviter (toxiques)</small></span><i>›</i></button></div>'+
   '<div class="v304-card"><h3>🦊 Clôtures et prédateurs au sol</h3><p>Renard, fouine, chien errant, rat : la clôture est la première protection.</p><ul>'+
