@@ -7003,7 +7003,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=400;
+  var APP_V=401;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15118,7 +15118,48 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
     function chips(lbl,attr,items,cur,help){ return '<div class="park-popotes"><div class="park-popotes-title"><b>'+lbl+'</b></div><div class="park-popote-list">'+
       items.map(function(it){ var on=String(cur)===String(it.v); return '<button type="button" '+attr+'="'+esc(it.v)+'" class="park-popote-chip'+(on?' on':'')+'">'+esc(it.t)+(on?' ✓':'')+'</button>'; }).join('')+
       '</div><div class="field-help">'+help+'</div></div>'; }
-    return '<div class="park-card" data-i="'+i+'"><div class="park-card-head"><span class="park-num">'+n+'</span><strong data-title>'+esc(title(c,n))+'</strong></div><div class="park-fields">'+
+      function entBlock(c){
+    var ent=c.entretien||{};
+    function ago(d){ if(!d) return ''; var ms=Date.now()-new Date(d).getTime(); var dy=Math.round(ms/86400000); if(dy<0) return ''; if(dy===0) return '<span class="v401-ago">Aujourd’hui</span>'; if(dy===1) return '<span class="v401-ago">Il y a 1 jour</span>'; if(dy<30) return '<span class="v401-ago">Il y a '+dy+' jours</span>'; if(dy<365) return '<span class="v401-ago">Il y a ~'+Math.round(dy/30)+' mois</span>'; return '<span class="v401-ago">Il y a ~'+Math.round(dy/365)+' an(s)</span>'; }
+    function entRow(key,ic,lbl){
+      var d=(ent[key]||{}), dt=d.date||'', rm=d.reminder||'';
+      return '<div class="v401-ent-item">'+
+        '<div class="v401-ent-lbl">'+ic+' '+lbl+'</div>'+
+        '<div class="v401-ent-date">'+
+          '<span class="v401-sub">Dernier —</span>'+
+          '<input type="date" data-ef="'+key+'-date" value="'+esc(dt)+'" class="v401-dt-inp">'+
+          '<button type="button" data-ef-today="'+key+'-date" class="v401-td-btn">Fait aujourd\'hui</button>'+
+        '</div>'+
+        ago(dt)+
+        '<div class="v401-ent-remind">'+
+          '<span class="v401-sub">Me rappeler le</span>'+
+          '<input type="date" data-ef="'+key+'-reminder" value="'+esc(rm)+'" class="v401-dt-inp v401-rm-inp">'+
+          '<button type="button" data-ef-clear="'+key+'-reminder" class="v401-clr-btn" style="'+(rm?'':'display:none')+'">&#215;</button>'+
+        '</div>'+
+      '</div>';
+    }
+    var poux=ent.poux||{}, pd=poux.date||'', pf=poux.freq||'';
+    var freqs=[{v:'15j',t:'15 j.'},{v:'1m',t:'1 mois'},{v:'2m',t:'2 mois'}];
+    return '<div class="v401-entretien">'+
+      '<div class="v401-ent-hd">&#129520; Entretien du poulailler</div>'+
+      entRow('courant','&#129529;','Nettoyage courant')+
+      entRow('complet','&#129533;','Grand nettoyage')+
+      entRow('produit','&#129524;','Traitement avec produit')+
+      '<div class="v401-ent-item v401-poux-item">'+
+        '<div class="v401-ent-lbl">&#128308; Poux rouges · dernier check</div>'+
+        '<div class="v401-ent-date">'+
+          '<input type="date" data-ef="poux-date" value="'+esc(pd)+'" class="v401-dt-inp">'+
+          '<button type="button" data-ef-today="poux-date" class="v401-td-btn v401-poux-td">Checké aujourd\'hui</button>'+
+        '</div>'+
+        ago(pd)+
+        '<div class="v401-poux-freq">'+
+          '<span class="v401-sub">Rappel dans</span>'+
+          freqs.map(function(f){ return '<button type="button" data-ef-freq="'+f.v+'" class="park-popote-chip'+(pf===f.v?' on':'')+'">'+(pf===f.v?'&#10003; ':'')+f.t+'</button>'; }).join('')+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }
+return '<div class="park-card" data-i="'+i+'"><div class="park-card-head"><span class="park-num">'+n+'</span><strong data-title>'+esc(title(c,n))+'</strong></div><div class="park-fields">'+
       '<div class="soft-field"><label class="v173-lbl">Son petit nom <i>(facultatif)</i></label><input data-f="name" type="text" maxlength="50" value="'+esc(c.name)+'" placeholder="Ex. La cabane, Le palace des copines…"></div>'+
       '<div class="soft-field"><label class="v173-lbl">Sa marque <i>(facultatif)</i></label><input data-f="brand" type="text" maxlength="60" value="'+esc(c.brand)+'" placeholder="Ex. Omlet, Gardenstyle, fait maison…"></div>'+
       '<div class="soft-field"><label class="v173-lbl">Son modèle <i>(facultatif)</i></label><input data-f="model" type="text" maxlength="60" value="'+esc(c.model)+'" placeholder="Nom du modèle"></div>'+
@@ -15129,12 +15170,7 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
       (P.length>1?chips('Dans quel parc ?','data-park',P.map(function(p,j){return {v:j,t:pname(j)};}),c.park,'Touche le parc où se trouve ce poulailler.'):'')+
       chips('En quelle matière ?','data-mat',MATS.map(function(m){return {v:m,t:m};}),c.mat||'','Touche la matière principale de ce poulailler.')+
       '<div class="soft-field"><label class="v173-lbl">Prévu pour combien de poules ? <i>(facultatif)</i></label><input data-f="cap" type="number" min="0" max="200" value="'+esc(c.cap)+'" placeholder="Ex. 4"></div>'+
-      '<div class="soft-field v363-disinfect-wrap"><label class="v173-lbl">🧴 Dernier traitement préventif (produit fort) <i>(facultatif)</i></label>'+
-      '<div style="display:flex;gap:8px;align-items:center"><input data-f="lastDisinfect" type="date" value="'+esc(c.lastDisinfect||'')+'" style="flex:1;padding:9px 12px;border:1.5px solid #e0d5c8;border-radius:10px;font-size:14px;font-family:inherit;color:#3a2e25;background:#faf8f4">'+
-      '<button type="button" onclick="(function(el){el.value=new Date().toISOString().slice(0,10);el.dispatchEvent(new Event(\'input\',{bubbles:true}))})(this.previousElementSibling)" style="padding:9px 14px;border:none;border-radius:10px;background:#e8f5e9;color:#2e7d32;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Aujourd\'hui</button></div>'+
-      (c.lastDisinfect?'<span class="v363-ago" data-since="'+esc(c.lastDisinfect)+'"></span>':'')+
-      '</div>'+
-      '<div class="soft-field"><label class="v173-lbl">Une remarque ? <i>(facultatif)</i></label><input data-f="note" type="text" maxlength="140" value="'+esc(c.note)+'" placeholder="Ex. toit qui fuit, pondoir trop petit…"></div>'+
+      +entBlock(c)+
     '</div></div>';
   }
   function summary(){
@@ -15843,4 +15879,168 @@ body.v359-pzmode #v199CoqBox{display:none!important}
 .beh-hero-art{width:100%;height:200px;flex:none;border-radius:16px;padding:0}
 .beh-hero-art img{object-fit:cover;object-position:center top}
 </style>
+<style id="v401-css">
+.v401-entretien{margin-top:18px;border-top:2px solid #e8ddd0;padding-top:14px}
+.v401-ent-hd{font-size:14px;font-weight:700;color:#5c3d1e;margin-bottom:12px}
+.v401-ent-item{background:#fdf9f5;border:1.5px solid #e8ddd0;border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.v401-poux-item{border-color:#f8c8c0;background:#fff8f7}
+.v401-ent-lbl{font-size:13px;font-weight:700;color:#3a2e25;margin-bottom:8px}
+.v401-sub{font-size:11px;color:#8a7060;font-weight:600;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em}
+.v401-ent-date{margin-top:6px}
+.v401-ent-remind{margin-top:8px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.v401-ent-remind .v401-sub{width:100%}
+.v401-poux-freq{margin-top:8px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.v401-dt-inp{padding:8px 10px;border:1.5px solid #e0d5c8;border-radius:10px;font-size:13px;font-family:inherit;color:#3a2e25;background:#fff;width:100%;box-sizing:border-box;margin-bottom:4px}
+.v401-rm-inp{border-color:#d9c8b0;background:#fdf6ec;width:auto;flex:1;min-width:120px}
+.v401-td-btn{padding:7px 12px;border:none;border-radius:9px;background:#e8f5e9;color:#2e7d32;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:2px}
+.v401-poux-td{background:#fdecea;color:#c62828}
+.v401-clr-btn{padding:5px 9px;border:none;border-radius:8px;background:#f5e9e9;color:#b71c1c;font-size:12px;cursor:pointer;font-family:inherit}
+.v401-ago{font-size:11px;color:#9a8070;display:block;margin-top:2px;margin-bottom:4px}
+.v401-pop-bg{position:fixed;inset:0;background:rgba(30,20,10,.55);z-index:9999;display:flex;align-items:flex-end;justify-content:center}
+.v401-pop{background:#fff;border-radius:20px 20px 0 0;padding:24px 20px 32px;width:100%;max-width:430px;box-shadow:0 -4px 32px rgba(0,0,0,.18);max-height:80vh;overflow-y:auto}
+.v401-pop h3{font-size:16px;font-weight:800;color:#3a2e25;margin:0 0 12px}
+.v401-pop-item{border-left:3px solid #f0a050;padding:8px 12px;margin-bottom:10px;background:#fdf6ec;border-radius:0 10px 10px 0}
+.v401-pop-item b{display:block;font-size:13px;color:#3a2e25}
+.v401-pop-item span{font-size:12px;color:#7a5a30}
+.v401-pop-done{display:block;width:100%;padding:13px;background:#2e7d32;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:16px}
+.v401-pop-later{display:block;width:100%;padding:10px;background:none;color:#8a7060;border:none;font-size:13px;cursor:pointer;font-family:inherit;margin-top:6px;text-decoration:underline}
+</style>
+<script id="v401-entretien-js">
+(function(){
+  function today(){ return new Date().toISOString().slice(0,10); }
+  function coops(){ try{ return JSON.parse(localStorage.getItem('maisonPopotesCoopsV279')||'[]'); }catch(e){ return []; } }
+  function saveCoops(L){ try{ localStorage.setItem('maisonPopotesCoopsV279',JSON.stringify(L)); }catch(e){} }
+
+  // input handler for data-ef fields
+  document.addEventListener('input',function(e){
+    var ef=e.target.getAttribute('data-ef'); if(!ef) return;
+    var cd=e.target.closest('[data-i]'); if(!cd) return;
+    var i=+cd.getAttribute('data-i'), L=coops(); var c=L[i]; if(!c) return;
+    var parts=ef.split('-'), type=parts[0], field=parts[1];
+    if(!c.entretien) c.entretien={};
+    if(!c.entretien[type]) c.entretien[type]={};
+    c.entretien[type][field]=e.target.value;
+    saveCoops(L);
+    if(field==='reminder'){
+      var clr=cd.querySelector('[data-ef-clear="'+ef+'"]');
+      if(clr) clr.style.display=e.target.value?'':'none';
+    }
+  },true);
+
+  // click handler for today/clear/freq buttons
+  document.addEventListener('click',function(e){
+    var bt=e.target.closest('[data-ef-today]');
+    if(bt){
+      var ef=bt.getAttribute('data-ef-today');
+      var cd=bt.closest('[data-i]'); if(!cd) return;
+      var inp=cd.querySelector('[data-ef="'+ef+'"]'); if(!inp) return;
+      inp.value=today();
+      inp.dispatchEvent(new Event('input',{bubbles:true}));
+      var ago=inp.parentElement.nextElementSibling;
+      if(ago&&ago.classList&&ago.classList.contains('v401-ago')) ago.textContent='Aujourd’hui';
+      return;
+    }
+    var clr=e.target.closest('[data-ef-clear]');
+    if(clr){
+      var ef2=clr.getAttribute('data-ef-clear');
+      var cd2=clr.closest('[data-i]'); if(!cd2) return;
+      var inp2=cd2.querySelector('[data-ef="'+ef2+'"]'); if(!inp2) return;
+      inp2.value='';
+      inp2.dispatchEvent(new Event('input',{bubbles:true}));
+      clr.style.display='none';
+      return;
+    }
+    var fc=e.target.closest('[data-ef-freq]');
+    if(fc){
+      var fv=fc.getAttribute('data-ef-freq');
+      var cd3=fc.closest('[data-i]'); if(!cd3) return;
+      var i3=+cd3.getAttribute('data-i'), L3=coops(); var c3=L3[i3]; if(!c3) return;
+      if(!c3.entretien) c3.entretien={};
+      if(!c3.entretien.poux) c3.entretien.poux={};
+      c3.entretien.poux.freq=c3.entretien.poux.freq===fv?'':fv;
+      saveCoops(L3);
+      cd3.querySelectorAll('[data-ef-freq]').forEach(function(x){
+        var on=x.getAttribute('data-ef-freq')===c3.entretien.poux.freq;
+        x.classList.toggle('on',on);
+        var lbl=x.getAttribute('data-ef-freq')==='15j'?'15 j.':x.getAttribute('data-ef-freq')==='1m'?'1 mois':'2 mois';
+        x.textContent=(on?'✓ ':'')+lbl;
+      });
+      return;
+    }
+  },true);
+
+  // migration: lastDisinfect -> entretien.produit.date
+  (function(){
+    var L=coops(), changed=false;
+    L.forEach(function(c){
+      if(c.lastDisinfect&&!(c.entretien&&c.entretien.produit&&c.entretien.produit.date)){
+        if(!c.entretien) c.entretien={};
+        if(!c.entretien.produit) c.entretien.produit={};
+        c.entretien.produit.date=c.lastDisinfect;
+        changed=true;
+      }
+    });
+    if(changed) saveCoops(L);
+  })();
+
+  // rappel popup
+  function freqToDate(d,freq){
+    if(!d||!freq) return null;
+    var dt=new Date(d);
+    if(freq==='15j') dt.setDate(dt.getDate()+15);
+    else if(freq==='1m') dt.setMonth(dt.getMonth()+1);
+    else if(freq==='2m') dt.setMonth(dt.getMonth()+2);
+    return dt.toISOString().slice(0,10);
+  }
+  function checkRappels(){
+    var sk='v401Dismiss'+today(); var dismissed={};
+    try{ dismissed=JSON.parse(sessionStorage.getItem(sk)||'{}'); }catch(e){}
+    var L=coops(), due=[];
+    var TYPES={courant:{ic:'&#129529;',lbl:'Nettoyage courant'},complet:{ic:'&#129533;',lbl:'Grand nettoyage'},produit:{ic:'&#129524;',lbl:'Traitement avec produit'}};
+    L.forEach(function(c,i){
+      var cname=c.name||('Poulailler '+(i+1)), ent=c.entretien||{};
+      Object.keys(TYPES).forEach(function(key){
+        var rm=(ent[key]||{}).reminder;
+        if(rm&&rm<=today()&&!dismissed[i+'-'+key])
+          due.push({coop:i,key:key,cname:cname,ic:TYPES[key].ic,lbl:TYPES[key].lbl,date:rm});
+      });
+      var poux=ent.poux||{};
+      if(poux.freq&&!dismissed[i+'-poux']){
+        var nxt=freqToDate(poux.date,poux.freq);
+        if(nxt&&nxt<=today())
+          due.push({coop:i,key:'poux',cname:cname,ic:'&#128308;',lbl:'Poux rouges · check',date:nxt});
+      }
+    });
+    if(!due.length) return;
+    var bg=document.createElement('div'); bg.className='v401-pop-bg';
+    var html='<div class="v401-pop"><h3>&#128276; Rappels entretien</h3>';
+    due.forEach(function(r){ html+='<div class="v401-pop-item"><b>'+r.ic+' '+r.lbl+'</b><span>'+r.cname+' · prévu le '+r.date+'</span></div>'; });
+    html+='<button class="v401-pop-done">C'est noté &#10003;</button><button class="v401-pop-later">Me rappeler plus tard</button></div>';
+    bg.innerHTML=html;
+    bg.querySelector('.v401-pop-done').addEventListener('click',function(){
+      var L2=coops();
+      due.forEach(function(r){
+        var c=L2[r.coop]; if(!c||!c.entretien) return;
+        if(r.key==='poux'){ if(c.entretien.poux) c.entretien.poux.date=today(); }
+        else { if(c.entretien[r.key]) c.entretien[r.key].reminder=''; }
+      });
+      saveCoops(L2);
+      bg.remove();
+    });
+    bg.querySelector('.v401-pop-later').addEventListener('click',function(){
+      var d2={}; try{ d2=JSON.parse(sessionStorage.getItem(sk)||'{}'); }catch(e){}
+      due.forEach(function(r){ d2[r.coop+'-'+r.key]=1; });
+      try{ sessionStorage.setItem(sk,JSON.stringify(d2)); }catch(e){}
+      bg.remove();
+    });
+    document.body.appendChild(bg);
+  }
+  setTimeout(function(){
+    var m=document.getElementById('v186Modal');
+    if(m&&m.style.display!=='none') return;
+    checkRappels();
+  },2200);
+  window.v401CheckRappels=checkRappels;
+})();
+</script>
 </body></html>
