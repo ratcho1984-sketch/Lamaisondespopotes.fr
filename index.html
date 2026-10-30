@@ -6922,7 +6922,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=437;
+  var APP_V=438;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -8210,21 +8210,21 @@ function renderParks(){
         <div class="park-popotes v434-q">
           <div class="park-popotes-title"><b>Est-il beaucoup arboré ?</b></div>
           <div class="park-popote-list">
-            ${['beaucoup','un-peu','pas-du-tout'].map(v=>{const lab={'beaucoup':'Beaucoup de végétation','un-peu':'Un peu de végétation','pas-du-tout':'Pas du tout de végétation'}[v];const on=p.vegetation===v;return '<button type="button" class="park-popote-chip'+(on?' on':'')+('" onclick="syncParkStateFromDOM();parkState['+i+'].vegetation=\''+v+'\';renderParks()">')+lab+(on?' ✓':'')+'</button>';}).join('')}
+            ${ [['beaucoup','Beaucoup de végétation'],['un-peu','Un peu de végétation'],['pas-du-tout','Pas du tout de végétation']].map(([v,lab])=>{ const on=p.vegetation===v; return '<button type="button" class="park-popote-chip v434-chip'+(on?' on':'')+('" data-park-idx="'+i+'" data-park-key="vegetation" data-park-val="'+v+'">'+lab+(on?' ✓':'')+'</button>'); }).join('') }
           </div>
         </div>
 
         <div class="park-popotes v434-q">
           <div class="park-popotes-title"><b>As-tu des abris extérieurs contre le vent, la pluie, le soleil ?</b></div>
           <div class="park-popote-list">
-            ${['oui','non'].map(v=>{const on=p.shelters===v;return '<button type="button" class="park-popote-chip'+(on?' on':'')+('" onclick="syncParkStateFromDOM();parkState['+i+'].shelters=\''+v+'\';renderParks()">')+(v==='oui'?'Oui':'Non')+(on?' ✓':'')+'</button>';}).join('')}
+            ${ [['oui','Oui'],['non','Non']].map(([v,lab])=>{ const on=p.shelters===v; return '<button type="button" class="park-popote-chip v434-chip'+(on?' on':'')+('" data-park-idx="'+i+'" data-park-key="shelters" data-park-val="'+v+'">'+lab+(on?' ✓':'')+'</button>'); }).join('') }
           </div>
         </div>
 
         <div class="park-popotes v434-q">
           <div class="park-popotes-title"><b>Au-delà de 4 poules, as-tu plusieurs abreuvoirs et plusieurs gamelles ?</b></div>
           <div class="park-popote-list">
-            ${['oui','non'].map(v=>{const on=p.feeders===v;return '<button type="button" class="park-popote-chip'+(on?' on':'')+'" onclick="syncParkStateFromDOM();parkState['+i+'].feeders=\''+v+'\';renderParks()">'+(v==='oui'?'Oui':'Non')+(on?' ✓':'')+'</button>');}).join('')}
+            ${ [['oui','Oui'],['non','Non']].map(([v,lab])=>{ const on=p.feeders===v; return '<button type="button" class="park-popote-chip v434-chip'+(on?' on':'')+('" data-park-idx="'+i+'" data-park-key="feeders" data-park-val="'+v+'">'+lab+(on?' ✓':'')+'</button>'); }).join('') }
           </div>
         </div>
 
@@ -8239,6 +8239,22 @@ function renderParks(){
       </div>
     </div>`).join('');
   updateParkSummary();
+  // delegated handler for v434 chips (set once, re-bound after re-render)
+  (function(){
+    var c=document.getElementById('parksContainer'); if(!c) return;
+    c.removeEventListener('click',window._v434ChipHandler);
+    window._v434ChipHandler=function(e){
+      var b=e.target.closest('.v434-chip'); if(!b) return;
+      var idx=+b.getAttribute('data-park-idx');
+      var k=b.getAttribute('data-park-key');
+      var v=b.getAttribute('data-park-val');
+      if(!parkState[idx]) return;
+      syncParkStateFromDOM();
+      parkState[idx][k]=v;
+      renderParks();
+    };
+    c.addEventListener('click',window._v434ChipHandler);
+  })();
 }
 
 function escapeHtml(s){
