@@ -5986,86 +5986,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
     <p>C’est tout le cadre de vie de tes poules, et il est différent chez chacun : la place dont elles disposent par rapport à leur nombre, mais aussi leurs ressources (le nombre de mangeoires et d’abreuvoirs, le nombre de perchoirs, de cachettes et d’abris, les coins pour gratter ou prendre un bain de poussière, les zones abritées par l’ombre, etc.).</p>
     <p>La sécurité en fait partie aussi : les clôtures et la protection contre les prédateurs. Une poule qui trouve ce dont elle a besoin et qui se sent à l’abri peut vivre plus sereinement.</p>
   </div>
-
-  <div class="choice-section">
-    <h3>🌿 Environnement</h3>
-    <p>Plusieurs réponses peuvent être sélectionnées.</p>
-    <div class="check-grid">
-      <label class="check-tile"><input type="checkbox" id="envShade" onchange="updateInstallScore()">Ombragé</label>
-      <label class="check-tile"><input type="checkbox" id="envSun" checked onchange="updateInstallScore()">Ensoleillé</label>
-      <label class="check-tile"><input type="checkbox" id="envWindy" onchange="updateInstallScore()">Venté</label>
-      <label class="check-tile"><input type="checkbox" id="envShelteredWind" onchange="updateInstallScore()">À l’abri du vent</label>
-      <label class="check-tile"><input type="checkbox" id="envTrees" onchange="updateInstallScore()">Arbres / arbustes</label>
-      <label class="check-tile"><input type="checkbox" id="envShelter" onchange="updateInstallScore()">Abris / refuges</label>
-    </div>
-  </div>
-
-  <div class="choice-section">
-    <h3>💧 Eau et mangeoires</h3>
-    <p>Indique combien de points d’eau / abreuvoirs et de mangeoires sont disponibles dans tes parcs.</p>
-    <div class="water-grid">
-      <div class="water-field">
-        <label for="waterPoints">Points d’eau</label>
-        <input id="waterPoints" type="number" min="0" max="20" value="1" oninput="updateInstallScore()">
-      </div>
-      <div class="water-field">
-        <label for="feederPoints">Mangeoires</label>
-        <input id="feederPoints" type="number" min="0" max="20" value="1">
-      </div>
-      <div class="water-field">
-        <label for="waterShade">Eau placée à l’ombre ?</label>
-        <select id="waterShade" onchange="updateInstallScore()">
-          <option value="yes">Oui</option>
-          <option value="no">Non</option>
-          <option value="sometimes">Partiellement</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <div class="choice-section">
-    <h3>🛡️ Sécurité & prédateurs</h3>
-    <p>Coche les protections réellement présentes.</p>
-    <div class="check-grid">
-      <label class="check-tile">
-        <input type="checkbox" id="secMesh" checked onchange="updateInstallScore()">
-        <span class="choice-copy">Grillage à poules <strong>supérieur à 1,50 m</strong></span>
-      </label>
-      <label class="check-tile"><input type="checkbox" id="secElectric" onchange="updateInstallScore()">Clôture électrifiée</label>
-      <label class="check-tile"><input type="checkbox" id="secRoofNet" onchange="updateInstallScore()">Filet au-dessus du parc</label>
-      <label class="check-tile"><input type="checkbox" id="secBalloon" onchange="updateInstallScore()">Ballon anti-prédateur</label>
-      <label class="check-tile"><input type="checkbox" id="secScarecrow" onchange="updateInstallScore()">Épouvantail</label>
-      <label class="check-tile"><input type="checkbox" id="secBuried" onchange="updateInstallScore()">Grillage enterré</label>
-      <label class="check-tile"><input type="checkbox" id="secNight" checked onchange="updateInstallScore()">Fermeture sécurisée la nuit</label>
-      <label class="check-tile"><input type="checkbox" id="secAnchored" onchange="updateInstallScore()">Abris / poulailler bien ancrés</label>
-    </div>
-  </div>
-
-  <button class="primary v267-save" type="button" onclick="saveEnvironmentAndBack()">Enregistrer mon environnement</button>
-  <div class="install-watch">
-    <h3>À surveiller dans mes installations</h3>
-    <div class="status-grid">
-      <div class="status-card"><b>Ombre</b><span id="statusShade" class="status-pill status-warn">À améliorer</span></div>
-      <div class="status-card"><b>Sécurité</b><span id="statusSecurity" class="status-pill status-warn">À améliorer</span></div>
-      <div class="status-card"><b>Eau</b><span id="statusWater" class="status-pill status-ok">Bien</span></div>
-      <div class="status-card"><b>Refuges</b><span id="statusShelter" class="status-pill status-warn">À compléter</span></div>
-    </div>
-    <div class="install-watch-note show" id="installAdviceNote">
-      <b class="v267-elo-t"><span>🔍</span>Le regard d’Élodie</b>
-      Certains points peuvent être améliorés. Tu peux consulter les conseils de La Maison des Popotes pour savoir quoi mettre en place.
-      <button type="button" onclick="go('parktour');try{restartParkTour&&document.getElementById('parkTourIntroView')&&(document.getElementById('parkTourIntroView').style.display='',document.getElementById('parkTourQuestionView').style.display='none',document.getElementById('parkTourResultView').style.display='none')}catch(e){}">Voir les conseils adaptés</button>
-    </div>
-  </div>
-
-  <div class="security-score-preview">
-    <h3>Aperçu de tes indicateurs</h3>
-    <div class="score-preview-grid">
-      <div><b>Ombre</b><span id="previewShade">À améliorer</span></div>
-      <div><b>Sécurité</b><span id="previewSecurity">À améliorer</span></div>
-      <div><b>Eau</b><span id="previewWater">Bien</span></div>
-      <div><b>Refuges</b><span id="previewShelter">À compléter</span></div>
-    </div>
-  </div>
+  <button class="primary v267-save" type="button" onclick="saveEnvironmentAndBack()" style="display:none">Enregistrer mon environnement</button>
 
 </section>
 
@@ -7002,7 +6923,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=427;
+  var APP_V=428;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15755,17 +15676,8 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
       '<div class="park-popotes v318-q v356-pop">Tes Popotes : <b>'+n+'</b> poule'+(n>1?'s':'')+' et <b>'+k+'</b> coq'+(k>1?'s':'')+', dans <b>'+ps.length+'</b> parc'+(ps.length>1?'s':'')+'.</div>'+
       '<button type="button" class="v334-link v357-link" onclick="go(\'parks\')">Modifier mes parcs&nbsp;›</button>'+
         '</div></div>';
-    ps.forEach(function(p,i){
-      h+='<div class="park-card v355-park"><div class="park-card-head"><span class="park-num">'+(i+1)+'</span><strong>'+esc2(nm(i))+'</strong></div><div class="park-fields">'+
-        '<div class="park-popotes v318-q v356-pop">'+(function(t){ return 'Dans ce parc : <b>'+t+'</b> individu'+(t>1?'s':''); })(inPark(i,false)+inPark(i,true))+'</div>'+
-        RES.map(function(r){ return num(i,r[0],r[1]); }).join('')+'</div></div>';
-    });
     w.innerHTML=h; h='';
-    var w2=document.getElementById('v358Sec'); if(!w2){ w2=document.createElement('div'); w2.id='v358Sec'; w2.className='v318-wrap v358-sec'; save.after(w2); }
-    h+='<div class="park-card v357-sec"><div class="park-card-head"><span class="park-num">🛡️</span><strong>Sécurité et prédateurs</strong></div>'+
-      '<p>Pour la sécurité de ton parc et la protection contre les prédateurs, fais le tour de ton parc avec nous : quelques questions simples, puis des conseils adaptés.</p>'+
-      '<button type="button" class="v357-go" onclick="go(\'parktour\');try{var a=document.getElementById(\'parkTourIntroView\');if(a){a.style.display=\'\';document.getElementById(\'parkTourQuestionView\').style.display=\'none\';document.getElementById(\'parkTourResultView\').style.display=\'none\';}}catch(e){}">Faisons le tour de ton parc&nbsp;›</button></div>';
-    w2.innerHTML=h;
+    var w2=document.getElementById('v358Sec'); if(w2) w2.innerHTML='';
   }
   w.addEventListener('input',function(e){
     var t=e.target.closest('[data-n]'); if(!t) return;
