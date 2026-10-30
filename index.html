@@ -7002,7 +7002,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=425;
+  var APP_V=426;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15156,7 +15156,7 @@ nav.bottom{position:fixed!important;bottom:0!important;left:50%!important;transf
     var ex=ent.extra||{}, exl=ex.label||'', exr=ex.reminder||'';
     var prodName=(ent.produit||{}).name||'';
     return '<div class="v401-entretien">'+
-      '<div class="v401-ent-hd">&#129520; Entretien du poulailler</div>'+
+      '<div class="v401-ent-hd">Entretien du poulailler</div>'+
       entRow('complet','🧽','Grand nettoyage','Changement de la litière, nettoyage des parois, etc.')+
       entRow('produit','🧴','Traitements avec produits','',
         '<div class="v401-prodname-row"><input type="text" data-ef="produit-name" value="'+esc(prodName)+'" placeholder="Nom du produit utilisé" class="v401-prodname-inp"></div>')+
@@ -15894,7 +15894,7 @@ body.v359-pzmode #v199CoqBox{display:none!important}
 </style>
 <style id="v401-css">
 .v401-entretien{margin-top:18px;border-top:2px solid #e8ddd0;padding-top:14px}
-.v401-ent-hd{font-size:14px;font-weight:700;color:#5c3d1e;margin-bottom:12px}
+.v401-ent-hd{font-family:Georgia,"Times New Roman",serif;font-size:18px;font-weight:700;color:#2f5d43;margin-bottom:12px}
 .v401-ent-item{background:#fdf9f5;border:1.5px solid #e8ddd0;border-radius:14px;padding:12px 14px;margin-bottom:10px}
 .v401-poux-item{border-color:#f8c8c0;background:#fff8f7}
 .v401-ent-lbl{font-size:13px;font-weight:700;color:#3a2e25;margin-bottom:8px}
