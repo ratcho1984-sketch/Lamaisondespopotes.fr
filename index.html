@@ -7002,7 +7002,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=423;
+  var APP_V=424;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15670,7 +15670,7 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
   var sv=document.querySelector('#parks button.primary[onclick^="saveParksAndBack"]');
   if(sv&&!document.getElementById('v316Enc')){
     var d2=document.createElement('div'); d2.id='v316Enc'; d2.className='v316-enc';
-    d2.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Plus de sécurité pour mon parc</b><small>Aménagement selon la surface et le nombre de poules</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
+    d2.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Plus de sérénité pour mes poules</b><small>Aménagement selon la surface et le nombre de poules, plantes conseillées</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
     sv.after(d2);
   }
 })();
