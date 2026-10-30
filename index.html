@@ -6923,7 +6923,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=428;
+  var APP_V=429;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15691,8 +15691,8 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
   });
   render();
   /* v319 : encart violet Premium sous « Enregistrer mon environnement » */
-  var enc=document.createElement('div'); enc.className='v319-enc'; enc.id='v319Enc';
-  enc.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Va plus loin avec ton parc :</b><small>Passe en Premium pour découvrir comment l’améliorer et l’adapter à tes Popotes</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
+  var enc=document.createElement('div'); enc.id='v319Enc'; enc.style.margin='16px 0 4px';
+  enc.innerHTML='<button type="button" class="primary" onclick="go(\'parktour\');try{var a=document.getElementById(\'parkTourIntroView\');if(a){a.style.display=\'\';document.getElementById(\'parkTourQuestionView\').style.display=\'none\';document.getElementById(\'parkTourResultView\').style.display=\'none\';}}catch(e){}">Explorons ensemble ton parc ›</button>';
   save.after(enc); var s358=document.getElementById('v358Sec'); if(s358) save.after(s358);
   var g=window.go; if(typeof g==='function') window.go=function(id){ var r=g.apply(this,arguments); if(id==='envsecurity'){ try{ render(); }catch(e){} } return r; };
 })();
