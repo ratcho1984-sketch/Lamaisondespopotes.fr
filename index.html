@@ -6924,7 +6924,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=442;
+  var APP_V=443;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11482,7 +11482,7 @@ renderStarterStep = function(){
   window.elodieOfferHTML=elodieOffer;
   F.export={icon:'📥',title:'Exporter mon historique',pitch:'Télécharge tout l’historique de tes pontes dans un tableur.',bullets:['Toutes tes pontes, date par date','Poule par poule, avec l’aspect et les détails','À ouvrir dans un tableur ou à garder en sauvegarde'],action(){ try{ (window.v242ExportBase||window.v81Export)(); }catch(e){} }};
   F.traitement={icon:'💊',title:'Suivi des traitements',pitch:'Vitamines, vermifuge ou traitement médical : note le produit, la dose exacte, les dates, la photo de l’ordonnance, et reçois un rappel chaque jour de traitement.',bullets:['Vitamines, vermifuge et traitements médicaux','Le produit et la dose exacte à donner','Un rappel à l’ouverture de l’appli chaque jour de traitement','La photo de l’ordonnance toujours sous la main'],action(){ try{ var h=currentProfileHen&&currentProfileHen(); if(h&&document.getElementById('v245Row')&&document.querySelector('#profile.active, #profile.screen.active')) v245Open(); else { go('hens'); toast('Choisis une Popote, puis « Traitement actuel » sur sa fiche'); } }catch(e){} }};
-  F.parcplus={icon:'🛡️',title:'Aller plus loin pour ton parc',pitch:'Des solutions supplémentaires pour protéger tes poules et aménager ton parc.',bullets:['Clôtures et prédateurs au sol : poteaux, grillage, hauteur, fil électrique','Prédateurs du ciel : filet, ballons effaroucheurs, leurre de grand-duc','Les arbres et arbustes à planter, et ceux à éviter','Des idées d’aménagement selon la surface de ton parc'],action(){ try{ go('parkplus'); }catch(e){} }};
+  F.parcplus={icon:'🛡️',title:'Aller plus loin pour ton parc',pitch:'Des solutions supplémentaires pour protéger tes poules et aménager ton parc.',bullets:['Clôture et prédateurs','Prédateurs du ciel','Les arbres et arbustes à planter, et ceux à éviter','Des idées d’aménagement selon la surface de ton parc'],action(){ try{ go('parkplus'); }catch(e){} }};
   F.oeufinfo={icon:'🥚',title:'Détails de chaque œuf',pitch:'Note le poids, la taille, la couleur, les particularités et la photo de chaque œuf.',bullets:['Poids, taille et couleur de l’œuf','Particularités et photo d’un œuf inhabituel','Un historique précis pour chaque Popote'],action(){ try{ toggleEggExtraInfo(true); }catch(e){} }};
   F.guide={icon:'📚',title:'Guide approfondi',free:true,
     pitch:'Des guides complets, pas à pas, écrits à partir de notre expérience et de l’observation.',
