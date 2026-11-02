@@ -6924,7 +6924,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=445;
+  var APP_V=446;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15619,13 +15619,7 @@ body:not(.v81-prem) #v245Row{flex-wrap:wrap}
     var slot=sec.querySelector('.elodie-slot'); if(slot&&!slot.innerHTML&&window.elodieOfferHTML) slot.innerHTML=elodieOfferHTML();
   }
   var g=window.go; if(typeof g==='function') window.go=function(id){ if(id==='parkplus'&&window.v81IsPremium&&!v81IsPremium()){ try{ v81Lock('parcplus'); }catch(e){} return; } var r=g.apply(this,arguments); if(id==='parkplus') surf(); return r; };
-  /* Encart violet en fin de résultat, avant la carte d'Élodie */
-  var el=document.getElementById('parkElodieCard');
-  if(el&&!document.getElementById('v304Enc')){
-    var d=document.createElement('div'); d.id='v304Enc'; d.className='v304-enc';
-    d.innerHTML='<button type="button" class="v81-enc" onclick="v81Open(\'parcplus\')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Aller plus loin pour ton parc</b><small>Solutions contre tous les prédateurs, arbres et arbustes à planter, aménagement selon la surface</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button>';
-    el.before(d);
-  }
+  /* v446 : encart Premium géré par l'élément statique v442Enc dans le HTML */
   /* v316 : même encart violet sous « Enregistrer mes parcs » (#parks) */
   var sv=document.querySelector('#parks button.primary[onclick^="saveParksAndBack"]');
   if(sv&&!document.getElementById('v316Enc')){
