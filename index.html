@@ -6403,6 +6403,8 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
     <h3 class="park-tour-section-title">Pistes d'amélioration</h3>
     <div id="parkImproveList" class="park-improve-list"></div>
 
+    <div class="v304-enc" id="v442Enc"><button type="button" class="v81-enc" onclick="v81Open('parcplus')"><span class="v81-enc-ic">🛡️</span><span class="v81-enc-t"><b>Aller plus loin pour ton parc</b><small>Solutions contre les prédateurs, plantes, aménagement selon la surface</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button></div>
+
     <div id="parkElodieCard" style="display:none"></div>
 
     <div class="park-tour-result-actions">
@@ -6922,7 +6924,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=441;
+  var APP_V=442;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
