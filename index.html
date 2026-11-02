@@ -6924,7 +6924,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=447;
+  var APP_V=448;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11260,6 +11260,7 @@ renderStarterStep = function(){
       const total=items.reduce((s,i)=>s+i.v,0), bestM=items.reduce((p,q)=>q.v>p.v?q:p,items[0]);
       const a=monthStart(now.getFullYear(),now.getMonth()-pRange+1);
       const per=popotes.filter(h=>!v359NL(h)).map(h=>({l:h.name,v:sum(list,a,Date.now()+1,h.id)})).sort((p,q)=>q.v-p.v);
+      const _pT=per.reduce((s,x)=>s+x.v,0),_aT=sum(list,a,Date.now()+1,null),_unk=_aT-_pT; if(_unk>0) per.push({l:'Pondeuse inconnue',v:_unk});
       body.innerHTML=`${demoBar()}
         <div class="v81-seg2">${[3,6,12].map(r=>`<button type="button" class="${pRange===r?'on':''}" onclick="v81Ponte(${r})">${r} mois</button>`).join('')}</div>
         <div class="v81-chips"><button type="button" class="${pHen==null?'on':''}" onclick="v81PonteHen(null)">Toutes</button>${popotes.filter(h=>!v359NL(h)).map(h=>`<button type="button" class="${pHen===h.id?'on':''}" onclick="v81PonteHen('${h.id}')">${esc(h.name)}</button>`).join('')}</div>
