@@ -6924,7 +6924,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=449;
+  var APP_V=450;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11270,7 +11270,7 @@ renderStarterStep = function(){
         <div class="v81-tiles">
           <div><b>${total}</b><span>œufs sur ${pRange} mois</span></div>
           <div><b>${Math.round(total/pRange)}</b><span>par mois en moyenne</span></div>
-          <div><b>${per[0]&&per[0].v>0?esc(per[0].l):'—'}</b><span>meilleure pondeuse</span></div>
+          <div><b>${total?esc(bestM.full.split(' ')[0]):'—'}</b><span>meilleur mois</span></div>
         </div>
         ${pHen?'':`<h3 class="v81-h">Par Popote sur la période</h3>${hbars(per,'œufs')}`}
         ${!list.length&&!demo?`<div class="v81-empty">Aucune ponte enregistrée pour l’instant. Les graphiques se construisent au fil de tes enregistrements.<button type="button" onclick="v81Demo(true)">Voir un exemple</button></div>`:''}
