@@ -6924,7 +6924,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=458;
+  var APP_V=459;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14288,6 +14288,21 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
   var HIDE=['Faverolles allemande','Pékin froment','Sabelpoot citronnée','Sabelpoot'];
   try{ for(var i=breedCatalog.length-1;i>=0;i--){ if(HIDE.indexOf(breedCatalog[i].value)>=0) breedCatalog.splice(i,1); } }catch(e){}
   function ref(){ if(typeof refreshBreedSelectors==='function') try{refreshBreedSelectors();}catch(e){} }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ref); else ref();
+})();
+</script>
+<script id="v458-rename-breeds-js">/* v458 : noms de races raccourcis (Pékin, Orpington, Sabelpote, Padoue, Wyandotte, Soie) */
+(function(){
+  var R=[['Pékin blanche','Pékin'],['Orpington fauve','Orpington'],['Sabelpoot millefleurs','Sabelpote'],['Padoue argentée','Padoue'],['Wyandotte argentée','Wyandotte'],['Poule soie','Soie']];
+  try{
+    R.forEach(function(p){
+      var k=breedAliasMap[normalizeBreedLabel(p[0])];
+      if(k) breedAliasMap[normalizeBreedLabel(p[1])]=k;
+      breedCatalog.forEach(function(x){ if(x.value===p[0]){ x.value=p[1]; x.label=p[1]; } });
+      if(typeof popotes!=='undefined') popotes.forEach(function(h){ if(h&&h.breed===p[0]) h.breed=p[1]; });
+    });
+  }catch(e){}
+  function ref(){ try{ if(typeof refreshBreedSelectors==='function') refreshBreedSelectors(); if(typeof renderPopotes==='function') renderPopotes(); }catch(e){} }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ref); else ref();
 })();
 </script>
