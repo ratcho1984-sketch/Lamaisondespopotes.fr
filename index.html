@@ -6924,7 +6924,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=462;
+  var APP_V=463;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -9620,12 +9620,13 @@ const foodItems=[
   {status:'moderate',name:'Tomate mûre',text:'Uniquement la tomate bien mûre, sans les feuilles ni les tiges.'},
   {status:'moderate',name:'Banane',text:'Très sucrée, à donner en petite quantité.'},
   {status:'moderate',name:'Raisin',text:'Sucré, quelques grains suffisent.'},
-  {status:'moderate',name:'Agrumes',text:'Acides et souvent peu appréciés.'},
   {status:'moderate',name:'Vers de farine',text:'Très riches en protéines\u00A0: une friandise, surtout utile pendant la mue.'},
   {status:'moderate',name:'Haricots secs',text:'Uniquement bien cuits. Jamais crus.'},
   {status:'moderate',name:'Restes de viande et de poisson',text:'Cuits, sans os ni arêtes, sans sel ni sauce, et en petite quantité.'},
 
   {status:'no',name:'Avocat',text:'Toxique pour les oiseaux.'},
+  {status:'no',name:'Agrumes (orange, citron, pamplemousse)',text:'Trop acides : à ne pas donner.'},
+  {status:'no',name:'Peau de kiwi',text:'À ne pas donner. Si tu donnes du kiwi, retire toujours la peau.'},
   {status:'no',name:'Peau de banane',text:'À ne pas donner : dure à digérer et souvent traitée en surface. Si tu donnes de la banane, retire toujours la peau.'},
   {status:'no',name:'Chocolat',text:'Toxique.'},
   {status:'no',name:'Pomme de terre crue, épluchures et parties vertes',text:'Contiennent une substance toxique.'},
@@ -13039,7 +13040,7 @@ body[data-screen="home"] #testPremiumToggle{display:inline-flex}
     }
 
     D.heading('Ne jamais leur donner',RED);
-    D.text('Avocat, peau de banane, chocolat, pommes de terre crues et épluchures, feuilles et tiges de tomate, tomates vertes, haricots secs crus, rhubarbe, oignon, aliments moisis, plats cuisinés, salés, sucrés ou gras, café et thé.',{s:27,lh:38});
+    D.text('Avocat, agrumes (orange, citron, pamplemousse), peau de kiwi, peau de banane, chocolat, pommes de terre crues et épluchures, feuilles et tiges de tomate, tomates vertes, haricots secs crus, rhubarbe, oignon, aliments moisis, plats cuisinés, salés, sucrés ou gras, café et thé.',{s:27,lh:38});
 
     /* Urgence */
     D.need(230); D.y+=18;
