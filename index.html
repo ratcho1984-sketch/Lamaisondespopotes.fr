@@ -6924,7 +6924,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=457;
+  var APP_V=458;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14281,6 +14281,14 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
   function ref(){ if(typeof refreshBreedSelectors==='function') try{refreshBreedSelectors();}catch(e){} }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ref); else ref();
   setTimeout(ref,500);
+})();
+</script>
+<script id="v457-hide-breeds-js">/* v457 : races retirées de la liste de choix (les poules déjà créées gardent leur race) */
+(function(){
+  var HIDE=['Faverolles allemande','Pékin froment','Sabelpoot citronnée','Sabelpoot'];
+  try{ for(var i=breedCatalog.length-1;i>=0;i--){ if(HIDE.indexOf(breedCatalog[i].value)>=0) breedCatalog.splice(i,1); } }catch(e){}
+  function ref(){ if(typeof refreshBreedSelectors==='function') try{refreshBreedSelectors();}catch(e){} }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ref); else ref();
 })();
 </script>
 <style id="v237-premium-swap-css">
