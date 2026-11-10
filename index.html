@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=500;
+  var APP_V=501;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14445,6 +14445,38 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
   ];
   try{ if(typeof henBreedData==='undefined') return;
     L.forEach(function(b){ if(!henBreedData.some(function(x){return x.name===b.name;})){ b.small=b.size==='naine'; henBreedData.push(b); } });
+  }catch(e){}
+})();
+</script>
+<script id="v501-breed-corrections-js">
+(function(){
+  var C={
+    'Houdan':{familiarity:3,brood:false,description:"Ancienne race française à cinq doigts et à huppe, au plumage moucheté noir et blanc. Très attachante mais assez délicate. Médiocre couveuse, elle pond environ 150 œufs blancs par an. Sa huppe peut gêner sa vue : garde-la au sec."},
+    'Noire de Janzé':{brood:true,description:"Race française noire à reflets verts, très rustique et docile. Bonne pondeuse et bonne couveuse (environ 150 œufs blancs par an)."},
+    'Harco':{description:"Poule rousse de type hybride, annoncée comme très bonne pondeuse."},
+    'Hollandaise huppée':{flight:false,description:"Race néerlandaise à grosse huppe de plumes. Sa huppe peut limiter sa vue : garde-la au sec et surveille les bousculades."},
+    'Padoue':{brood:true,description:"Padoue (Padovana, Italie) : poule d'agrément à la ponte modeste (100 à 120 œufs blancs ou légèrement teintés par an), très couveuse. Sa huppe peut lui masquer les yeux : garde-la au sec."},
+    'Olivette':{description:"Poule connue pour ses œufs vert olive, une couleur qui varie d'une poule à l'autre."},
+    'Appenzelloise':{familiarity:2,cold:2,description:"Race suisse à huppe en pointe, active, qui supporte mal l'enfermement. Bonne fouilleuse, elle se perche volontiers : prévois un grand espace et une clôture haute. Environ 150 œufs blancs la première année."},
+    'Combatant anglais':{cold:3,heat:1,brood:true,description:"Race anglaise ancienne, petite et musclée, très active et bruyante, au caractère affirmé : à ne pas mélanger avec des poules douces. Ponte moyenne (environ 2 œufs par semaine, de couleur crème). Elle couve, supporte bien l'hiver mais moins la forte chaleur."},
+    'Lakenvelder':{description:"Race allemande (Westphalie) au plumage noir et blanc, élancée. Bonne pondeuse d'œufs blancs, peu couveuse. Vive et farouche, elle vole jusqu'à environ 2,5 m : prévois une clôture haute."},
+    'Hambourg':{cold:3,brood:false,description:"Race vive et très active, farouche, qui vole et se perche haut. Bonne pondeuse d'œufs blancs (120 à 225 par an), elle ne couve pas. Elle supporte bien le froid comme la chaleur : prévois un parcours spacieux et une clôture haute."},
+    'Sebright':{description:"Petite poule naine anglaise, active et vive. Elle pond peu (environ 140 à 160 œufs blanc crème par an) et vole facilement : prévois une clôture haute."},
+    'Cochin':{laying:1,cold:3,heat:1,description:"Grosse poule toute en plumes, très douce, facile à apprivoiser et excellente couveuse. Ses pattes emplumées craignent la boue et le gel. Rustique au froid, elle souffre de la chaleur : ombre et eau fraîche. Ponte modérée (environ 150 à 200 œufs bruns par an). Elle ne vole pas."},
+    'Chabo':{description:"Petite poule naine d'origine japonaise, aux pattes très courtes et à la queue portée haute. Très docile et bonne couveuse."},
+    'Serama':{cold:2,heat:2,description:"La plus petite race de poule du monde, originaire de Malaisie, avec une poule d'environ 425 g. Extrêmement familière."},
+    'Rhode Island':{brood:false,description:"Poule de taille moyenne, sélectionnée depuis les années 1940 pour la ponte. Son plumage plus clair l'aide à mieux supporter la chaleur. Peu encline à couver."},
+    'Coucou de Rennes':{familiarity:2,laying:3,cold:2,description:"Race bretonne au plumage coucou, élevée surtout pour sa viande. Selon un ancien rapport de concours : très bonne pondeuse, bonne couveuse et très bonne mère, mais un peu sauvage."},
+    'Gâtinaise':{cold:2,description:"Race française à deux fins (chair et œufs), rustique et de bonne taille, au plumage uniquement blanc. Elle s'adapte aussi bien à un parquet clos qu'au plein air. Ses œufs sont bruns en pratique."},
+    'Gauloise dorée':{heat:2,description:"Race française au caractère resté sauvage, qui a failli disparaître après 1945. Elle pond régulièrement au printemps et en été des œufs blancs d'au moins 60 g, et vole sur de longues distances : prévois de l'espace et une clôture haute."},
+    'Barnevelder':{description:"Race néerlandaise à deux fins, assez robuste, qui pond de gros œufs bruns, y compris en hiver. Une variété naine existe."},
+    'Bleue de France':{laying:3,cold:2,description:"Poule hybride (croisement Rhode-Island × Coucou), pas une race fixée : on ne peut pas la reproduire à l'identique. Plumage cendré, environ 290 œufs la première année, œufs beige foncé à roux."},
+    'Bielefelder':{laying:2,cold:2,description:"Race allemande autosexable, précoce et rustique, qui pond de gros œufs bruns (environ 200 par an). Une variété naine existe."},
+    'Sabelpoot':{laying:2,description:"Poule naine d'origine néerlandaise, aux pattes très emplumées. Plutôt amicale et calme, bonne couveuse, bonne fouilleuse qui abîme peu les plantes. Ponte respectable pour une naine, surtout en été, de très petits œufs blancs ou colorés. On la garde sur sol sec pour protéger les plumes de ses pattes."},
+    'Cream Legbar':{flight:false,description:"Race anglaise à crête à pois, qui pond des œufs bleu-vert (180 à 200 par an). Autosexable : on distingue les poussins mâles et femelles à la couleur de leur duvet."}
+  };
+  try{ if(typeof henBreedData==='undefined') return;
+    henBreedData.forEach(function(b){ var c=C[b.name]; if(c) Object.assign(b,c); });
   }catch(e){}
 })();
 </script>
