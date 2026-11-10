@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=483;
+  var APP_V=484;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -8437,7 +8437,7 @@ const healthAdviceData = {
   mange_moins: {
     title: "Mange ou boit moins",
     meaning: "ça accompagne beaucoup de situations : maladie, parasites, forte chaleur, stress, mue ou poule qui couve.",
-    check: "l'eau est-elle propre, fraîche et accessible ? La mangeoire est-elle pleine ? Le matin, touche doucement son jabot (à la base du cou) : il doit être vide et souple.",
+    check: "l'eau est-elle propre et accessible ? La mangeoire est-elle pleine ? Le matin, touche doucement son jabot (à la base du cou) : il doit être vide et souple.",
     vet: "si elle ne boit plus du tout, si elle ne mange plus depuis plus d'une journée, ou si son jabot reste dur ou gonflé le matin."
   },
   respiratoire: {
@@ -8883,7 +8883,7 @@ const parkTourQuestions=[
   {key:'mud', title:"Sol sec", question:"Le sol reste-t-il sec, sans zones boueuses permanentes\u00A0?"},
   {key:'scratch', title:"Zone pour gratter", question:"Ont-elles une zone pour gratter et chercher (feuilles, paille, terre, herbe)\u00A0?"},
   {key:'height', title:"Points en hauteur", question:"Ont-elles des points en hauteur dehors (souche, branche, perchoir)\u00A0?"},
-  {key:'water', title:"Eau propre et fraîche", question:"L'eau est-elle toujours propre et à l'ombre\u00A0?"},
+  {key:'water', title:"Eau propre", question:"L'eau est-elle toujours propre et à l'ombre\u00A0?"},
   {key:'fence', title:"Clôture et prédateurs", question:"La clôture protège-t-elle bien des prédateurs (renard, fouine), y compris par le dessous\u00A0?"},
   {key:'net', title:"Filet contre les rapaces", question:"As-tu un filet pour protéger tes poules des prédateurs aériens (rapaces)\u00A0?"}
 ];
@@ -8925,7 +8925,7 @@ const parkTourAdvice={
     idea:"des souches de bois, des grosses branches posées en travers ou des perchoirs bas suffisent."
   },
   water:{
-    title:"Eau propre et fraîche",
+    title:"Eau propre",
     why:"l'eau est indispensable, surtout par forte chaleur. Une eau chaude ou sale est moins bue.",
     idea:"place l'abreuvoir à l'ombre, surélève-le légèrement pour limiter les saletés, et change l'eau chaque jour."
   },
@@ -9572,7 +9572,7 @@ const foodBasicsData=[
   },
   {
     title:"L'eau",
-    text:"De l'eau propre et fraîche doit être disponible en permanence. Change-la chaque jour et nettoie régulièrement l'abreuvoir. Par forte chaleur, une poule boit beaucoup plus."
+    text:"De l'eau propre doit être disponible en permanence. Change-la chaque jour et nettoie régulièrement l'abreuvoir. Par forte chaleur, une poule boit beaucoup plus."
   },
   {
     title:"Attention aux friandises",
@@ -10271,7 +10271,7 @@ renderStarterStep = function(){
     {k:['grain','graine','cereale','granule','farine complete','aliment','melange','nourri','ration','quantite','combien','mangeoire','ble'],a:"La base, c’est un aliment complet pour poules pondeuses, en multi-céréales ou en granulés : il est formulé pour couvrir leurs besoins. Un mélange de graines seul ne suffit pas, il manque notamment de protéines : garde-le comme complément, par exemple quelques poignées à gratter l’après-midi.\n\nCôté quantité, on compte en repère environ 100 à 150 g d’aliment par poule et par jour, selon sa taille, la saison et ce qu’elle trouve dans le parc. Le plus simple est de laisser l’aliment complet à disposition dans une mangeoire. Restes et friandises : pas plus d’environ 10 % de la ration.",go:['foodguide','Alimentation']},
     {k:['grit','caillou','cailloux','gesier','silex'],a:"Les poules n’ont pas de dents : elles avalent de petits cailloux, le grit, qui restent dans leur gésier et les aident à broyer les aliments. Elles en trouvent souvent dans leur parcours. Sinon, propose-leur du grit à part, en libre-service.",go:['foodguide','Alimentation']},
     {k:['calcium','huitre','coquille','coquilles'],a:"Pour fabriquer la coquille de leurs œufs, les poules ont besoin de beaucoup de calcium. Laisse à disposition, à part, des coquilles d’huîtres broyées : chaque poule en prend selon ses besoins. Tu peux aussi donner les coquilles de tes œufs, à condition de bien les préparer : nettoyées, passées au four entre 120 et 150 °C pendant 10 à 15 minutes pour éliminer les bactéries, puis bien broyées pour qu’elles ne prennent pas l’habitude de picorer leurs propres œufs.",go:['foodguide','Alimentation']},
-    {k:['eau','boire','abreuvoir','boivent'],a:"De l’eau propre et fraîche doit être disponible en permanence. Change-la chaque jour et nettoie régulièrement l’abreuvoir. Par forte chaleur, une poule boit beaucoup plus : prévois plusieurs points d’eau à l’ombre, de préférence dans des coupelles en terre cuite plutôt qu’en plastique, qui fait chauffer l’eau.",go:['foodguide','Alimentation']},
+    {k:['eau','boire','abreuvoir','boivent'],a:"De l’eau propre doit être disponible en permanence. Change-la chaque jour et nettoie régulièrement l’abreuvoir. Par forte chaleur, une poule boit beaucoup plus : prévois plusieurs points d’eau à l’ombre, de préférence dans des coupelles en terre cuite plutôt qu’en plastique, qui fait chauffer l’eau.",go:['foodguide','Alimentation']},
     {k:['friandise','gourmandise','recompense'],a:"Les friandises font plaisir, mais avec mesure : pas plus d’environ 10 % de la ration. Trop de friandises peut entraîner du surpoids, une baisse de ponte et des poules qui boudent leur aliment complet. Une idée : suspends un légume de saison, ça les occupe longtemps.",go:['foodguide','Alimentation']}
   ];
   const QC_POULTRY=['grain','graine','cereale','granule','grit','calcium','friandise','abreuvoir','nourri','ration','poule','poulet','popote','coq','poussin','oeuf','pond','ponte','poulailler','pondoir','perchoir','plume','picage','mue','couv','mangeoire','abreuvoir','volaille','crete','jabot','renard','fouine','predateur','queen','nid','grit','coquille','poussiere','parc','picor','gratt','race','elodie','grain','graine','basse-cour','enclos'];
@@ -12966,7 +12966,7 @@ body[data-screen="home"] #testPremiumToggle{display:inline-flex}
     D.heading('Chaque matin');
     D.item('Ouvrir '+(d.coops>1?'les '+d.coops+' poulaillers':'le poulailler')+parkNames+' une fois qu’il fait jour.');
     D.item('Compter les poules : '+N+' en tout'+perPark+'.');
-    D.item('Vider, rincer et remplir '+(d.water>1?'les '+d.water+' abreuvoirs':'l’abreuvoir')+' avec de l’eau fraîche.');
+    D.item('Vider, rincer et remplir '+(d.water>1?'les '+d.water+' abreuvoirs':'l’abreuvoir')+' avec de l’eau propre.');
     D.item('Remplir '+(d.feeders>1?'les '+d.feeders+' mangeoires':'la mangeoire')+' : environ '+(grams>=1000?(grams/1000).toLocaleString('fr-FR')+' kg':grams+' g')+' d’aliment complet par jour pour '+pl(N,'poule','poules')+' (100 à 150 g par poule).'+(g('vacFood')?' L’aliment se trouve ici : '+g('vacFood')+'.':''));
     D.item('Ramasser les œufs et noter leur nombre dans le carnet de suivi.');
     D.item('Prendre une minute pour regarder chaque poule : elle marche, mange, boit et gratte comme d’habitude.');
@@ -12974,7 +12974,7 @@ body[data-screen="home"] #testPremiumToggle{display:inline-flex}
     D.heading('Dans la journée');
     if(summer) D.item('S’il fait chaud, vérifier l’eau en début d’après-midi : elle doit rester fraîche et à l’ombre. Une coupelle en terre cuite la garde plus fraîche qu’un abreuvoir en plastique.');
     if(winter) D.item('S’il gèle, casser la glace ou remettre de l’eau tiède dans les abreuvoirs, le matin et à midi.');
-    if(!summer&&!winter) D.item('Jeter un œil à l’eau : elle doit rester propre et fraîche.');
+    if(!summer&&!winter) D.item('Jeter un œil à l’eau : elle doit rester propre.');
     D.item('Vérifier qu’il reste des coquilles à disposition : coquilles d’huîtres, ou coquilles d’œufs nettoyées, cuites 10 à 15 min au four entre 120 et 150 °C, puis broyées.');
     D.item('Friandises en petite quantité seulement : un légume de saison, quelques restes de légumes.');
 
