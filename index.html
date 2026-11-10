@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=497;
+  var APP_V=498;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14421,6 +14421,29 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
 #foodguide .v482-card small{display:block;font-size:12px;color:#8a806b;margin-top:6px;line-height:1.35}
 #foodguide .v482-warn{background:#fff7e8;border-color:#f0dcb4}
 </style>
+<script id="v498-breed-cards-js">
+(function(){
+  var L=[
+    {name:'Harco',laying:3,familiarity:2,size:'moyenne',forage:2,heat:2,cold:2,flight:false,mud:false,brood:false,hybrid:true,description:"Poule rousse de type hybride, très bonne pondeuse et plutôt calme. Facile à vivre, elle convient bien pour débuter."},
+    {name:'Houdan',laying:2,familiarity:2,size:'moyenne',forage:2,heat:2,cold:2,flight:false,mud:false,brood:false,description:"Ancienne race française à huppe et à cinq doigts, au plumage moucheté noir et blanc. Active et sociable. Sa huppe peut gêner sa vue : garde-la au sec et surveille les bousculades."},
+    {name:'Hollandaise huppée',laying:2,familiarity:2,size:'moyenne',forage:2,heat:2,cold:2,flight:true,mud:false,brood:false,description:"Race néerlandaise à grosse huppe de plumes, légère et assez vive. Sa huppe limite sa vue : elle peut être craintive, et il vaut mieux lui offrir un abri sec."},
+    {name:'Padoue',laying:1,familiarity:2,size:'moyenne',forage:2,heat:2,cold:2,flight:false,mud:false,brood:false,description:"Race ancienne d'origine italienne, à la huppe en pompon très fournie. Plutôt une poule d'agrément, à la ponte modeste. Sa huppe demande un abri sec et un œil attentif."},
+    {name:'Olivette',laying:2,familiarity:2,size:'moyenne',forage:2,heat:2,cold:2,flight:false,mud:false,brood:false,original:'Œufs vert olive',description:"Poule connue pour ses œufs vert olive, une couleur qui varie d'une poule à l'autre. Plutôt calme, elle s'adapte bien à un poulailler familial."},
+    {name:'Appenzelloise',laying:2,familiarity:1,size:'moyenne',forage:3,heat:2,cold:3,flight:true,mud:false,brood:false,description:"Race suisse à huppe en pointe, vive et très active. Rustique, elle aime l'espace et vole facilement : prévois une clôture haute."},
+    {name:'Combatant anglais',laying:1,familiarity:1,size:'moyenne',forage:3,heat:2,cold:2,flight:true,mud:false,brood:false,description:"Race anglaise ancienne à la silhouette athlétique. Vive et de caractère affirmé, elle peut bousculer les autres poules. Elle pond modérément."},
+    {name:'Cochin',laying:1,familiarity:3,size:'grande',forage:1,heat:1,cold:3,flight:false,mud:true,brood:true,description:"Grosse poule toute en plumes, très douce et familière. Ses pattes emplumées craignent la boue et elle supporte mal la chaleur. Elle pond peu et couve volontiers."},
+    {name:'Chabo',laying:1,familiarity:3,size:'naine',forage:2,heat:2,cold:2,flight:false,mud:true,brood:true,description:"Petite poule naine d'origine japonaise, aux pattes très courtes et à la queue relevée. Douce et familière, adaptée à un petit jardin. Elle pond peu, de petits œufs."},
+    {name:'Hambourg',laying:3,familiarity:1,size:'moyenne',forage:3,heat:3,cold:2,flight:true,mud:false,brood:false,description:"Race vive et très active, bonne pondeuse d'œufs blancs. Elle vole facilement et reste plutôt farouche : prévois un parcours spacieux et une clôture haute."},
+    {name:'Lakenvelder',laying:2,familiarity:1,size:'moyenne',forage:3,heat:2,cold:2,flight:true,mud:false,brood:false,description:"Race néerlandaise au plumage reconnaissable : tête et queue noires, corps blanc. Active et plutôt vive, elle aime l'espace et vole bien."},
+    {name:'Noire de Janzé',laying:2,familiarity:2,size:'moyenne',forage:3,heat:2,cold:2,flight:false,mud:false,brood:false,description:"Race française au plumage noir à reflets. Rustique et active, elle apprécie un parcours où gratter et fouiller."},
+    {name:'Sebright',laying:1,familiarity:2,size:'naine',forage:2,heat:2,cold:2,flight:true,mud:false,brood:false,description:"Petite poule naine anglaise au plumage finement bordé de noir. Vive et gracieuse, adaptée à un petit jardin. Elle pond peu et vole bien : prévois une clôture haute."},
+    {name:'Serama',laying:1,familiarity:3,size:'naine',forage:1,heat:3,cold:1,flight:false,mud:false,brood:false,description:"La plus petite race de poule du monde, originaire de Malaisie. Très familière, mais frileuse : il lui faut un abri chaud et sec en hiver. Elle pond de très petits œufs."}
+  ];
+  try{ if(typeof henBreedData==='undefined') return;
+    L.forEach(function(b){ if(!henBreedData.some(function(x){return x.name===b.name;})){ b.small=b.size==='naine'; henBreedData.push(b); } });
+  }catch(e){}
+})();
+</script>
 <style id="v237-premium-swap-css">
 .v81-enc-b.v237-free{background:#2f7a4a!important;color:#fff!important;border-color:#2f7a4a!important}
 #extraInfoToggle .v237-tag{margin-left:8px;font-size:11.5px;font-weight:800;color:#8a5d12;background:#fff6e0;border:1.5px solid #f0d9a0;border-radius:99px;padding:2px 8px}
