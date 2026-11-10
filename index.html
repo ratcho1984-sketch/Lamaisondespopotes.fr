@@ -4866,16 +4866,6 @@ nav.bottom{z-index:90!important}
 .v58-fb-body p{margin:0;font-size:14.5px;line-height:1.55;color:#4a4a44}
 /* Alimentation — Selon la saison */
 #foodSeasonList{display:grid;gap:12px}
-.v58-fs{border-radius:18px;padding:14px 16px 16px;border:1px solid;box-shadow:0 2px 8px rgba(82,64,36,.05)}
-.v58-fs.spring{background:#edf6e6;border-color:#c9e0bd}
-.v58-fs.mue{background:#fdf1e3;border-color:#f0d3ad}
-.v58-fs.hot{background:#fff7dc;border-color:#f1dd9b}
-.v58-fs.cold{background:#eaf3fb;border-color:#c5dcef}
-.v58-fs-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-.v58-fs-ic{flex:0 0 50px;height:50px;border-radius:50%;display:grid;place-items:center;font-size:27px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.v58-fs-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#7a6a52}
-.v58-fs h3{margin:2px 0 0;font:800 18px/1.2 Georgia,serif;color:#1f3a2c}
-.v58-fs p{margin:0;font-size:14.5px;line-height:1.55;color:#4a4a44}
 #foodguide .food-queen-icon{display:none!important}
 #foodguide .food-queen-card p{font-size:14.5px!important;line-height:1.55!important;color:#4a4a44!important}
 /* Barre du bas : icônes illustrées */
@@ -6924,7 +6914,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=481;
+  var APP_V=482;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -9642,28 +9632,27 @@ const foodItems=[
 ];
 
 const foodSeasonData=[
-  {
-    title:'Au printemps, la ponte repart',
-    text:"Avec les jours qui rallongent, les poules reprennent la ponte : c'est le moment de bien les soutenir. Garde l'aliment complet comme base, et complète un peu en protéines, par exemple avec quelques vers de farine de temps en temps. Laisse à disposition des coquilles d'huîtres broyées, ou des coquilles d'œufs nettoyées, passées au four entre 120 et 150 °C pendant 10 à 15 minutes puis bien broyées. Si tu as de l'herbe fraîche, laisse-les y accéder : elles adorent la jeune herbe, les pissenlits et les petites bêtes du sol. Vas-y progressivement si elles en ont été privées tout l'hiver, et pense à protéger tes semis du potager."
-  },
-  {
-    title:'Pendant les fortes chaleurs',
-    text:"Assure-toi qu'elles ont de l'eau fraîche à l'ombre en permanence, idéalement à plusieurs endroits. Évite les abreuvoirs en plastique, qui font chauffer l'eau : préfère par exemple des coupelles en terre cuite, qui la gardent plus fraîche, et une eau moins chaude limite le développement des bactéries. Propose des fruits et légumes riches en eau (pastèque, concombre) en petite quantité, aux heures les plus fraîches. Évite les friandises très énergétiques comme le maïs."
-  },
-  {
-    title:'Pendant la mue (souvent en automne)',
-    text:"Pour refaire leurs plumes, les poules ont besoin de plus de protéines. Veille à leur donner un aliment complet de qualité. Une petite friandise protéinée, comme quelques vers de farine, peut les aider. Il est normal qu'elles pondent moins ou plus du tout pendant cette période."
-  },
-  {
-    title:'En hiver',
-    text:"Vérifie chaque jour que l'eau n'a pas gelé. Une petite poignée de grains le soir, avant qu'elles aillent se coucher, est souvent appréciée."
-  }
+  {k:'printemps',e:'🌱',t:'Printemps',
+   give:['Herbe tendre et pissenlits','Orties fanées (elles ne piquent plus)','Vers et insectes : laisse-les gratter la terre retournée'],
+   care:['La ponte repart : elle demande du calcium, mais aussi des protéines. Garde l’aliment complet comme base et laisse à disposition des coquilles d’huîtres broyées, ou des coquilles d’œufs nettoyées, passées au four entre 120 et 150 °C pendant 10 à 15 minutes pour éliminer les bactéries, puis bien broyées pour qu’elles ne prennent pas l’habitude de picorer leurs propres œufs.','Tu peux aussi leur donner régulièrement quelques vers de farine pour les aider, en petite quantité.','Si elles ont été privées d’herbe tout l’hiver, laisse-les y accéder progressivement.','Protège les jeunes pousses du potager, elles adorent !']},
+  {k:'ete',e:'☀️',t:'Été',
+   give:['Pastèque, melon, concombre, en petits morceaux','Courgettes crues','Salade, blettes'],
+   care:['Assure-toi qu’elles ont de l’eau fraîche à l’ombre en permanence, idéalement à plusieurs endroits.','Évite les abreuvoirs en plastique, qui font chauffer l’eau : préfère par exemple des coupelles en terre cuite, qui la gardent plus fraîche et limitent le développement des bactéries.','Donne les friandises tôt le matin ou le soir, jamais au soleil de midi.','Ramasse les restes : ils fermentent vite à la chaleur.','Évite les friandises très énergétiques comme le maïs.']},
+  {k:'automne',e:'🍂',t:'Automne',
+   give:['Potirons et courges, avec leurs graines','Courgettes (si encore disponibles)','Feuilles de chou, ou un chou suspendu à hauteur de bec pour les occuper'],
+   care:['C’est la saison de la mue : les plumes demandent des protéines, garde un aliment complet de qualité comme base.','Pour les aider, donne-leur des vers de farine, séchés ou vivants : un vrai coup de pouce, en petite quantité.','Il est normal qu’elles pondent moins ou plus du tout pendant cette période.']},
+  {k:'hiver',e:'❄️',t:'Hiver',
+   give:['Chou suspendu à hauteur de bec (ça occupe !)','Carottes et betteraves râpées','Un peu de blé, de maïs concassé, d’avoine ou de graines de tournesol en fin de journée : en petite quantité, et pas tous les jours'],
+   care:['Vérifie que l’eau ne gèle pas, matin et soir.','Pas de restes chauds, salés ou épicés.']}
 ];
+
+let foodSeasonSel=null;
 
 let activeFoodFilter=null;
 
 function openFoodGuide(){
   activeFoodFilter=null;
+  foodSeasonSel=null;
   const search=document.getElementById('foodSearch');
   if(search) search.value='';
   switchFoodTab('canGive');
@@ -9774,16 +9763,32 @@ function renderFoodList(){
   empty.classList.toggle('show',filtered.length===0);
 }
 
+function foodCurSeason(){
+  const m=new Date().getMonth();
+  return [2,3,4].includes(m)?'printemps':[5,6,7].includes(m)?'ete':[8,9,10].includes(m)?'automne':'hiver';
+}
+
+function setFoodSeason(k){
+  foodSeasonSel=k;
+  renderFoodSeason();
+}
+
 function renderFoodSeason(){
   const list=document.getElementById('foodSeasonList');
   if(!list) return;
-
-  list.innerHTML=foodSeasonData.map(item=>`
-    <div class="food-season-card">
-      <h3>${foodTextHtml(item.title)}</h3>
-      <p>${foodTextHtml(item.text)}</p>
+  const cur=foodCurSeason();
+  const s=foodSeasonData.find(x=>x.k===(foodSeasonSel||cur));
+  list.innerHTML=`
+    <div class="v482-seg">${foodSeasonData.map(x=>`<button type="button" class="${x.k===s.k?'on':''}" onclick="setFoodSeason('${x.k}')">${x.e} ${x.t}</button>`).join('')}</div>
+    <div class="food-season-card v482-card">
+      <h3>${s.e} À leur proposer ${s.k===cur?'en ce moment':'en '+s.t.toLowerCase()}</h3>
+      <ul>${s.give.map(g=>`<li>${foodTextHtml(g)}</li>`).join('')}</ul>
+      <small>Ce sont des friandises, en petite quantité : l’aliment complet reste la base.</small>
     </div>
-  `).join('');
+    <div class="food-season-card v482-card v482-warn">
+      <h3>⚠️ Les conseils de la saison</h3>
+      <ul>${s.care.map(g=>`<li>${foodTextHtml(g)}</li>`).join('')}</ul>
+    </div>`;
 }
 
 function foodTextHtml(text){
@@ -10434,15 +10439,6 @@ renderStarterStep = function(){
           <span class="v58-fb-arrow" aria-hidden="true">›</span>
         </button>
         ${rest?`<div class="v58-fb-body"><p>${foodTextHtml(rest)}</p></div>`:''}
-      </div>`;}).join('');
-  };
-  const FS_STYLE=[{ic:'🌱',tag:'Printemps',cls:'spring'},{ic:'☀️',tag:'Été',cls:'hot'},{ic:'🍂',tag:'Automne',cls:'mue'},{ic:'❄️',tag:'Hiver',cls:'cold'}];
-  window.renderFoodSeason=function(){
-    const list=document.getElementById('foodSeasonList'); if(!list) return;
-    list.innerHTML=foodSeasonData.map((it,i)=>{const s=FS_STYLE[i]||FS_STYLE[0];
-      return `<div class="v58-fs ${s.cls}">
-        <div class="v58-fs-head"><span class="v58-fs-ic">${s.ic}</span><div><span class="v58-fs-tag">${s.tag}</span><h3>${foodTextHtml(it.title)}</h3></div></div>
-        <p>${foodTextHtml(it.text)}</p>
       </div>`;}).join('');
   };
   try{ renderFoodBasics(); renderFoodSeason(); }catch(e){}
@@ -11512,12 +11508,6 @@ renderStarterStep = function(){
     action(key){ v81Open('guide',key||'integration'); }};
 
   /* ---------- 6. Alimentation : calendrier et rappels ---------- */
-  const SEASONS=[
-    {k:'printemps',e:'🌱',t:'Printemps',give:['Herbe tendre et pissenlits','Orties fanées (elles ne piquent plus)','Vers et insectes : laisse-les gratter la terre retournée'],care:['La ponte repart : elle demande du calcium, mais aussi des protéines. Garde à disposition des coquilles d’huîtres broyées, ou des coquilles d’œufs nettoyées, passées au four entre 120 et 150 °C pendant 10 à 15 minutes pour éliminer les bactéries, puis bien broyées pour qu’elles ne prennent pas l’habitude de picorer leurs propres œufs.','Tu peux aussi leur donner régulièrement quelques vers de farine pour les aider, en petite quantité.','Protège les jeunes pousses du potager, elles adorent !']},
-    {k:'ete',e:'☀️',t:'Été',give:['Pastèque, melon, concombre, en petits morceaux','Courgettes crues','Salade, blettes'],care:['Donne les friandises tôt le matin ou le soir, jamais au soleil de midi.','Ramasse les restes : ils fermentent vite à la chaleur.','Eau fraîche renouvelée, à l’ombre.','Évite les abreuvoirs en plastique, qui font chauffer l’eau : préfère par exemple des coupelles en terre cuite, qui la gardent plus fraîche et limitent le développement des bactéries.']},
-    {k:'automne',e:'🍂',t:'Automne',give:['Potirons et courges, avec leurs graines','Courgettes (si encore disponibles)','Feuilles de chou, ou un chou suspendu à hauteur de bec pour les occuper'],care:['C’est la saison de la mue : les plumes demandent des protéines, garde l’aliment complet comme base.','Pour les aider, donne-leur des vers de farine, séchés ou vivants : un vrai coup de pouce, en petite quantité.']},
-    {k:'hiver',e:'❄️',t:'Hiver',give:['Chou suspendu à hauteur de bec (ça occupe !)','Carottes et betteraves râpées','Un peu de blé, de maïs concassé, d’avoine ou de graines de tournesol en fin de journée : en petite quantité, et pas tous les jours'],care:['Vérifie que l’eau ne gèle pas, matin et soir.','Pas de restes chauds, salés ou épicés.']}
-  ];
   const RKEY='maisonPopotesRappels';
   const REMINDERS=[
     {k:'eau',e:'💧',t:'Nettoyer l’abreuvoir',every:1,why:'Une eau propre est plus bue.'},
@@ -11526,22 +11516,15 @@ renderStarterStep = function(){
     {k:'verdure',e:'🥬',t:'Verdure',every:2,why:'Si le parc manque d’herbe, un peu de verdure fraîche.'},
     {k:'mangeoire',e:'🥣',t:'Vider et nettoyer la mangeoire',every:7,why:'Évite l’humidité et les moisissures, surtout en cas de pluie.'}
   ];
-  const curSeason=()=>{ const m=new Date().getMonth(); return [2,3,4].includes(m)?'printemps':[5,6,7].includes(m)?'ete':[8,9,10].includes(m)?'automne':'hiver'; };
-  let foodSeason=null;
-  F.food={icon:'🗓️',title:'Calendrier alimentaire',
-    pitch:'Quoi leur donner saison par saison, et des rappels pour ne rien oublier.',
-    bullets:['Le calendrier des friandises de saison','Les points d’attention du moment','Rappels : abreuvoir, coquilles, grit, verdure'],
+  F.food={icon:'🗓️',title:'Mes rappels alimentaires',
+    pitch:'Des rappels pour ne rien oublier : abreuvoir, coquilles, grit, verdure, mangeoire.',
+    bullets:['Abreuvoir, coquilles, grit, verdure, mangeoire','Tu notes « Fait » et tu vois quand c’est le moment','Les conseils de saison sont dans « Selon la saison »'],
     render(body){
-      const s=SEASONS.find(x=>x.k===(foodSeason||curSeason())); const done=load(RKEY,{}); const t0=today0().getTime();
-      body.innerHTML=`<div class="v81-seg2 v81-seg4">${SEASONS.map(x=>`<button type="button" class="${x.k===s.k?'on':''}" onclick="v81FoodSeason('${x.k}')">${x.e} ${x.t}</button>`).join('')}</div>
-        <div class="v81-card"><h3>${s.e} À leur proposer ${s.k===curSeason()?'en ce moment':'en '+s.t.toLowerCase()}</h3><ul>${s.give.map(g=>`<li>${esc(g)}</li>`).join('')}</ul><small class="v81-note">Ce sont des friandises, en petite quantité : l’aliment complet reste la base.</small></div>
-        <div class="v81-card v81-warn"><h3>⚠️ Points d’attention</h3><ul>${s.care.map(g=>`<li>${esc(g)}</li>`).join('')}</ul></div>
-        <h3 class="v81-h">Mes rappels</h3>
-        <div class="v81-rems">${REMINDERS.map(r=>{ const last=done[r.k]; const ago=last!=null?Math.round((t0-new Date(last).setHours(0,0,0,0))/DAY):null; const due=ago==null||ago>=r.every;
+      const done=load(RKEY,{}); const t0=today0().getTime();
+      body.innerHTML=`<div class="v81-rems">${REMINDERS.map(r=>{ const last=done[r.k]; const ago=last!=null?Math.round((t0-new Date(last).setHours(0,0,0,0))/DAY):null; const due=ago==null||ago>=r.every;
           return `<div class="v81-rem${due?' due':''}"><span class="v81-remic">${r.e}</span><div><b>${esc(r.t)}</b><small>${esc(r.why)}</small><em>${ago==null?'Jamais noté':ago===0?'Fait aujourd’hui ✓':'Fait il y a '+ago+' jour'+(ago>1?'s':'')} · tous les ${r.every===1?'jours':r.every+' jours'}</em></div><button type="button" onclick="v81RemDone('${r.k}')">${ago===0?'✓':'Fait'}</button></div>`; }).join('')}</div>
         <p class="v81-disc">Dans l’application finale, ces rappels pourront t’envoyer une notification. Ces repères sont généraux : en cas de doute sur la santé de tes poules, demande l’avis d’un vétérinaire.</p>`;
     }};
-  window.v81FoodSeason=k=>{ foodSeason=k; rerender(); };
   window.v81RemDone=k=>{ const d=load(RKEY,{}); d[k]=Date.now(); save(RKEY,d); rerender(); };
 
   F.saison={icon:'🍂',title:'Alimentation selon la saison',
@@ -11910,7 +11893,7 @@ const adv=document.querySelector('#advice .grid');
       adv.insertAdjacentHTML('afterend',`<div id="v81Guides"><h3 class="v81-h">Guides approfondis</h3>
         ${Object.entries(GUIDES).map(([k,g])=>`<button type="button" class="v81-guide" onclick="v81Open('guide','${k}')"><span class="v81-gic">${window.GUIDE_BUBBLE_IMGS&&window.GUIDE_BUBBLE_IMGS[k]?'<img src="'+window.GUIDE_BUBBLE_IMGS[k]+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover">':g.icon}</span><span><b>${esc(g.title)}</b><small>${esc(g.sub)}${g.allFree?' · <u>gratuit</u>':'<span class="v81-free-tag"> · <u>début gratuit</u></span>'}</small></span><span class="v81-chev">›</span></button>`).join('')}</div>`);
     }
-    mount('#foodguide .food-disclaimer',{k:'food',pos:'beforebegin'},encart('food','Calendrier alimentaire & rappels','Quoi donner saison par saison, et rappels grit, coquilles, verdure'));
+    mount('#foodguide .food-disclaimer',{k:'food',pos:'beforebegin'},encart('food','Mes rappels alimentaires','Abreuvoir, coquilles, grit, verdure : note « Fait » pour ne rien oublier'));
     mount('#parktour .park-tour-result-actions',{k:'pt',pos:'beforebegin'},`<div class="pt-elodie-offer" style="margin:16px 0">${elodieOffer()}</div>`);
     mount('#coopdetail .project-btn',{k:'coop',pos:'afterend'},encart('plans','Liste d’achats et plan à télécharger','Quantités à cocher en magasin, plan imprimable'));
     mount('#weather .premium-weather',{k:'wx',pos:'afterend'},encart('meteo','Alertes selon tes Popotes','Selon leur race et ton installation'));
@@ -11920,7 +11903,7 @@ const adv=document.querySelector('#advice .grid');
   }
 
   /* ---------- Page Premium : liste des services + mode test ---------- */
-  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['parcplus','Aller plus loin pour ton parc : prédateurs, plantes, surface'],['bilan','Bilan du mois'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements et rappel quotidien (vitamines, vermifuge, médical)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['food','Calendrier alimentaire et rappels'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon tes Popotes'],['compare','Comparateur de races']];
+  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['parcplus','Aller plus loin pour ton parc : prédateurs, plantes, surface'],['bilan','Bilan du mois'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements et rappel quotidien (vitamines, vermifuge, médical)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['food','Rappels alimentaires'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon tes Popotes'],['compare','Comparateur de races']];
   function renderPremiumPage(){
     const list=document.querySelector('#premium .pm-list');
     if(list) list.innerHTML=PM_LIST.map(([k,t])=>`<button type="button" class="pm-item v81-pmi" onclick="v81Open('${k}')"><span class="pm-ic">${F[k].icon}</span><div><b>${esc(t)}</b><small>${esc(F[k].pitch)}</small></div><span class="v81-chev">›</span></button>`).join('');
@@ -14455,6 +14438,17 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
   }catch(e){}
 })();
 </script>
+<style id="v482-season-css">
+#foodguide .v482-seg{display:flex;gap:6px;background:#f3ede0;padding:4px;border-radius:14px;margin-bottom:12px}
+#foodguide .v482-seg button{flex:1;min-width:0;border:0;background:none;padding:9px 4px;border-radius:10px;font:700 12px system-ui,sans-serif;color:#7a6f5a;cursor:pointer;white-space:nowrap}
+#foodguide .v482-seg button.on{background:#fff;color:#2f5d3a;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+#foodguide .v482-card{margin:10px 0}
+#foodguide .v482-card h3{font-size:15.5px;margin:0 0 6px;color:#2f5d3a}
+#foodguide .v482-card ul{margin:0;padding-left:20px;font-size:14px;line-height:1.5;color:#4a463f}
+#foodguide .v482-card li{margin-bottom:4px}
+#foodguide .v482-card small{display:block;font-size:12px;color:#8a806b;margin-top:6px;line-height:1.35}
+#foodguide .v482-warn{background:#fff7e8;border-color:#f0dcb4}
+</style>
 <style id="v237-premium-swap-css">
 .v81-enc-b.v237-free{background:#2f7a4a!important;color:#fff!important;border-color:#2f7a4a!important}
 #extraInfoToggle .v237-tag{margin-left:8px;font-size:11.5px;font-weight:800;color:#8a5d12;background:#fff6e0;border:1.5px solid #f0d9a0;border-radius:99px;padding:2px 8px}
