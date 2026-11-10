@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=485;
+  var APP_V=486;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -9556,7 +9556,7 @@ function restartHenChooser(){
 const foodBasicsData=[
   {
     title:"L'aliment complet, la base",
-    text:"Un aliment complet pour poules pondeuses (multi-céréales ou en granulés) est formulé pour couvrir leurs besoins. Il doit constituer l'essentiel de leur alimentation. Les restes et friandises ne devraient rester qu'un petit complément\u00A0: on conseille souvent de ne pas dépasser 10 % de la ration. Chaque groupe est différent (poules qui pondent, poules plus âgées, poules d'ornement) : pour une nourriture adaptée à tes poules, rapproche-toi d'un professionnel de l'alimentation."
+    text:"Un aliment complet pour poules pondeuses (multi-céréales ou en granulés) est formulé pour couvrir leurs besoins. Il doit constituer l'essentiel de leur alimentation. Les restes et friandises ne devraient rester qu'un petit complément\u00A0: on conseille souvent de ne pas dépasser 10 % de la ration.\n\nSi tu as des poules plus âgées ou des poules d'ornement, une nourriture adaptée est nécessaire pour elles aussi. Rapproche-toi d'un professionnel de l'alimentation."
   },
   {
     title:"Les graines seules, ça ne suffit pas",
@@ -9787,7 +9787,7 @@ function foodTextHtml(text){
   return escapeHtml(text)
     .replace(/ :/g,'\u00A0:')
     .replace(/ \?/g,'\u00A0?')
-    .replace(/ !/g,'\u00A0!');
+    .replace(/ !/g,'\u00A0!').replace(/\n/g,'<br>');
 }
 
 </script>
