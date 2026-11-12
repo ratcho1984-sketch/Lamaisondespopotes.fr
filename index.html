@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=501;
+  var APP_V=502;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14478,6 +14478,71 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
   try{ if(typeof henBreedData==='undefined') return;
     henBreedData.forEach(function(b){ var c=C[b.name]; if(c) Object.assign(b,c); });
   }catch(e){}
+})();
+</script>
+<style id="v502-memo-css">
+#v502MemoBtn{display:flex;align-items:center;gap:10px;width:calc(100% - 28px);margin:6px 14px 4px;padding:9px 13px;border:1px solid #cfe0d3;border-radius:14px;background:#f1f8f2;color:#245d3d;font:inherit;font-weight:800;font-size:13.5px;text-align:left}
+#v502MemoBtn small{display:block;font-weight:600;font-size:11.5px;color:#5b6b5f;margin-top:1px}
+#v502MemoBtn .v502-ic{font-size:20px}
+#v502MemoBtn .v502-n{margin-left:auto;background:#2f7a4a;color:#fff;border-radius:999px;font-size:11.5px;padding:2px 8px;font-weight:800}
+#memo .v502-card{margin:0 14px 12px;background:#fffdf8;border:1px solid #eadfcc;border-radius:18px;padding:13px 14px}
+#memo .v502-card p{margin:0 0 10px;font-size:13.5px;line-height:1.45;color:#4b463a}
+#memo textarea{width:100%;min-height:110px;border:1px solid #d9ceb8;border-radius:12px;padding:10px;font:inherit;font-size:14.5px;background:#fff;resize:vertical;box-sizing:border-box}
+#memo .v502-save{width:100%;margin-top:10px;border:0;border-radius:14px;background:#2f7a4a;color:#fff;padding:13px;font-weight:850;font-size:15px}
+#memo .v502-item{border-top:1px solid #efe6d3;padding:10px 0}
+#memo .v502-item:first-child{border-top:0;padding-top:0}
+#memo .v502-date{font-size:11.5px;font-weight:800;color:#2f7a4a}
+#memo .v502-txt{white-space:pre-wrap;font-size:14px;line-height:1.45;margin:3px 0 6px;color:#2e2a22}
+#memo .v502-del{border:0;background:transparent;color:#a04b3a;font-size:12.5px;font-weight:700;padding:2px 0}
+#memo .v502-empty{color:#8a857a;font-size:13.5px}
+</style>
+<script id="v502-memo-js">
+(function(){
+  var KEY='maisonPopotesMemo';
+  function load(){ try{ var a=JSON.parse(localStorage.getItem(KEY)||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+  function save(a){ try{ localStorage.setItem(KEY,JSON.stringify(a)); }catch(e){ try{toast('Impossible d’enregistrer ici');}catch(_){} } }
+  function esc(t){ return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function fmt(ts){ try{ var d=new Date(ts); return d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})+' à '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); }catch(e){ return ''; } }
+  function build(){
+    if(document.getElementById('memo')) return;
+    var ref=document.getElementById('lay'); if(!ref||!ref.parentNode) return;
+    var sec=document.createElement('section'); sec.className='screen'; sec.id='memo';
+    sec.innerHTML='<div class="top"><button class="back" onclick="go(\'home\')">‹</button><div class="title">Mémo du poulailler</div></div>'
+      +'<div class="v502-card"><p>Note ici ce que tu viens de constater ou une info importante à retenir (par exemple des fientes inhabituelles, une poule qui boite, un grillage abîmé). La date et l’heure sont ajoutées toutes seules.</p>'
+      +'<textarea id="v502Text" placeholder="Ce que j’ai remarqué aujourd’hui…"></textarea>'
+      +'<button type="button" class="v502-save" onclick="v502Add()">Enregistrer ce mémo</button></div>'
+      +'<div class="v502-card"><p style="font-weight:800;margin-bottom:8px">Mes mémos</p><div id="v502List"></div></div>'
+      +'<div class="v502-card" style="background:#fff3ea;border-color:#e8c7a8"><p style="margin:0"><b>Un mémo ne remplace pas un vétérinaire.</b> Si une poule a un comportement inhabituel, appelle ton vétérinaire sans attendre. Une poule immobile, en boule ou debout, c’est le vétérinaire tout de suite.</p></div>'
+      +'<div style="height:90px"></div>';
+    ref.parentNode.insertBefore(sec,ref);
+  }
+  function render(){
+    var l=document.getElementById('v502List'); if(!l) return;
+    var a=load();
+    l.innerHTML=a.length?a.map(function(m){ return '<div class="v502-item"><div class="v502-date">'+esc(fmt(m.t))+'</div><div class="v502-txt">'+esc(m.x)+'</div><button type="button" class="v502-del" onclick="v502Del('+m.t+')">Supprimer</button></div>'; }).join(''):'<div class="v502-empty">Aucun mémo pour l’instant.</div>';
+    var n=document.getElementById('v502Count'); if(n){ n.textContent=a.length; n.style.display=a.length?'':'none'; }
+  }
+  window.v502Add=function(){
+    var t=document.getElementById('v502Text'); var v=(t&&t.value||'').trim();
+    if(!v){ try{toast('Écris d’abord ton mémo');}catch(e){} return; }
+    var a=load(); a.unshift({t:Date.now(),x:v}); save(a); t.value=''; render();
+    try{toast('Mémo enregistré ✓');}catch(e){}
+  };
+  window.v502Del=async function(ts){
+    var ok=true; try{ if(window.v58Confirm) ok=await window.v58Confirm('Supprimer ce mémo ?','Il sera supprimé définitivement.','Supprimer'); }catch(e){}
+    if(!ok) return; save(load().filter(function(m){return m.t!==ts;})); render();
+  };
+  window.v502Open=function(){ build(); render(); go('memo'); };
+  function addBtn(){
+    if(document.getElementById('v502MemoBtn')) return;
+    var st=document.querySelector('#home .h58-stats'); if(!st||!st.parentNode) return;
+    var b=document.createElement('button'); b.id='v502MemoBtn'; b.type='button';
+    b.innerHTML='<span class="v502-ic">📝</span><span>Mémo du poulailler<small>Une info à ne pas oublier</small></span><span class="v502-n" id="v502Count" style="display:none">0</span>';
+    b.onclick=function(){ window.v502Open(); };
+    st.parentNode.insertBefore(b,st.nextSibling);
+  }
+  function init(){ build(); addBtn(); render(); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
 <style id="v237-premium-swap-css">
