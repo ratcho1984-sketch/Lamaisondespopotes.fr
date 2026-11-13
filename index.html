@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=502;
+  var APP_V=503;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14507,7 +14507,7 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
     if(document.getElementById('memo')) return;
     var ref=document.getElementById('lay'); if(!ref||!ref.parentNode) return;
     var sec=document.createElement('section'); sec.className='screen'; sec.id='memo';
-    sec.innerHTML='<div class="top"><button class="back" onclick="go(\'home\')">‹</button><div class="title">Mémo du poulailler</div></div>'
+    sec.innerHTML='<div class="top"><button class="back" onclick="go(\'home\')">‹</button><div class="title">Remarques journalières</div></div>'
       +'<div class="v502-card"><p>Note ici ce que tu viens de constater ou une info importante à retenir (par exemple des fientes inhabituelles, une poule qui boite, un grillage abîmé). La date et l’heure sont ajoutées toutes seules.</p>'
       +'<textarea id="v502Text" placeholder="Ce que j’ai remarqué aujourd’hui…"></textarea>'
       +'<button type="button" class="v502-save" onclick="v502Add()">Enregistrer ce mémo</button></div>'
@@ -14537,7 +14537,7 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
     if(document.getElementById('v502MemoBtn')) return;
     var st=document.querySelector('#home .h58-stats'); if(!st||!st.parentNode) return;
     var b=document.createElement('button'); b.id='v502MemoBtn'; b.type='button';
-    b.innerHTML='<span class="v502-ic">📝</span><span>Mémo du poulailler<small>Une info à ne pas oublier</small></span><span class="v502-n" id="v502Count" style="display:none">0</span>';
+    b.innerHTML='<span class="v502-ic">📝</span><span>Remarques journalières<small>Un détail inhabituel</small></span><span class="v502-n" id="v502Count" style="display:none">0</span>';
     b.onclick=function(){ window.v502Open(); };
     st.parentNode.insertBefore(b,st.nextSibling);
   }
