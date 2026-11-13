@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=503;
+  var APP_V=504;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14508,7 +14508,7 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
     var ref=document.getElementById('lay'); if(!ref||!ref.parentNode) return;
     var sec=document.createElement('section'); sec.className='screen'; sec.id='memo';
     sec.innerHTML='<div class="top"><button class="back" onclick="go(\'home\')">‹</button><div class="title">Remarques journalières</div></div>'
-      +'<div class="v502-card"><p>Note ici ce que tu viens de constater ou une info importante à retenir (par exemple des fientes inhabituelles, une poule qui boite, un grillage abîmé). La date et l’heure sont ajoutées toutes seules.</p>'
+      +'<div class="v502-card"><p>Note ici ce que tu viens de constater ou une information importante à retenir (par exemple, des fientes inhabituelles, un œuf hors pondoir, la porte automatique en panne, humidité dans le poulailler…)</p>'
       +'<textarea id="v502Text" placeholder="Ce que j’ai remarqué aujourd’hui…"></textarea>'
       +'<button type="button" class="v502-save" onclick="v502Add()">Enregistrer ce mémo</button></div>'
       +'<div class="v502-card"><p style="font-weight:800;margin-bottom:8px">Mes mémos</p><div id="v502List"></div></div>'
