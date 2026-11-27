@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=505;
+  var APP_V=506;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14566,7 +14566,7 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
     'Poule rousse hybride':{description:"Hybride de ponte très productive (environ 200 œufs par an, davantage les premières années), souvent très docile et familière. En contrepartie, elle s'épuise plus vite et peut avoir des problèmes de ponte avec l'âge."},
     'Harco':{description:"Souche hybride de ponte (pas une race au sens du standard), proche de ce qu'on appelle couramment la poule rousse. Très productive sur 18 à 24 mois environ, mais elle ne couve jamais."},
     'Hollandaise huppée':{description:"Race néerlandaise à grosse huppe de plumes. Sa huppe peut limiter sa vue : garde les lieux secs et protège-la des bousculades."},
-    'Olivette':{description:"Poule hybride (type Olive Egger), pas une race fixée, qui pond des œufs vert olive dont la nuance varie. Environ 150 à 200 œufs par an, parfois couveuse."}
+    'Olivette':{description:"Poule hybride (type Olive Egger), pas une race pure : elle est issue d'un croisement, souvent entre une Araucana et une Marans, parfois avec une Cream Legbar. Elle est surtout recherchée pour ses œufs vert olive, dont la nuance varie. Environ 150 à 200 œufs par an, parfois couveuse."}
   };
   function ap(){ if(typeof henBreedData==='undefined') return; henBreedData.forEach(function(b){var c=C[b.name]; if(c) Object.assign(b,c);}); }
   ap();
