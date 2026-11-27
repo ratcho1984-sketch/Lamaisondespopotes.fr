@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=513;
+  var APP_V=514;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11318,8 +11318,8 @@ renderStarterStep = function(){
     action(){ go('addpopote'); }};
   let jHen=null, jFilter=null;
   F.journal={icon:'📔',title:'Journal de tes Popotes',
-    pitch:'Note la vie de chaque poule : observations, mue, couvaison, petits moments, avec photos.',
-    bullets:['Un journal daté pour chaque Popote','Photos et types de notes (mue, santé, comportement…)','Très utile pour repérer un changement, ou en parler à un vétérinaire'],
+    pitch:'Note la vie de chaque poule : observations, mue, couvaison, petits moments avec photo.',
+    bullets:['Un journal daté pour chaque Popote','Couleur des œufs, photo si œuf inhabituel','Ponte en un coup d’œil, diverses notes sur le comportement et autres points de santé','Très utile pour repérer un changement, ou en parler à un vétérinaire','Journal personnalisé'],
     render(body){
       if(!popotes.length){ body.innerHTML='<div class="v81-empty">Ajoute d’abord une Popote pour commencer son journal.</div>'; return; }
       if(!popotes.some(h=>h.id===jHen)) jHen=popotes[0].id;
