@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=511;
+  var APP_V=512;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11296,7 +11296,7 @@ renderStarterStep = function(){
         </div>
         ${!list.length&&!demo?`<div class="v81-empty">Aucune ponte enregistrée pour l’instant. Le graphique se construit au fil de tes enregistrements.<button type="button" onclick="v81Demo(true)">Voir un exemple</button></div>`:''}
         <div class="v81-queen"><span class="v232-elo v268-loupe-c">🔍</span><p><b>Le regard d’Élodie</b>Une ponte qui varie d’une semaine à l’autre est normale. Ce qui mérite ton attention, c’est un arrêt brutal accompagné d’autres changements chez une poule.</p></div>
-        <div class="v81-card" style="background:#f1ebfa;border:1.5px solid #cdbbe8;display:block"><b style="color:#5a3a8c">♛ Envie d’aller plus loin ?</b><small style="display:block;margin:4px 0 8px;color:#5a3a8c">Avec Premium, tu peux suivre la ponte sur plusieurs mois, voire plusieurs années, et comparer tes poules entre elles. C’est là que se voient les vrais rythmes.</small><button type="button" class="v81-link" style="color:#5a3a8c" onclick="v81Lock('pontePlus')">Découvrir ce que Premium ajoute ›</button></div>`;
+        <div style="margin:14px 0 4px"><button type="button" class="v81-enc" onclick="v81Open('pontePlus')"><span class="v81-enc-ic"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="13" width="4.5" height="8" rx="1.2" fill="#e8843c"/><rect x="9.8" y="7" width="4.5" height="14" rx="1.2" fill="#6b3fa0"/><rect x="16.5" y="3" width="4.5" height="18" rx="1.2" fill="#3a9a5c"/></svg></span><span class="v81-enc-t"><b>Aller plus loin dans le suivi</b><small>Suivre la ponte sur plusieurs mois et années. Comparer tes poules entre elles, c’est là que se voient les vrais rythmes ! Exporter tout ton historique pour ton vétérinaire.</small></span><span class="v81-enc-b"><span class="v81-off">♛ Premium</span><span class="v81-on">♛ Ouvrir ›</span></span></button></div>`;
     }};
   window.v81Ponte=r=>{ pRange=r; rerender(); };
   window.v81PonteHen=id=>{ pHen=id; rerender(); };
