@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=506;
+  var APP_V=507;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11245,7 +11245,7 @@ renderStarterStep = function(){
 
   /* ---------- 2. Ponte : graphiques ---------- */
   let pRange=6, pHen=null;
-  F.ponte={icon:'📈',title:'Évolution de la ponte',free:true,
+  F.pontePlus={icon:'📈',title:'Évolution de la ponte',free:false,
     pitch:'Suis la ponte mois par mois, poule par poule, au fil des saisons.',
     bullets:['Graphiques sur 3, 6 ou 12 mois','Le détail de chaque Popote','Les saisons en repère, et l’export de ton historique'],
     render(body){
@@ -11270,6 +11270,30 @@ renderStarterStep = function(){
         ${!list.length&&!demo?`<div class="v81-empty">Aucune ponte enregistrée pour l’instant. Les graphiques se construisent au fil de tes enregistrements.<button type="button" onclick="v81Demo(true)">Voir un exemple</button></div>`:''}
         <div class="v81-queen"><span class="v232-elo v268-loupe-c">🔍</span><p><b>Le regard d’Élodie</b>Une courbe qui baisse en automne et en hiver, c’est le rythme habituel de beaucoup de poules. Ce qui mérite ton attention, c’est un arrêt brutal chez une seule poule, surtout avec d’autres changements de comportement.</p></div>
         <button type="button" class="v81-link" onclick="v81Export()">📥 Exporter tout mon historique (tableur)</button>`;
+    }};
+  /* v507 : gratuit = dernier mois seulement, sans comparaison ; Premium = page complète */
+  F.ponte={icon:'📈',title:'Évolution de la ponte',free:true,
+    pitch:F.pontePlus.pitch,bullets:F.pontePlus.bullets,
+    render(body,arg){
+      if(isP()){ F.pontePlus.render(body,arg); return; }
+      const list=recs(), DAYMS=86400000, end=Date.now()+1, items=[];
+      const t0=new Date(); t0.setHours(0,0,0,0); const today=t0.getTime();
+      for(let i=3;i>=0;i--){
+        const a=today-(i*7+6)*DAYMS, b=today-(i*7-1)*DAYMS, d=new Date(a);
+        items.push({l:d.getDate()+'/'+(d.getMonth()+1),full:'Semaine du '+d.getDate()+'/'+(d.getMonth()+1),v:sum(list,a,Math.min(b,end))});
+      }
+      const total=items.reduce((x,i)=>x+i.v,0), layDays=new Set(list.filter(r=>r.createdAt>=today-27*DAYMS&&r.createdAt<end&&r.count>0).map(r=>new Date(r.createdAt).toDateString())).size;
+      body.innerHTML=`${demoBar()}
+        <h3 class="v81-h">Le poulailler · œufs par semaine</h3>
+        ${bars(items,'œufs')}
+        <div class="v81-tiles">
+          <div><b>${total}</b><span>œufs sur les 4 dernières semaines</span></div>
+          <div><b>${(total/28).toFixed(1).replace('.',',')}</b><span>œufs / jour en moyenne</span></div>
+          <div><b>${layDays}</b><span>jour${layDays>1?'s':''} avec ponte</span></div>
+        </div>
+        ${!list.length&&!demo?`<div class="v81-empty">Aucune ponte enregistrée pour l’instant. Le graphique se construit au fil de tes enregistrements.<button type="button" onclick="v81Demo(true)">Voir un exemple</button></div>`:''}
+        <div class="v81-queen"><span class="v232-elo v268-loupe-c">🔍</span><p><b>Le regard d’Élodie</b>Une ponte qui varie d’une semaine à l’autre est normale. Ce qui mérite ton attention, c’est un arrêt brutal accompagné d’autres changements chez une poule.</p></div>
+        <div class="v81-card" style="background:#f1ebfa;border:1.5px solid #cdbbe8;display:block"><b style="color:#5a3a8c">♛ Envie d’aller plus loin ?</b><small style="display:block;margin:4px 0 8px;color:#5a3a8c">Avec Premium, tu peux suivre la ponte sur 3, 6 ou 12 mois et comparer tes poules entre elles. C’est là que se voient les vrais rythmes.</small><button type="button" class="v81-link" style="color:#5a3a8c" onclick="v81Lock('pontePlus')">Découvrir ce que Premium ajoute ›</button></div>`;
     }};
   window.v81Ponte=r=>{ pRange=r; rerender(); };
   window.v81PonteHen=id=>{ pHen=id; rerender(); };
@@ -11875,12 +11899,12 @@ const adv=document.querySelector('#advice .grid');
   }
 
   /* ---------- Page Premium : liste des services + mode test ---------- */
-  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['parcplus','Aller plus loin pour ton parc : prédateurs, plantes, surface'],['bilan','Bilan du mois'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements et rappel quotidien (vitamines, vermifuge, médical)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon tes Popotes'],['compare','Comparateur de races']];
+  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['parcplus','Aller plus loin pour ton parc : prédateurs, plantes, surface'],['bilan','Bilan du mois'],['pontePlus','Évolution de la ponte sur 3, 6 ou 12 mois et comparaison des poules'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements et rappel quotidien (vitamines, vermifuge, médical)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon tes Popotes'],['compare','Comparateur de races']];
   function renderPremiumPage(){
     const list=document.querySelector('#premium .pm-list');
     if(list) list.innerHTML=PM_LIST.map(([k,t])=>`<button type="button" class="pm-item v81-pmi" onclick="v81Open('${k}')"><span class="pm-ic">${F[k].icon}</span><div><b>${esc(t)}</b><small>${esc(F[k].pitch)}</small></div><span class="v81-chev">›</span></button>`).join('');
     const free=document.querySelector('#premium .pm-free');
-    if(free) free.innerHTML=['« Ma poule ne va pas bien » et les signes d’urgence','Les bases de l’alimentation et « Je peux leur donner… ? »','Toutes les fiches de conseils, et le début de chaque guide','Jusqu’à 5 Popotes, avec leur carte d’identité','L’enregistrement des pontes, l’évolution de la ponte sur 12 mois et le bilan simple du parc','Les alertes météo de base','3 questions à Queen chaque mois'].map(t=>`<span>✓ ${esc(t)}</span>`).join('');
+    if(free) free.innerHTML=['« Ma poule ne va pas bien » et les signes d’urgence','Les bases de l’alimentation et « Je peux leur donner… ? »','Toutes les fiches de conseils, et le début de chaque guide','Jusqu’à 5 Popotes, avec leur carte d’identité','L’enregistrement des pontes, l’évolution de la ponte du dernier mois et le bilan simple du parc','Les alertes météo de base','3 questions à Queen chaque mois'].map(t=>`<span>✓ ${esc(t)}</span>`).join('');
     let t=document.getElementById('v81Test');
     const cta=document.querySelector('#premium .pm-cta');
     if(!t&&cta){ t=document.createElement('div'); t.id='v81Test'; cta.before(t); }
