@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=518;
+  var APP_V=519;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -8268,8 +8268,7 @@ function updateParkSummary(){
 }
 
 function saveParksAndBack(){
-  syncParkStateFromDOM();
-  toast('Tes parcs ont été enregistrés ✓');
+  try{ syncParkStateFromDOM(); toast('Tes parcs ont été enregistrés ✓'); }catch(e){ console.error(e); }
   go('install');
 }
 
@@ -8320,8 +8319,7 @@ function updateInstallScore(){
 }
 
 function saveEnvironmentAndBack(){
-  updateInstallScore();
-  toast('Ton environnement a été enregistré ✓');
+  try{ updateInstallScore(); toast('Ton environnement a été enregistré ✓'); }catch(e){ console.error(e); }
   go('install');
 }
 
@@ -14600,6 +14598,29 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
 })();
 </script>
 <style id="v508-lock-css">.v81-lock p:empty{display:none}</style>
+<script id="v519-nav-safe-js">
+/* v519 : la flèche retour ne doit jamais laisser un écran blanc (iPhone) */
+(function(){
+  var g=window.go; if(typeof g!=='function') return;
+  function fix(id){
+    try{
+      var act=document.querySelector('.screen.active');
+      if(act) return;
+      var t=id&&document.getElementById(id); if(!t||!t.classList.contains('screen')) t=document.getElementById('home');
+      if(t){ t.classList.add('active'); document.body.classList.toggle('exact-home-mode',t.id==='home'); }
+    }catch(e){}
+  }
+  window.go=function(id,el){
+    var r;
+    try{ r=g.apply(this,arguments); }
+    catch(e){ console.error(e); fix(id); }
+    fix(id);
+    return r;
+  };
+  ['pageshow','visibilitychange','focus'].forEach(function(ev){ window.addEventListener(ev,function(){ fix('home'); }); });
+  setInterval(function(){ fix('home'); },1500);
+})();
+</script>
 <style id="v237-premium-swap-css">
 .v81-enc-b.v237-free{background:#2f7a4a!important;color:#fff!important;border-color:#2f7a4a!important}
 #extraInfoToggle .v237-tag{margin-left:8px;font-size:11.5px;font-weight:800;color:#8a5d12;background:#fff6e0;border:1.5px solid #f0d9a0;border-radius:99px;padding:2px 8px}
