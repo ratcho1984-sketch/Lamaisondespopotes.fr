@@ -5491,7 +5491,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
   </div>
 
   <div class="lay-card v269-card" id="v269WeightCard">
-    <div class="lay-card-title"><span class="icon">⚖️</span><span>Poids de l’œuf</span><em class="v269-tag">♛ Premium</em></div>
+    <div class="lay-card-title"><span class="icon">⚖️</span><span>Poids de l’œuf, couleur de l’œuf…</span><em class="v269-tag">♛ Premium</em></div>
     <div class="v269-row"><input id="v269Weight" type="number" inputmode="decimal" min="20" max="150" step="1" placeholder="Ex. 58" oninput="var w=document.getElementById('eggWeight');if(w)w.value=this.value"><span>g</span></div>
     <div class="v269-note">Facultatif. Si tu enregistres plusieurs œufs d’un coup, ce poids est noté pour chacun.</div>
   </div>
@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=516;
+  var APP_V=517;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -15591,7 +15591,7 @@ return '<div class="park-card" data-i="'+i+'"><div class="park-card-head"><span 
     var multi=p&&named.length>0, key=(p?1:0)+'|'+named.join(',')+'|'+U;
     if(!force&&key===last) return; last=key;
     card.classList.toggle('v282-multi',multi);
-    var t=card.querySelector('.lay-card-title span:nth-child(2)'); if(t) t.textContent=multi&&(named.length+(U?1:0))>1?'Poids de chaque œuf':'Poids de l’œuf';
+    var t=card.querySelector('.lay-card-title span:nth-child(2)'); if(t) t.textContent=multi&&(named.length+(U?1:0))>1?'Poids de chaque œuf':'Poids de l’œuf, couleur de l’œuf…';
     var box=document.getElementById('v282Rows');
     if(!multi){ if(box) box.remove(); return; }
     if(!box){ box=document.createElement('div'); box.id='v282Rows'; var row=card.querySelector('.v269-row'); (row||card).after?row.after(box):card.appendChild(box); }
