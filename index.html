@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=508;
+  var APP_V=509;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -11247,24 +11247,27 @@ renderStarterStep = function(){
   let pRange=6, pHen=null;
   F.pontePlus={icon:'📈',title:'Évolution de la ponte',free:false,
     pitch:'Suis la ponte mois par mois, poule par poule, au fil des saisons.',
-    bullets:['Graphiques sur 3, 6 ou 12 mois','Le détail de chaque Popote','Les saisons en repère, et l’export de ton historique'],
+    bullets:['Graphiques sur 3, 6, 12 mois, 2 ans, 3 ans ou tout l’historique','Le détail de chaque Popote','Les saisons en repère, et l’export de ton historique'],
     render(body){
       const now=new Date(), list=recs(), items=[];
-      for(let i=pRange-1;i>=0;i--){ const y=now.getFullYear(), m=now.getMonth()-i, d=new Date(y,m,1); items.push({l:MSHORT[d.getMonth()].replace('.',''),s:SEASON_EMO(d.getMonth()),full:MONTHS[d.getMonth()]+' '+d.getFullYear(),v:sum(list,monthStart(y,m),monthStart(y,m+1),pHen)}); }
+      let nM=pRange; if(pRange===0){ const first=list.reduce((mn,r)=>Math.min(mn,r.createdAt),Date.now()); const fd=new Date(first); nM=Math.max(1,(now.getFullYear()-fd.getFullYear())*12+now.getMonth()-fd.getMonth()+1); }
+      const byYear=nM>12;
+      if(byYear){ const a0=monthStart(now.getFullYear(),now.getMonth()-nM+1), y0=new Date(a0).getFullYear(); for(let y=y0;y<=now.getFullYear();y++){ items.push({l:String(y),full:'Année '+y,v:sum(list,Math.max(a0,new Date(y,0,1).getTime()),Math.min(new Date(y+1,0,1).getTime(),Date.now()+1),pHen)}); } }
+      else for(let i=nM-1;i>=0;i--){ const y=now.getFullYear(), m=now.getMonth()-i, d=new Date(y,m,1); items.push({l:MSHORT[d.getMonth()].replace('.',''),s:SEASON_EMO(d.getMonth()),full:MONTHS[d.getMonth()]+' '+d.getFullYear(),v:sum(list,monthStart(y,m),monthStart(y,m+1),pHen)}); }
       const total=items.reduce((s,i)=>s+i.v,0), bestM=items.reduce((p,q)=>q.v>p.v?q:p,items[0]);
-      const a=monthStart(now.getFullYear(),now.getMonth()-pRange+1);
+      const a=monthStart(now.getFullYear(),now.getMonth()-nM+1);
       const per=popotes.filter(h=>!v359NL(h)).map(h=>({l:h.name,v:sum(list,a,Date.now()+1,h.id)})).sort((p,q)=>q.v-p.v);
       const _pT=per.reduce((s,x)=>s+x.v,0),_aT=sum(list,a,Date.now()+1,null),_unk=_aT-_pT; if(_unk>0) per.push({l:'Pondeuse inconnue',v:_unk});
       body.innerHTML=`${demoBar()}
-        <div class="v81-seg2">${[3,6,12].map(r=>`<button type="button" class="${pRange===r?'on':''}" onclick="v81Ponte(${r})">${r} mois</button>`).join('')}</div>
+        <div class="v81-seg2">${[[3,'3 mois'],[6,'6 mois'],[12,'12 mois'],[24,'2 ans'],[36,'3 ans'],[0,'Tout']].map(([r,t])=>`<button type="button" class="${pRange===r?'on':''}" onclick="v81Ponte(${r})">${t}</button>`).join('')}</div>
         <div class="v81-chips"><button type="button" class="${pHen==null?'on':''}" onclick="v81PonteHen(null)">Toutes</button>${popotes.filter(h=>!v359NL(h)).map(h=>`<button type="button" class="${pHen===h.id?'on':''}" onclick="v81PonteHen('${h.id}')">${esc(h.name)}</button>`).join('')}</div>
-        <h3 class="v81-h">${pHen?esc(henName(pHen)):'Toutes les Popotes'} · œufs par mois</h3>
+        <h3 class="v81-h">${pHen?esc(henName(pHen)):'Toutes les Popotes'} · œufs par ${byYear?'année':'mois'}</h3>
         ${bars(items,'œufs')}
-        <p class="v81-legend">❄️ hiver · 🌱 printemps · ☀️ été · 🍂 automne</p>
+        ${byYear?'':'<p class="v81-legend">❄️ hiver · 🌱 printemps · ☀️ été · 🍂 automne</p>'}
         <div class="v81-tiles">
-          <div><b>${total}</b><span>œufs sur ${pRange} mois</span></div>
-          <div><b>${Math.round(total/pRange)}</b><span>par mois en moyenne</span></div>
-          <div><b>${total?esc(bestM.full.split(' ')[0]):'—'}</b><span>meilleur mois</span></div>
+          <div><b>${total}</b><span>œufs sur ${nM>12?(nM%12?(nM/12).toFixed(1).replace('.',','):nM/12)+' an'+(nM>=24?'s':''):nM+' mois'}</span></div>
+          <div><b>${Math.round(total/nM)}</b><span>par mois en moyenne</span></div>
+          <div><b>${total?esc(byYear?bestM.l:bestM.full.split(' ')[0]):'—'}</b><span>${byYear?'meilleure année':'meilleur mois'}</span></div>
         </div>
         ${pHen?'':`<h3 class="v81-h">Par Popote sur la période</h3>${hbars(per,'œufs')}`}
         ${!list.length&&!demo?`<div class="v81-empty">Aucune ponte enregistrée pour l’instant. Les graphiques se construisent au fil de tes enregistrements.<button type="button" onclick="v81Demo(true)">Voir un exemple</button></div>`:''}
@@ -11899,7 +11902,7 @@ const adv=document.querySelector('#advice .grid');
   }
 
   /* ---------- Page Premium : liste des services + mode test ---------- */
-  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['parcplus','Aller plus loin pour ton parc : prédateurs, plantes, surface'],['bilan','Bilan du mois'],['pontePlus','Évolution de la ponte sur 3, 6 ou 12 mois et comparaison des poules'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements et rappel quotidien (vitamines, vermifuge, médical)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon tes Popotes'],['compare','Comparateur de races']];
+  const PM_LIST=[['queen','Discuter avec Queen sans limite'],['parcplus','Aller plus loin pour ton parc : prédateurs, plantes, surface'],['bilan','Bilan du mois'],['pontePlus','Évolution de la ponte sur 12 mois, 2 ans, 3 ans ou tout l’historique, et comparaison des poules'],['oeufinfo','Détails de chaque œuf : poids, taille, couleur, photo'],['journal','Journal de vie de chaque poule'],['calendrier','Calendrier de ponte et fiche pour le vétérinaire'],['traitement','Suivi des traitements et rappel quotidien (vitamines, vermifuge, médical)'],['unlimited','Poules illimitées (5 comprises en gratuit)'],['cartes','Modèles de carte et image HD'],['guides','Guides approfondis'],['saison','Alimentation selon la saison'],['elodie','Bilan détaillé du parc'],['plans','Liste d’achats et plan du poulailler'],['meteo','Alertes météo selon tes Popotes'],['compare','Comparateur de races']];
   function renderPremiumPage(){
     const list=document.querySelector('#premium .pm-list');
     if(list) list.innerHTML=PM_LIST.map(([k,t])=>`<button type="button" class="pm-item v81-pmi" onclick="v81Open('${k}')"><span class="pm-ic">${F[k].icon}</span><div><b>${esc(t)}</b><small>${esc(F[k].pitch)}</small></div><span class="v81-chev">›</span></button>`).join('');
