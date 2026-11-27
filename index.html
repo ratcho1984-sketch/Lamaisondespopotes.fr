@@ -6906,7 +6906,7 @@ body.v85-typing #queenchat{padding-bottom:6px!important}
 </script>
 <script id="v203-autoupdate">
 (function(){
-  var APP_V=504;
+  var APP_V=505;
   if(!/github\.io$/.test(location.hostname)) return;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
@@ -14543,6 +14543,33 @@ try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persiste
   }
   function init(){ build(); addBtn(); render(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
+<script id="v505-breed-sources-js">
+(function(){
+  var C={
+    'Sussex':{size:'moyenne',brood:true,description:"Poule calme et curieuse, facile à manipuler. Elle pond environ 150 œufs par an, à coquille brun très clair, et elle couve volontiers. C'était la race de Queen, notre toute première poule."},
+    'Orpington':{description:"Grosse poule calme et douce, bien adaptée au froid grâce à son plumage épais. Elle supporte moins bien la chaleur : prévois de l'ombre. Elle pond environ 150 à 200 œufs brun clair par an et elle couve volontiers."},
+    'Brahma':{laying:2,description:"Très grande poule calme et docile, très résistante au froid. Elle supporte mal la chaleur et ses pattes emplumées craignent la boue. Elle pond jusqu'à 200 œufs bruns par an (les sources divergent) et elle couve."},
+    'Faverolles':{mud:true,description:"Poule calme et très douce, appréciée des enfants et des débutants. Bonne pondeuse, même en hiver (150 à plus de 200 œufs par an, teintés brun clair à rose). Elle a les pattes emplumées."},
+    'Marans':{cold:2,size:'grande',description:"Poule plutôt calme (les sources divergent), de taille moyenne à grande, connue pour ses œufs brun foncé (150 à 200 par an). Sa crête est sensible au gel : elle s'épanouit mieux en climat modéré. Pattes parfois emplumées selon les lignées."},
+    'Wyandotte':{size:'grande',brood:true,description:"Grosse poule calme et robuste, bonne pondeuse (environ 150 à 200 gros œufs bruns par an). Résistante au froid, elle convient moins bien aux très fortes chaleurs. Peu volante, elle couve volontiers."},
+    'Cou nu':{cold:2,size:'grande',description:"Poule rustique et imposante, bonne pondeuse (120 à 180 œufs par an selon la souche). Son cou nu l'aide à supporter la chaleur ; protège-la tout de même du grand froid. Peu farouche."},
+    'Leghorn':{description:"Excellente pondeuse de gros œufs blancs (environ 280 à 300 par an), légère et très active. Plutôt farouche, elle peut voler. Elle tolère bien la chaleur mais sa crête craint le gel."},
+    'Araucana':{brood:true,description:"Poule originale qui pond environ 150 à 200 œufs bleu-vert par an, surtout au printemps et en été. Calme, douce et amicale, avec une tendance à couver."},
+    'Pékin':{description:"Petite poule naine (environ 570 à 680 g), très douce et adaptée aux enfants. Elle pond de petits œufs blancs ou crème en quantité modeste, couve volontiers et a les pattes emplumées. Idéale pour un petit jardin."},
+    'Soie':{heat:1,description:"Petite poule naine au plumage duveteux, très douce et excellente couveuse. Elle pond de petits œufs en nombre modeste. Elle souffre plus de la chaleur que les autres races et craint l'humidité : elle a besoin d'un abri sec."},
+    'Ayam Cemani':{laying:1,description:"Race indonésienne entièrement noire (plumes, peau, os). Ponte modeste (60 à 120 œufs par an selon les sources, avec des arrêts fréquents). Calme mais parfois nerveuse ; elle doit être abritée du froid."},
+    'Suédoise à fleurs':{size:'grande',description:"Plus grande race de poule suédoise, calme et lourde, au plumage moucheté coloré. Elle pond environ 150 œufs par an."},
+    'Vorwerk':{flight:true,description:"Race allemande à double fin, au plumage fauve avec la tête, le cou et la queue noirs. Environ 170 œufs crème par an. Facile à apprivoiser, elle vole assez bien (environ 2 m) : prévois une clôture."},
+    'Bresse gauloise':{familiarity:2,laying:2,flight:false,description:"Bonne pondeuse d'œufs blancs, calme et active, souvent curieuse et proche de l'humain. Elle couve rarement."},
+    'Poule rousse hybride':{description:"Hybride de ponte très productive (environ 200 œufs par an, davantage les premières années), souvent très docile et familière. En contrepartie, elle s'épuise plus vite et peut avoir des problèmes de ponte avec l'âge."},
+    'Harco':{description:"Souche hybride de ponte (pas une race au sens du standard), proche de ce qu'on appelle couramment la poule rousse. Très productive sur 18 à 24 mois environ, mais elle ne couve jamais."},
+    'Hollandaise huppée':{description:"Race néerlandaise à grosse huppe de plumes. Sa huppe peut limiter sa vue : garde les lieux secs et protège-la des bousculades."},
+    'Olivette':{description:"Poule hybride (type Olive Egger), pas une race fixée, qui pond des œufs vert olive dont la nuance varie. Environ 150 à 200 œufs par an, parfois couveuse."}
+  };
+  function ap(){ if(typeof henBreedData==='undefined') return; henBreedData.forEach(function(b){var c=C[b.name]; if(c) Object.assign(b,c);}); }
+  ap();
 })();
 </script>
 <style id="v237-premium-swap-css">
